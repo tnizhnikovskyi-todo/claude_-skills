@@ -1,4 +1,4 @@
 schema_version: "1.1"
 name: cloud-memory/remember-decision
 context:
-  scaffold_script: ../_scaffold/empty-repo.sh
+  scaffold_script: scaffold.sh
