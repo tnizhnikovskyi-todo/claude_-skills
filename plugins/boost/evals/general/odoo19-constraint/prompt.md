@@ -1,4 +1,5 @@
 ---
+name: general/odoo19-constraint
 description: Код Odoo 19 с ловушкой устаревшего API (_sql_constraints → models.Constraint)
 tags: [general, odoo, code]
 max_turns: 6

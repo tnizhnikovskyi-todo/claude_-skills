@@ -1,4 +1,5 @@
 ---
+name: general/pr-review-bug
 description: Ревью PR с заложенной ошибкой (compute не присваивает значение во всех ветках)
 tags: [general, review, odoo]
 max_turns: 6

@@ -1,4 +1,5 @@
 ---
+name: general/fact-check
 description: Исследование с проверкой фактов; одно утверждение ложное, у каждого вердикта нужен источник
 tags: [general, research]
 max_turns: 6

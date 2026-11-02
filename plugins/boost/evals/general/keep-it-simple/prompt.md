@@ -1,4 +1,5 @@
 ---
+name: general/keep-it-simple
 description: Простая доработка с соблазном переусложнить
 tags: [general, odoo, code, simplicity]
 max_turns: 6

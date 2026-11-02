@@ -1,4 +1,5 @@
 ---
+name: general/tr-requirements
 description: ТР/требования; проверяем граничные случаи и несчастливые пути в критериях приёмки
 tags: [general, tr]
 max_turns: 6

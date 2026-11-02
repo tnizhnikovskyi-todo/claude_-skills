@@ -1,4 +1,5 @@
 ---
+name: general/vague-task
 description: Расплывчатая задача; хороший ответ сначала уточняет, а не пишет код
 tags: [general, clarify]
 max_turns: 6

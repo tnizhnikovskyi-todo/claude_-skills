@@ -1,4 +1,5 @@
 ---
+name: general/discovery-questions
 description: Вопросы для дискавери; заметки содержат противоречие, которое надо выявить
 tags: [general, discovery]
 max_turns: 6

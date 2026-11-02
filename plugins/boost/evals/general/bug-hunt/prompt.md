@@ -1,4 +1,5 @@
 ---
+name: general/bug-hunt
 description: Поиск бага по симптому (округление долей рассрочки)
 tags: [general, bug]
 max_turns: 6
