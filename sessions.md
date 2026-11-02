@@ -40,3 +40,5 @@
 | discovery-interview | 3.4 | `build/discovery-interview` | [session_01L4X5dxFcHE2T9drn8GJzP1](https://claude.ai/code/session_01L4X5dxFcHE2T9drn8GJzP1) | слито (предложение) |
 | automation-audit | 4.3 | `build/automation-audit` | [session_01L4X5e1ZugnciMyW7EMAugR](https://claude.ai/code/session_01L4X5e1ZugnciMyW7EMAugR) | слито |
 | observations | 5.1 | `build/observations` | [session_01L4X5dwJimwjr7KpRxJq5ja](https://claude.ai/code/session_01L4X5dwJimwjr7KpRxJq5ja) | слито |
+| rtk-pilot | 4.4 | `build/rtk-pilot` | [session_01L4X5e1jKV3A2wTSXnx6WP4](https://claude.ai/code/session_01L4X5e1jKV3A2wTSXnx6WP4) | в работе |
+| cbm-pilot | 4.5 | `build/cbm-pilot` | [session_01L4X5dy4DhWq69JxUWuSYwo](https://claude.ai/code/session_01L4X5dy4DhWq69JxUWuSYwo) | в работе |

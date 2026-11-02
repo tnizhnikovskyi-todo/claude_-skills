@@ -146,7 +146,8 @@
 | 4.1 | ждёт ключ Firecrawl | | | |
 | 4.2 | заменено на 4.5 | | | |
 | 4.3 | готово, в плагине (+0.36) | [automation-audit](https://claude.ai/code/session_01L4X5e1ZugnciMyW7EMAugR) | `build/automation-audit` | `reports/automation-audit.md` |
-| 4.4, 4.5 | заблокировано: создание чатов с запуском чужих программ не пропустила система безопасности; нужно правило разрешения от пользователя | | | |
+| 4.4 | в работе (разрешено пользователем) | [rtk-pilot](https://claude.ai/code/session_01L4X5e1jKV3A2wTSXnx6WP4) | `build/rtk-pilot` | |
+| 4.5 | в работе (разрешено пользователем) | [cbm-pilot](https://claude.ai/code/session_01L4X5dy4DhWq69JxUWuSYwo) | `build/cbm-pilot` | |
 | 5.1 | готово, в плагине (+0.45); 5 наблюдений в `observations/`; еженедельная задача не создана, промпт готов | [observations](https://claude.ai/code/session_01L4X5dwJimwjr7KpRxJq5ja) | `build/observations` | `reports/observations.md` |
 | 5.2 | готово: принципы в `criteria.md` | главная сессия | | |
 | 5.3 | готово: 4 разбора слиты | см. `sessions.md` | | `catalog/INDEX.md` |
