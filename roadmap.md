@@ -134,7 +134,7 @@
 | 1.2 | готово, в плагине | [interview-source](https://claude.ai/code/session_01L4X5dxWNHTCxZX6YvcL6a7) | `build/interview-source` | `reports/interview-source.md` |
 | 1.3 | готово, в плагине; повторить A/B с Context7 после 1.1 | interview-source | | |
 | 2.1 | готово, в плагине; пилот на рабочем репозитории | [cloud-memory](https://claude.ai/code/session_01L4X5dzUi82gav7qHcVBeNe) | `build/cloud-memory` | `reports/cloud-memory.md` |
-| 2.2 / 2.2b | не включён: 2.2 прирост 0; 2.2b со скиллом 7/7, базовое плечо не снято (лимит съело плечо «с»); дозамер базы в работе | [independent-check](https://claude.ai/code/session_01L4X5dyQd2f4Mh8gpmeyMcM) | `build/independent-check` (не слита) | в ветке |
+| 2.2 / 2.2b | не включён: 2.2 прирост 0; 2.2b со скиллом 7/7, базовое плечо не снято; дозамер базы поручен (бюджет $1.5) | [independent-check](https://claude.ai/code/session_01L4X5dyQd2f4Mh8gpmeyMcM) | `build/independent-check` (не слита) | в ветке |
 | 2.3 | готово, в плагине | [lean](https://claude.ai/code/session_01L4X5dxJQwq1GhZzTZqZuEh) | `build/lean` | `reports/lean.md` |
 | 2.4 | готово, в плагине; прогон на рабочем модуле Odoo | lean | | |
 | 2.5 | готово, в плагине (+0.11); прогон на ядре Odoo 19 и рабочем модуле | [odoo-model-map](https://claude.ai/code/session_01L4X5dxEu7FH3tN8TH8JSfr) | `build/odoo-model-map` | `reports/odoo-model-map.md` |
