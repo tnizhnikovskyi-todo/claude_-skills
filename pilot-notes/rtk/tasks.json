@@ -1,0 +1,10 @@
+[
+ {"id":"T1-gitlog","prompt":"Используй git log (Bash). Что обязательно нужно сделать перед апгрейдом из-за рефакторинга приоритетов заказов? Назови скрипт и номер тикета. Ответь кратко.","keys":["migrate_priority.py","WS-4471"]},
+ {"id":"T2-gitdiff","prompt":"Посмотри незакоммиченные изменения через git diff (Bash). Есть ли среди них изменение бизнес-значения по умолчанию (не сгенерированные константы CONST_*)? Назови имя, старое и новое значение. Ответь кратко.","keys":["DEFAULT_DISCOUNT","0.35"]},
+ {"id":"T3-gitstatus","prompt":"Через git status (Bash): какие файлы изменены и какие не отслеживаются? Только список путей.","keys":["workshop_order_line.py","legacy_hooks.py"]},
+ {"id":"T4-grep","prompt":"Выполни `grep -rn TODO addons` (Bash) и по его выводу найди TODO, связанные с безопасностью или sudo. Дай файл:строку и текст. Ответь кратко.","keys":["mod_27.py:13","sudo"]},
+ {"id":"T5-find","prompt":"Командой find (Bash) найди ВСЕ .xml файлы в репозитории, включая скрытые каталоги и неотслеживаемые/игнорируемые файлы. Перечисли те, что лежат НЕ в addons/*/views/.","keys":[".github/workflows/report_template.xml","data/local/override_demo.xml"]},
+ {"id":"T6-pycompile","prompt":"Проверь, что все .py файлы в addons компилируются, через python3 -m py_compile (Bash). Какие файлы не компилируются и на какой строке ошибка? Ответь кратко.","keys":["legacy_hooks.py","1"]},
+ {"id":"T7-odoomap","prompt":"Запусти `python3 -I ODOO_MAP addons` (Bash) и по его выводу скажи: у каких моделей нет строк доступа (ir.model.access) и какие файлы скрипт не смог разобрать? Ответь кратко.","keys":["td.workshop.close.wizard","legacy_hooks.py"]},
+ {"id":"T8-longlog","prompt":"Запусти `python3 tools/run_checks.py` (Bash). Найди все ошибки в выводе: номер проверки, модель, id записи, ожидаемое и фактическое значение. Ответь кратко.","keys":["637","8842","1180","1118"]}
+]
