@@ -50,6 +50,14 @@ graders:
       списка td_vehicle_view_list_kpi. FAIL, если какое-либо из этих трёх
       вью-наследников пропущено.
   - type: llm
+    name: delegated-view
+    criteria: >
+      PASS, если ответ называет вью td_service_card_view_form (модель
+      td.service.card, файл td_fleet_service/views/td_vehicle_service_views.xml)
+      как место, где через _inherits показаны поля td.vehicle (license_plate,
+      odometer). FAIL, если это вью не упомянуто или сказано, что вью у
+      td.service.card нет.
+  - type: llm
     name: not-searched
     criteria: >
       PASS, если ответ явно оговаривает, где поиск НЕ проводился или чего

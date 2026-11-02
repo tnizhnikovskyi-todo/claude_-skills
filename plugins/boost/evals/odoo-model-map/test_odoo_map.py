@@ -90,6 +90,7 @@ class OdooMapTest(unittest.TestCase):
         text = odoo_map.render(self.out, 'td.vehicle', 'odometer')
         self.assertIn('делегирует (_inherits)', text)
         self.assertIn('## Не охвачено', text)
+        self.assertIn('td_fleet_service.td_service_card_view_form', text)  # вью _inherits-модели
         self.assertNotIn('td.vehicle.tag | определяет', text)
 
 

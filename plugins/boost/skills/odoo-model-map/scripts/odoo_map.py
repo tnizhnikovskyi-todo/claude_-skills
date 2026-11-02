@@ -312,8 +312,12 @@ def render(out, model=None, field=None):
     p.append("\n## env['…']\n")
     p.append(table(['модель', 'модуль', 'где'], rows))
 
-    views = [v for v in out['views'] if not model or v['model'] == model]
+    deleg = {c['model'] for c in out['classes'] if model and model in c['inherits']}
+    views = [v for v in out['views'] if not model or v['model'] == model or v['model'] in deleg]
     p.append('\n## Вью\n')
+    if deleg:
+        p.append('Включены вью моделей с `_inherits` на неё (там видны её поля): ' +
+                 ', '.join(f'`{m}`' for m in sorted(deleg)) + '\n\n')
     p.append(table(['xml id', 'модель', 'тип', 'inherit_id', 'где'], [
         (v['id'], v['model'], v['type'], v['inherit'] or '', v['where']) for v in views]))
     ids = {v['id'] for v in out['views']}
