@@ -1,6 +1,7 @@
 ---
 type: regex
-pattern: "(?i)base_url"
+pattern: "base_url"
+flags: i
 target:
   source: file
   path: memory/HANDOFF.md

@@ -1,6 +1,7 @@
 ---
 type: regex
-pattern: "(?i)decision.*(вторник|вт).*14:00.*\\.md"
+pattern: "decision.*(вторник|вт).*14:00.*\\.md"
+flags: i
 target:
   source: file
   path: memory/INDEX.md

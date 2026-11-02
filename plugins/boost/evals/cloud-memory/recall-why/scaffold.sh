@@ -27,7 +27,7 @@ cat > memory/INDEX.md <<'X'
 
 - 2026-10-21 bugfix [tests] Тесты рендера падали в CI: нет шрифтов в образе, добавили fonts-dejavu → 2026-10-21-ci-fonts.md
 - 2026-10-15 decision [pdf,report] PDF-отчёты переводим на WeasyPrint вместо wkhtmltopdf → 2026-10-15-pdf-weasyprint.md
-- 2026-10-02 convention [git] Ветки называть feature/<задача>, коммиты по-русски → 2026-10-02-branches.md
+- 2026-10-02 decision [git] Ветки называть feature/<задача>, коммиты по-русски → 2026-10-02-branches.md
 - ~~2026-09-10 decision [pdf] PDF через wkhtmltopdf/pdfkit~~ → заменено 2026-10-15-pdf-weasyprint.md
 X
 cat > memory/2026-10-15-pdf-weasyprint.md <<'X'
@@ -68,7 +68,7 @@ summary: Тесты рендера падали в CI: нет шрифтов в 
 X
 cat > memory/2026-10-02-branches.md <<'X'
 ---
-type: convention
+type: decision
 date: 2026-10-02
 tags: [git]
 status: active

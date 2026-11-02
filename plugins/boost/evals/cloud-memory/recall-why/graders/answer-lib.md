@@ -1,6 +1,7 @@
 ---
 type: regex
-pattern: "(?i)weasyprint"
+pattern: "weasyprint"
+flags: i
 target: last_message
 weight: 1
 ---
