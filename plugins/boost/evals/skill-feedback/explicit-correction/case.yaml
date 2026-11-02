@@ -36,13 +36,13 @@ graders:
   - type: tool_used
     name: skill-not-edited-write
     tool: Write
-    input_match: 'skills/repo-audit'
+    input_match: '"file_path"\s*:\s*"[^"]*skills/repo-audit'
     min: 0
     max: 0
   - type: tool_used
     name: skill-not-edited-edit
     tool: Edit
-    input_match: 'skills/repo-audit'
+    input_match: '"file_path"\s*:\s*"[^"]*skills/repo-audit'
     min: 0
     max: 0
   - type: llm
