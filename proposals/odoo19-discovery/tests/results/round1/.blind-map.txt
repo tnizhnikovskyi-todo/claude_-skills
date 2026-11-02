@@ -1,0 +1,1 @@
+K1:X=B,Y=A K2:X=A,Y=B S1:X=B,Y=A

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="td_odometer_export_view_form" model="ir.ui.view">
+        <field name="name">td.odometer.export.form</field>
+        <field name="model">td.odometer.export</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="min_km"/>
+                    <field name="vehicle_ids" widget="many2many_tags"/>
+                    <field name="file_data" filename="odometer.csv"/>
+                </group>
+                <footer>
+                    <button name="action_export" type="object" string="Export" class="btn-primary"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="td_odometer_export_action" model="ir.actions.act_window">
+        <field name="name">Export odometer</field>
+        <field name="res_model">td.odometer.export</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="td_odometer_export_menu" parent="td_fleet.td_fleet_menu_root"
+              action="td_odometer_export_action"/>
+</odoo>
