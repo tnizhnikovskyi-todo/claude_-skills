@@ -58,6 +58,10 @@ claude plugin eval plugins/boost --case '<скилл>/*' --runs 3 --no-publish
 - **Общая фикстура** для нескольких кейсов: `_fixture/` рядом с кейсами, в
   `setup.sh`: `cp -r "$(dirname "$0")/../_fixture/addons" .`.
 - **YAML.** `description` с «: » бери в кавычки.
+- **Копии истории.** Рядом с `history_file` eval создаёт `<sessionId>.jsonl`
+  и папку `<sessionId>/`: добавляй их в `.gitignore` кейса.
+- **База для кейсов с историей:** копия плагина без проверяемого скилла и
+  его агентов, `--ablation none`, тот же судья.
 - **Общий набор `general/`.** Регрессионный уровень (14 кейсов) база
   проходит почти на 1.0. Уровень `hard` (`odoo19-api-traps`,
   `odoo19-sales-traps`) база проходит на 0.755: модель стабильно ошибается
