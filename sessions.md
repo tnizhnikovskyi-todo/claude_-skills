@@ -19,3 +19,20 @@
 | headroom-desktop | [gglucass/headroom-desktop](https://github.com/gglucass/headroom-desktop) | `analysis/headroom-desktop` | [session_01L4X5dzqxpAzZ8kRZtJSSAN](https://claude.ai/code/session_01L4X5dzqxpAzZ8kRZtJSSAN) | слито | отклонить |
 | claude-code-setup | [маркетплейс: claude-code-setup](https://claude.com/marketplace/plugins/claude-code-setup) | `analysis/claude-code-setup` | [session_01L4X5dy9sm8pVDovmeAq1QX](https://claude.ai/code/session_01L4X5dy9sm8pVDovmeAq1QX) | слито | адаптировать |
 | one-skill-to-rule-them-all | [rebelytics/one-skill-to-rule-them-all](https://github.com/rebelytics/one-skill-to-rule-them-all) | `analysis/one-skill-to-rule-them-all` | [session_01L4X5dx5NcvZcnMG9SYxw4R](https://claude.ai/code/session_01L4X5dx5NcvZcnMG9SYxw4R) | слито | адаптировать |
+| rtk | [rtk-ai/rtk](https://github.com/rtk-ai/rtk) | `analysis/rtk` | [session_01L4X5dxa9VjT2sSxKe7FyhB](https://claude.ai/code/session_01L4X5dxa9VjT2sSxKe7FyhB) | слито | адаптировать (пилот) |
+| caveman | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) | `analysis/caveman` | [session_01L4X5e1H4RqcF1WgcYFW6e1](https://claude.ai/code/session_01L4X5e1H4RqcF1WgcYFW6e1) | слито | адаптировать стиль; рантайм отклонить |
+| serena | [oraios/serena](https://github.com/oraios/serena) | `analysis/serena` | [session_01L4X5dzR6qNzDRNKnZA4sPT](https://claude.ai/code/session_01L4X5dzR6qNzDRNKnZA4sPT) | слито | отклонить для Odoo |
+| codebase-memory-mcp | [DeusData/codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp) | `analysis/codebase-memory-mcp` | [session_01L4X5e1KgfykFe4JrAaFYQo](https://claude.ai/code/session_01L4X5e1KgfykFe4JrAaFYQo) | слито | адаптировать (только сервер с пином) |
+
+## Сессии реализации
+
+Задачи и статусы: `roadmap.md`. Отчёты: `reports/<slug>.md`.
+
+| slug | Задачи | Ветка | Сессия | Статус |
+|---|---|---|---|---|
+| foundation | 0.2, 0.3, подготовка 1.1 | `build/foundation` | [session_01L4X5e1XU6o9G3qUruKMTMn](https://claude.ai/code/session_01L4X5e1XU6o9G3qUruKMTMn) | слито |
+| interview-source | 1.2, 1.3 | `build/interview-source` | [session_01L4X5dxWNHTCxZX6YvcL6a7](https://claude.ai/code/session_01L4X5dxWNHTCxZX6YvcL6a7) | слито |
+| cloud-memory | 2.1 | `build/cloud-memory` | [session_01L4X5dzUi82gav7qHcVBeNe](https://claude.ai/code/session_01L4X5dzUi82gav7qHcVBeNe) | слито |
+| independent-check | 2.2 | `build/independent-check` | [session_01L4X5dyQd2f4Mh8gpmeyMcM](https://claude.ai/code/session_01L4X5dyQd2f4Mh8gpmeyMcM) | не слито (прирост 0) |
+| lean | 2.3, 2.4 | `build/lean` | [session_01L4X5dxJQwq1GhZzTZqZuEh](https://claude.ai/code/session_01L4X5dxJQwq1GhZzTZqZuEh) | слито |
+| review-upgrades | 3.1, 3.2 | `build/review-upgrades` | [session_01L4X5dxM8fDnFXcEC1bqyAj](https://claude.ai/code/session_01L4X5dxM8fDnFXcEC1bqyAj) | слито (предложения) |

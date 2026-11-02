@@ -1,0 +1,67 @@
+schema_version: "1"
+name: repo-audit/odoo-module
+description: >
+  Фикстурный модуль Odoo 19 td_fleet_lite с заложенными долгами:
+  (1) публичный контроллер с sudo() отдаёт телефоны водителей всех машин;
+  (2) td.fleet.service нет в ir.model.access.csv;
+  (3) search_count в цикле в _compute_service_count;
+  (4) мёртвый _legacy_recompute_odometer;
+  (5) дубль _format_plate в двух моделях;
+  (6) стратегия стоимости с одной реализацией (yagni);
+  (7) cron глотает исключения (except Exception: pass) + бессмысленный += 0;
+  (8) неиспользуемая зависимость account;
+  (9) driver_phone копируется onchange+write вместо related;
+  (10) неиспользуемое поле color; (11) нет тестов.
+tags: [repo-audit, positive, odoo]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    Проведи аудит модуля Odoo 19 `td_fleet_lite` в рабочем каталоге:
+    переусложнения, мёртвый код, дубли, долги. Нам его передают на
+    поддержку, нужен список того, что чинить. Ничего не меняй.
+  max_turns: 25
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: repo-audit
+    min: 1
+  - type: llm
+    name: finds-security
+    criteria: >
+      PASS, если отчёт называет ОБЕ проблемы: (а) публичный маршрут
+      /fleet/vehicles (auth='public') с sudo() отдаёт данные водителей
+      (имя/телефон) любому, в том числе всех машин без фильтра; (б) у модели
+      td.fleet.service нет строки в ir.model.access.csv. FAIL, если хотя бы
+      одна не названа.
+  - type: llm
+    name: finds-lean-debts
+    criteria: >
+      Посчитай, сколько из следующих долгов названо в отчёте как находки:
+      search_count в цикле в _compute_service_count; мёртвый метод
+      _legacy_recompute_odometer; дублирующийся _format_plate в двух
+      моделях; стратегия стоимости (AbstractCostStrategy/get_cost_strategy)
+      с одной реализацией; cron глотает исключения (except Exception: pass);
+      неиспользуемая зависимость account в манифесте; driver_phone
+      копируется через onchange/write вместо related; неиспользуемое поле
+      color. PASS, если названо не меньше 6 из 8. FAIL иначе.
+  - type: llm
+    name: four-part-format
+    criteria: >
+      PASS, если находки пронумерованы сквозной нумерацией, сгруппированы
+      по важности (например, «чинить обязательно / стоит починить / можно
+      потом» или Must/Should/Nice), и КАЖДАЯ находка содержит четыре части:
+      что это, в чём проблема, конкретный фикс, что будет, если не чинить.
+      FAIL, если хотя бы у нескольких находок нет части «что будет, если не
+      чинить» или нет конкретного фикса, или нет группировки по важности.
+  - type: llm
+    name: verdict-and-not-checked
+    criteria: >
+      PASS, если отчёт заканчивается итоговым вердиктом (что чинить первым)
+      и явным разделом/строкой о том, что не проверено (например, не
+      запускалось, тестов нет, Odoo не поднимался). FAIL, если нет вердикта
+      или нет раздела «не проверено».

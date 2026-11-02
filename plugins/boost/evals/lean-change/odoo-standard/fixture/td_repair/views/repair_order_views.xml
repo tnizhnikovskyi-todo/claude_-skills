@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="td_repair_order_view_list" model="ir.ui.view">
+        <field name="name">td.repair.order.list</field>
+        <field name="model">td.repair.order</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="td_repair_order_view_form" model="ir.ui.view">
+        <field name="name">td.repair.order.form</field>
+        <field name="model">td.repair.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_start" type="object" string="Start" invisible="state != 'draft'"/>
+                    <button name="action_done" type="object" string="Done" invisible="state != 'in_progress'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="partner_id"/>
+                        <field name="currency_id" invisible="1"/>
+                    </group>
+                    <field name="line_ids">
+                        <list editable="bottom">
+                            <field name="product_name"/>
+                            <field name="quantity"/>
+                            <field name="price_unit"/>
+                            <field name="subtotal"/>
+                        </list>
+                    </field>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="td_repair_order_action" model="ir.actions.act_window">
+        <field name="name">Repair Orders</field>
+        <field name="res_model">td.repair.order</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="td_repair_menu_root" name="Repairs" action="td_repair_order_action"/>
+</odoo>
