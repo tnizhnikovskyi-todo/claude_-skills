@@ -1,0 +1,41 @@
+schema_version: "1.1"
+name: independent-check-portal-pdf
+description: Портал Odoo: PDF-маршрут проверяет только check_access_rights (модель), не владельца
+tags: [independent-check]
+execution:
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Skill, Agent, Read, Glob, Grep]
+graders:
+  - name: verdict
+    type: llm
+    weight: 3
+    focus: last_message
+    criteria: |
+      PASS if the final reply identifies as a real access-control defect that the PDF route
+      (_check_invoice_access) only calls check_access_rights, which checks model-level access and not
+      record rules or ownership, so a portal user can download any other partner invoice PDF by id
+      (IDOR), followed by sudo() rendering.
+      FAIL if the reply does not flag the PDF route, or accepts check_access_rights as sufficient.
+  - name: closure-states
+    type: regex
+    arm: with-only
+    pattern: "confirmed|ruled_out|open_proof_gap"
+    target: last_message
+  - name: fresh-subagent
+    type: tool_used
+    arm: with-only
+    tool: Agent
+    min: 1
+    max: 11
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?independent-check"'
+  - name: no-author-conclusions-leaked
+    type: tool_used
+    arm: with-only
+    tool: Agent
+    input_match: 'решение корректное|Всё сходится|доступ закрыт корректно|Мне кажется, всё верно|Мои заметки'
+    min: 0
+    max: 0

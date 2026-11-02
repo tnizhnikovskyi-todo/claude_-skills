@@ -1,0 +1,42 @@
+schema_version: "1.1"
+name: independent-check-stock-reserve
+description: Резерв склада: дубли товара в строках заказа обходят проверку остатка
+tags: [independent-check]
+execution:
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Skill, Agent, Read, Glob, Grep]
+graders:
+  - name: verdict
+    type: llm
+    weight: 3
+    focus: last_message
+    criteria: |
+      PASS if the final reply identifies as a real defect (not merely a style note or hypothetical)
+      that when the same product_id appears in several order lines the per-line check compares each
+      qty against the original stock separately, so the total can exceed stock and the resulting
+      stock goes negative (e.g. stock 5, lines (A,3),(A,3) -> -1).
+      FAIL if this duplicate-lines problem is missing, or only mentioned as an unresolved maybe while
+      the reply concludes the solution is correct.
+  - name: closure-states
+    type: regex
+    arm: with-only
+    pattern: "confirmed|ruled_out|open_proof_gap"
+    target: last_message
+  - name: fresh-subagent
+    type: tool_used
+    arm: with-only
+    tool: Agent
+    min: 1
+    max: 11
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?independent-check"'
+  - name: no-author-conclusions-leaked
+    type: tool_used
+    arm: with-only
+    tool: Agent
+    input_match: 'решение корректное|Всё сходится|доступ закрыт корректно|Мне кажется, всё верно|Мои заметки'
+    min: 0
+    max: 0

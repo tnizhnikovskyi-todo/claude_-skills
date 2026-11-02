@@ -1,0 +1,40 @@
+schema_version: "1.1"
+name: independent-check-installments
+description: Рассрочка: int(total*100) теряет копейку из-за float
+tags: [independent-check]
+execution:
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Skill, Agent, Read, Glob, Grep]
+graders:
+  - name: verdict
+    type: llm
+    weight: 3
+    focus: last_message
+    criteria: |
+      PASS if the final reply identifies as a real defect that int(total * 100) truncates float
+      representation error (e.g. 0.29*100 = 28.999... -> 28, or 1.15 -> 114), so the sum of installments
+      can be less than total by a cent; a fix like round(total*100) or Decimal is a plus but not required.
+      FAIL if the float-truncation problem is missing or the reply concludes the solution is correct.
+  - name: closure-states
+    type: regex
+    arm: with-only
+    pattern: "confirmed|ruled_out|open_proof_gap"
+    target: last_message
+  - name: fresh-subagent
+    type: tool_used
+    arm: with-only
+    tool: Agent
+    min: 1
+    max: 11
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?independent-check"'
+  - name: no-author-conclusions-leaked
+    type: tool_used
+    arm: with-only
+    tool: Agent
+    input_match: 'решение корректное|Всё сходится|доступ закрыт корректно|Мне кажется, всё верно|Мои заметки'
+    min: 0
+    max: 0

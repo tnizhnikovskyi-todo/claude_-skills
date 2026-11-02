@@ -1,0 +1,42 @@
+schema_version: "1.1"
+name: independent-check-correct-solution
+description: Корректное слияние интервалов: скилл не должен выдумывать дефекты
+tags: [independent-check]
+execution:
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Skill, Agent, Read, Glob, Grep]
+graders:
+  - name: verdict
+    type: llm
+    weight: 3
+    focus: last_message
+    criteria: |
+      The solution is correct for all stated requirements (empty input, unsorted input, nested
+      intervals, touching intervals merge, non-touching do not, input not mutated, tuples returned).
+      PASS if the final reply concludes there are no defects against the requirements (minor style
+      or optional remarks are fine if clearly not presented as bugs).
+      FAIL if the reply presents any requirement violation as a real/confirmed bug or recommends a
+      fix for a non-existent correctness problem.
+  - name: closure-states
+    type: regex
+    arm: with-only
+    pattern: "confirmed|ruled_out|open_proof_gap"
+    target: last_message
+  - name: fresh-subagent
+    type: tool_used
+    arm: with-only
+    tool: Agent
+    min: 1
+    max: 11
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?independent-check"'
+  - name: no-author-conclusions-leaked
+    type: tool_used
+    arm: with-only
+    tool: Agent
+    input_match: 'решение корректное|Всё сходится|доступ закрыт корректно|Мне кажется, всё верно|Мои заметки'
+    min: 0
+    max: 0
