@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_workshop_root" name="Workshop" sequence="40"/>
+    <menuitem id="menu_workshop_orders" name="Repair Orders" parent="menu_workshop_root"
+              action="action_workshop_order" sequence="10"/>
+</odoo>
