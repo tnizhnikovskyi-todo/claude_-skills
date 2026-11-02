@@ -1,0 +1,143 @@
+# Карта Odoo: все модели
+
+Корень скана: `pilot/addons`
+
+## Модули (__manifest__.py)
+
+| модуль | depends | data | demo |
+|---|---|---|---|
+| td_workshop | base, mail | 8 | 0 |
+| td_workshop_portal | td_workshop, portal | 1 | 0 |
+| td_workshop_sale | td_workshop, sale_management, stock | 2 | 0 |
+
+
+## Модели и наследование
+
+| модель | роль | модуль | класс | где | ещё |
+|---|---|---|---|---|---|
+| td.workshop.close.wizard | определяет | td_workshop | WorkshopCloseWizard | td_workshop/models/close_wizard.py:4 | TransientModel |
+| res.partner | расширяет | td_workshop | ResPartner | td_workshop/models/res_partner.py:4 |  |
+| td.workshop.order | определяет | td_workshop | WorkshopOrder | td_workshop/models/workshop_order.py:5 | _inherit: mail.thread |
+| td.workshop.order.line | определяет | td_workshop | WorkshopOrderLine | td_workshop/models/workshop_order_line.py:4 |  |
+| sale.order | расширяет | td_workshop_sale | SaleOrder | td_workshop_sale/models/sale_order.py:4 |  |
+| td.workshop.order | расширяет | td_workshop_sale | WorkshopOrder | td_workshop_sale/models/workshop_order.py:5 |  |
+
+
+Определены вне скана (ядро/другие репо): `mail.thread`, `res.partner`, `sale.order`
+
+
+## Поля-связи (comodel / related / compute)
+
+| модель | поле | тип | comodel | related | compute | где |
+|---|---|---|---|---|---|---|
+| td.workshop.close.wizard | order_id | Many2one | td.workshop.order |  |  | td_workshop/models/close_wizard.py:8 |
+| res.partner | workshop_order_count | Integer |  |  | _compute_workshop_order_count | td_workshop/models/res_partner.py:7 |
+| td.workshop.order | company_id | Many2one | res.company |  |  | td_workshop/models/workshop_order.py:12 |
+| td.workshop.order | partner_id | Many2one | res.partner |  |  | td_workshop/models/workshop_order.py:15 |
+| td.workshop.order | customer_mobile | Char |  | partner_id.mobile |  | td_workshop/models/workshop_order.py:17 |
+| td.workshop.order | technician_id | Many2one | res.users |  |  | td_workshop/models/workshop_order.py:22 |
+| td.workshop.order | line_ids | One2many | td.workshop.order.line |  |  | td_workshop/models/workshop_order.py:33 |
+| td.workshop.order | currency_id | Many2one |  | company_id.currency_id |  | td_workshop/models/workshop_order.py:35 |
+| td.workshop.order | amount_total | Monetary |  |  | _compute_amount_total | td_workshop/models/workshop_order.py:36 |
+| td.workshop.order.line | order_id | Many2one | td.workshop.order |  |  | td_workshop/models/workshop_order_line.py:8 |
+| td.workshop.order.line | product_id | Many2one | product.product |  |  | td_workshop/models/workshop_order_line.py:9 |
+| td.workshop.order.line | currency_id | Many2one |  | order_id.currency_id |  | td_workshop/models/workshop_order_line.py:13 |
+| td.workshop.order.line | subtotal | Monetary |  |  | _compute_subtotal | td_workshop/models/workshop_order_line.py:14 |
+| sale.order | workshop_order_id | Many2one | td.workshop.order |  |  | td_workshop_sale/models/sale_order.py:7 |
+| td.workshop.order | sale_order_id | Many2one | sale.order |  |  | td_workshop_sale/models/workshop_order.py:8 |
+
+
+## @api.depends / constrains / onchange
+
+| модель | декоратор | пути | метод | где |
+|---|---|---|---|---|
+| td.workshop.order | depends | line_ids.subtotal | _compute_amount_total | td_workshop/models/workshop_order.py:45 |
+| td.workshop.order | onchange | partner_id | _onchange_partner_id | td_workshop/models/workshop_order.py:63 |
+| td.workshop.order.line | depends | quantity, price_unit | _compute_subtotal | td_workshop/models/workshop_order_line.py:21 |
+
+
+## env['…']
+
+| модель | модуль | где |
+|---|---|---|
+| td.workshop.order | td_workshop | td_workshop/models/res_partner.py:11 |
+| res.partner | td_workshop | td_workshop/models/workshop_order.py:58 |
+| ir.sequence | td_workshop | td_workshop/models/workshop_order.py:55 |
+| res.partner | td_workshop | td_workshop/tests/test_workshop_order.py:9 |
+| td.workshop.order | td_workshop | td_workshop/tests/test_workshop_order.py:12 |
+| td.workshop.order | td_workshop | td_workshop/tests/test_workshop_order.py:18 |
+| td.workshop.order | td_workshop_portal | td_workshop_portal/controllers/main.py:9 |
+| sale.order | td_workshop_sale | td_workshop_sale/models/workshop_order.py:27 |
+| sale.order | td_workshop_sale | td_workshop_sale/models/workshop_order.py:32 |
+
+
+## Вью
+
+| xml id | модель | тип | inherit_id | где |
+|---|---|---|---|---|
+| td_workshop.view_workshop_close_wizard_form | td.workshop.close.wizard | form |  | td_workshop/views/close_wizard_views.xml:3 |
+| td_workshop.view_partner_form_workshop | res.partner | наследует | base.view_partner_form | td_workshop/views/res_partner_views.xml:3 |
+| td_workshop.view_workshop_order_list | td.workshop.order | list |  | td_workshop/views/workshop_order_views.xml:3 |
+| td_workshop.view_workshop_order_form | td.workshop.order | form |  | td_workshop/views/workshop_order_views.xml:20 |
+| td_workshop.view_workshop_order_search | td.workshop.order | search |  | td_workshop/views/workshop_order_views.xml:81 |
+| td_workshop_sale.view_order_form_workshop | sale.order | наследует | sale.view_order_form | td_workshop_sale/views/sale_order_views.xml:3 |
+| td_workshop_sale.view_workshop_order_form_sale | td.workshop.order | наследует | td_workshop.view_workshop_order_form | td_workshop_sale/views/workshop_order_views.xml:3 |
+
+
+Дерево наследования вью:
+```
+td_workshop.view_workshop_close_wizard_form (form, td_workshop/views/close_wizard_views.xml:3)
+base.view_partner_form (вне скана)
+  td_workshop.view_partner_form_workshop (наследует, td_workshop/views/res_partner_views.xml:3)
+td_workshop.view_workshop_order_list (list, td_workshop/views/workshop_order_views.xml:3)
+td_workshop.view_workshop_order_form (form, td_workshop/views/workshop_order_views.xml:20)
+  td_workshop_sale.view_workshop_order_form_sale (наследует, td_workshop_sale/views/workshop_order_views.xml:3)
+td_workshop.view_workshop_order_search (search, td_workshop/views/workshop_order_views.xml:81)
+sale.view_order_form (вне скана)
+  td_workshop_sale.view_order_form_workshop (наследует, td_workshop_sale/views/sale_order_views.xml:3)
+```
+
+Родительские вью вне скана: `base.view_partner_form`, `sale.view_order_form`
+
+
+Действия и отчёты:
+| xml id | тип | модель | где |
+|---|---|---|---|
+| td_workshop.action_workshop_order | ir.actions.act_window | td.workshop.order | td_workshop/views/workshop_order_views.xml:98 |
+
+
+## Права (ir.model.access.csv)
+
+| модель | группа | rwcd | id | где |
+|---|---|---|---|---|
+| td.workshop.order | base.group_user | rwc- | access_workshop_order_user | td_workshop/security/ir.model.access.csv:2 |
+| td.workshop.order | group_workshop_manager | rwcd | access_workshop_order_manager | td_workshop/security/ir.model.access.csv:3 |
+| td.workshop.order.line | base.group_user | rwcd | access_workshop_order_line_user | td_workshop/security/ir.model.access.csv:4 |
+
+
+**Без строк доступа:** `td.workshop.close.wizard`
+
+
+## Правила записей (ir.rule)
+
+| модель | группы | домен | id | где |
+|---|---|---|---|---|
+| td.workshop.order | глобальное | `[('company_id', 'in', company_ids)]` | td_workshop.rule_workshop_order_company | td_workshop/security/workshop_security.xml:8 |
+| td.workshop.order | base.group_user | `['\|', ('technician_id', '=', user.id), ('technician_id', '=', False)]` | td_workshop.rule_workshop_order_technician | td_workshop/security/workshop_security.xml:14 |
+| td.workshop.order | group_workshop_manager | `[(1, '=', 1)]` | td_workshop.rule_workshop_order_manager | td_workshop/security/workshop_security.xml:21 |
+
+
+## Прочие <record> по моделям
+
+| модель | модуль | записей | первая |
+|---|---|---|---|
+| ir.cron | td_workshop | 1 | td_workshop/data/ir_cron.xml:3 |
+| ir.sequence | td_workshop | 1 | td_workshop/data/ir_sequence.xml:3 |
+| res.groups | td_workshop | 1 | td_workshop/security/workshop_security.xml:3 |
+
+
+## Не охвачено
+
+- Только пути скана. Ядро Odoo, enterprise, другие репо не сканировались.
+- Данные в БД (ir.filters, серверные действия, Studio, автоматизации) не видны.
+- JS/OWL, QWeb-отчёты по тексту не разбираются; ищи grep по имени.
