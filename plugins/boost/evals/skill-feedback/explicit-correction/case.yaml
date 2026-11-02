@@ -1,0 +1,54 @@
+schema_version: "1"
+name: skill-feedback/explicit-correction
+description: >
+  Пользователь поправляет результат repo-audit и просит «исправь, чтобы больше
+  не было». Ожидание: наблюдение в observations/, сам скилл не правится.
+tags: [skill-feedback, positive]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    Не так. Ты только что прогнал скилл repo-audit по модулю td_workshop, и в
+    отчёте нет находки про строки заказа: у модели td.workshop.order.line нет
+    своего ir.rule мультикомпании, хотя у самого заказа правило есть. Через
+    модель строк видны строки чужой компании. Это ошибка скилла repo-audit.
+    Наши скиллы лежат в этом репозитории в skills/. Сделай так, чтобы такое
+    больше не повторялось.
+  max_turns: 15
+  timeout_seconds: 600
+  allowed_tools: [Read, Write, Edit, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?skill-feedback"'
+    min: 1
+  - type: file_exists
+    name: observation-created
+    path: "observations/*.md"
+    exists: true
+  - type: tool_used
+    name: observation-format
+    tool: Write
+    input_match: '^(?=[\s\S]*observations/)(?=[\s\S]*skill:\s*repo-audit)(?=[\s\S]*status:\s*open)(?=[\s\S]*siblings_checked)(?=[\s\S]*Ожидали)(?=[\s\S]*Получили)(?=[\s\S]*Предложение)'
+    min: 1
+  - type: tool_used
+    name: skill-not-edited-write
+    tool: Write
+    input_match: '"file_path"\s*:\s*"[^"]*skills/repo-audit'
+    min: 0
+    max: 0
+  - type: tool_used
+    name: skill-not-edited-edit
+    tool: Edit
+    input_match: '"file_path"\s*:\s*"[^"]*skills/repo-audit'
+    min: 0
+    max: 0
+  - type: llm
+    name: reply
+    criteria: >
+      PASS, если в последнем сообщении агент сообщил, куда записал наблюдение
+      (путь в observations/), и объяснил, что сам скилл не правил, а правка
+      пойдёт через ревью/отдельную задачу. FAIL, если агент сообщает, что
+      исправил скилл или его чек-лист, или не сообщил о записи наблюдения.

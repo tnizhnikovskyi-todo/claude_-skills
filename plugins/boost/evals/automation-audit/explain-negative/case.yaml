@@ -1,0 +1,32 @@
+schema_version: "1"
+name: automation-audit/explain-negative
+description: >
+  Негативный кейс: вопрос про один существующий хук. Скилл аудита не должен
+  срабатывать, ответ не должен превращаться в отчёт с рекомендациями.
+tags: [automation-audit, negative]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    Коротко: что делает хук в `.claude/settings.json` этого репозитория и
+    когда он срабатывает?
+  max_turns: 8
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-not-fired
+    tool: Skill
+    input_match: automation-audit
+    min: 0
+    max: 0
+  - type: llm
+    name: answers-question-only
+    criteria: >
+      PASS, если ответ объясняет, что это PostToolUse-хук на Edit/Write,
+      который берёт путь изменённого файла и, если это .py, запускает
+      `uv run ruff format`, и при этом ответ НЕ является аудитом
+      автоматизаций (нет списка рекомендаций по категориям хуки/скиллы/MCP/
+      CLAUDE.md). Одна короткая оговорка о слабом месте хука допустима.
+      FAIL иначе.

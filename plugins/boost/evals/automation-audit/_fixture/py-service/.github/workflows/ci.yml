@@ -1,0 +1,18 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env: {POSTGRES_USER: billing, POSTGRES_PASSWORD: billing, POSTGRES_DB: billing}
+        ports: ["5432:5432"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv sync
+      - run: uv run ruff check . && uv run mypy billing
+      - run: uv run pytest
+        env:
+          DATABASE_URL: postgresql+psycopg://billing:billing@localhost:5432/billing

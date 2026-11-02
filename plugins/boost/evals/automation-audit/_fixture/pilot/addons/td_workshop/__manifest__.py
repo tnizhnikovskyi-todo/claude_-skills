@@ -1,0 +1,20 @@
+{
+    "name": "Workshop Repair Orders",
+    "version": "19.0.1.0.0",
+    "summary": "Repair orders for the service workshop",
+    "category": "Services",
+    "license": "LGPL-3",
+    "depends": ["base", "mail"],
+    "data": [
+        "security/workshop_security.xml",
+        "security/ir.model.access.csv",
+        "data/ir_sequence.xml",
+        "data/ir_cron.xml",
+        "views/workshop_order_views.xml",
+        "views/close_wizard_views.xml",
+        "views/res_partner_views.xml",
+        "views/menus.xml",
+    ],
+    "installable": True,
+    "application": True,
+}
