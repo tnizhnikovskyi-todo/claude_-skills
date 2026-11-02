@@ -1,4 +1,5 @@
 ---
+name: interview-me/clear-small-task
 description: Ясная мелкая задача — скилл не должен срабатывать, ответ сразу
 tags: [interview-me, negative]
 max_turns: 4

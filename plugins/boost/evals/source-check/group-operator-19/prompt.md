@@ -1,4 +1,5 @@
 ---
+name: source-check/group-operator-19
 description: Odoo 19 — group_operator устарел с 18, правильно aggregator. Нужна цитата с URL
 tags: [source-check, positive]
 max_turns: 12

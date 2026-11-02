@@ -1,4 +1,5 @@
 ---
+name: source-check/plain-python
 description: Версионно-независимая задача — скилл не должен срабатывать
 tags: [source-check, negative]
 max_turns: 4

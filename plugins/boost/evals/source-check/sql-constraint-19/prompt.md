@@ -1,4 +1,5 @@
 ---
+name: source-check/sql-constraint-19
 description: Odoo 19 — уникальное SQL-ограничение; _sql_constraints в 19 больше не поддерживается. Нужен ответ с цитатой и URL
 tags: [source-check, positive]
 max_turns: 12

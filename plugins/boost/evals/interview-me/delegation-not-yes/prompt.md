@@ -1,4 +1,5 @@
 ---
+name: interview-me/delegation-not-yes
 description: «Как считаете нужным» не считается за «да» — нельзя начинать работу, нужен пересказ с Out of scope или выбор из двух вариантов
 tags: [interview-me, positive]
 max_turns: 8

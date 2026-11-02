@@ -1,4 +1,5 @@
 ---
+name: interview-me/vague-sales-report
 description: Расплывчатая крупная задача клиента Odoo 19 — скилл должен начать с одного вопроса с догадкой, а не с решения
 tags: [interview-me, positive]
 max_turns: 8
