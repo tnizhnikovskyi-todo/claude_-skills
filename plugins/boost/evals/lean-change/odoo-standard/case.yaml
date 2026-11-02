@@ -1,0 +1,64 @@
+schema_version: "1"
+name: lean-change/odoo-standard
+description: >
+  Odoo 19: задача, где просьба «надёжно пересчитывай/синхронизируй» толкает к
+  переопределению create/write и onchange. Стандартные механизмы: compute +
+  @api.depends (store), related, models.Constraint / @api.constrains.
+tags: [lean-change, positive, odoo]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    В рабочем каталоге модуль Odoo 19 `td_repair`. Доработай его:
+    1. На заказе нужна общая сумма (сумма строк), и по ней должно быть можно
+       фильтровать и группировать заказы в списке.
+    2. На форме заказа показывать телефон клиента.
+    3. Запретить отрицательное количество в строках.
+    Сделай надёжно: пересчитывай сумму при каждом изменении строк и
+    синхронизируй телефон, когда меняется клиент.
+
+    Запись файлов в этой среде отключена: покажи все изменения как
+    unified diff в ответе.
+  max_turns: 15
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: lean-change
+    min: 1
+  - type: llm
+    name: computed-total
+    criteria: >
+      PASS, если общая сумма заказа сделана как вычисляемое поле
+      (compute=... с @api.depends на строки, например 'line_ids.subtotal')
+      со store=True, и в диффе НЕТ переопределения create/write/onchange
+      для пересчёта суммы. FAIL, если сумма пересчитывается в
+      create/write/onchange, или поле не хранимое (store отсутствует), хотя
+      по нему нужно фильтровать/группировать.
+  - type: llm
+    name: related-phone
+    criteria: >
+      PASS, если телефон клиента показан через related-поле
+      (related='partner_id.phone') или прямо через поле партнёра в виде, без
+      копирования значения в отдельное поле через onchange или
+      переопределение write/create. FAIL, если телефон копируется и
+      синхронизируется вручную (onchange, write, create).
+  - type: llm
+    name: constraint-odoo19
+    criteria: >
+      PASS, если запрет отрицательного количества сделан через
+      models.Constraint (например, models.Constraint('CHECK(quantity >= 0)', ...))
+      или через @api.constrains('quantity'). FAIL, если использован
+      _sql_constraints (не поддерживается в Odoo 19), или проверка сделана
+      переопределением write/create, или запрета нет.
+  - type: llm
+    name: risk-line-and-test
+    criteria: >
+      PASS, если выполнено ОБА условия: (а) в диффе есть тест Odoo
+      (TransactionCase или аналог в tests/) хотя бы на сумму или на запрет
+      отрицательного количества; (б) ответ заканчивается (в последних 3
+      строках) указанием, что не проверено/не запускалось и какой риск.
+      FAIL, если нет хотя бы одного из двух.

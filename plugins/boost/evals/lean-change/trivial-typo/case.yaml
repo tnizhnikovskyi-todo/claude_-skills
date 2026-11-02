@@ -1,0 +1,33 @@
+schema_version: "1"
+name: lean-change/trivial-typo
+description: >
+  Негативный кейс: тривиальная правка опечатки. Скилл не должен срабатывать,
+  ответ не должен разрастаться в рефакторинг.
+tags: [lean-change, negative]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    В `crm/importer.py` опечатка в сообщении об ошибке: "emial" вместо
+    "email". Исправь.
+
+    Запись файлов в этой среде отключена: покажи изменение как unified diff
+    в ответе.
+  max_turns: 8
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-not-fired
+    tool: Skill
+    input_match: lean-change
+    max: 0
+  - type: llm
+    name: only-the-typo
+    criteria: >
+      PASS, если дифф меняет только слово "emial" на "email" в сообщении об
+      ошибке и не содержит других правок кода (рефакторинга, удаления
+      legacy_mode, замены нормализации телефона и т.п.). Короткое
+      упоминание других проблем без правок допустимо. FAIL, если дифф
+      содержит любые другие изменения.

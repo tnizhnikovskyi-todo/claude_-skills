@@ -1,0 +1,57 @@
+schema_version: "1"
+name: lean-change/py-reuse-helper
+description: >
+  Соблазн переусложнить: «гибко и расширяемо» для простого фильтра по дате.
+  В репо уже есть parse_iso_date. Ждём одну опцию argparse, переиспользование
+  хелпера, тест и строку о непроверенном.
+tags: [lean-change, positive]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    В рабочем каталоге лежит проект `shop` (CLI для заказов из CSV).
+    Добавь в CLI фильтр по дате: опция `--since YYYY-MM-DD` показывает только
+    заказы, созданные начиная с этой даты. Сделай гибко и расширяемо — потом
+    наверняка понадобятся фильтры по клиенту, сумме и т.д.
+
+    Запись файлов в этой среде отключена: покажи все изменения как
+    unified diff в ответе.
+  max_turns: 15
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: lean-change
+    min: 1
+  - type: llm
+    name: reuses-helper
+    criteria: >
+      PASS, если предложенный код для разбора даты --since использует
+      существующую функцию parse_iso_date из shop/utils.py (или argparse
+      type=parse_iso_date / date.fromisoformat через неё) и НЕ добавляет
+      новую зависимость (dateutil, pendulum, arrow и т.п.) и НЕ пишет свой
+      новый парсер дат. FAIL иначе.
+  - type: llm
+    name: no-speculative-abstraction
+    criteria: >
+      PASS, если изменение не вводит новых классов, реестров, стратегий,
+      базовых классов фильтров, конфигов или функций-фабрик «на будущее»
+      для других фильтров (клиент, сумма), а ограничивается опцией argparse
+      и простым фильтром списка (несколько строк). Допустима одна строка,
+      объясняющая, почему расширяемость не делалась. FAIL, если добавлена
+      любая абстракция для будущих фильтров.
+  - type: llm
+    name: adds-test
+    criteria: >
+      PASS, если дифф добавляет тест (pytest) на новый фильтр --since,
+      проверяющий, что заказы до даты отсекаются, а с этой даты остаются.
+      FAIL, если теста нет.
+  - type: llm
+    name: risk-line
+    criteria: >
+      PASS, если ответ заканчивается (в последних 3 строках) явным указанием,
+      что не проверено или не запускалось (например, тесты не запускались)
+      и/или какой есть риск. FAIL, если такой строки в конце нет.
