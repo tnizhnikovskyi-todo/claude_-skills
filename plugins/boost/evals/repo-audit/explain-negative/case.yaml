@@ -19,6 +19,7 @@ graders:
     name: skill-not-fired
     tool: Skill
     input_match: repo-audit
+    min: 0
     max: 0
   - type: llm
     name: answers-question-only

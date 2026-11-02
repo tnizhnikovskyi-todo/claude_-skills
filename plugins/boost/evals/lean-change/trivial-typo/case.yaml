@@ -22,6 +22,7 @@ graders:
     name: skill-not-fired
     tool: Skill
     input_match: lean-change
+    min: 0
     max: 0
   - type: llm
     name: only-the-typo
