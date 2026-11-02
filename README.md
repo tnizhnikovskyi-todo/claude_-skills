@@ -24,6 +24,9 @@
 | [`inventory/current.md`](inventory/current.md) | Что уже подключено в этой среде (стартовая точка) |
 | [`criteria.md`](criteria.md) | Как оцениваем кандидатов |
 | [`sources.md`](sources.md) | Где ищем |
+| [`synthesis.md`](synthesis.md) | Сводные выводы и план действий |
+| [`sessions.md`](sessions.md) | Реестр чатов анализа |
+| [`catalog/INDEX.md`](catalog/INDEX.md) | Таблица всех разобранных с вердиктами |
 | [`catalog/`](catalog/) | Карточка на каждый разобранный скилл или плагин |
 | [`catalog/_TEMPLATE.md`](catalog/_TEMPLATE.md) | Шаблон карточки |
 
