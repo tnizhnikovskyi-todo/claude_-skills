@@ -29,7 +29,7 @@ graders:
   - type: tool_used
     name: repeat-linked
     tool: Write
-    input_match: '^(?=[\s\S]*observations/)(?=[\s\S]*skill:\s*lean-change)(?=[\s\S]*repeat_of:\s*"?2026-10-20-lean-change-odoo-test)'
+    input_match: '^(?=[\s\S]*observations/)(?=[\s\S]*skill:\s*lean-change)(?=[\s\S]*repeat_of:\s*"?(?:observations/)?2026-10-20-lean-change-odoo-test)'
     min: 1
   - type: tool_used
     name: barrier-proposed
