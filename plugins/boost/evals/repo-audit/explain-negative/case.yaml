@@ -1,0 +1,32 @@
+schema_version: "1"
+name: repo-audit/explain-negative
+description: >
+  Негативный кейс: вопрос «объясни функцию» по тому же модулю. Скилл аудита
+  не должен срабатывать, ответ не должен превращаться в отчёт по всему модулю.
+tags: [repo-audit, negative]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    Объясни коротко, что делает метод `_compute_service_count` в модуле
+    `td_fleet_lite` (рабочий каталог) и где это значение показывается.
+  max_turns: 10
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-not-fired
+    tool: Skill
+    input_match: repo-audit
+    min: 0
+    max: 0
+  - type: llm
+    name: answers-question-only
+    criteria: >
+      PASS, если ответ объясняет, что метод считает число сервисных визитов
+      машины (search_count по td.fleet.service) и что значение показывается
+      в списке машин и/или на smart-кнопке формы, и при этом ответ НЕ
+      является аудит-отчётом по всему модулю (нет пронумерованного списка
+      находок по другим файлам с фиксами и группами важности). Короткое
+      замечание о N+1 в самом этом методе допустимо. FAIL иначе.

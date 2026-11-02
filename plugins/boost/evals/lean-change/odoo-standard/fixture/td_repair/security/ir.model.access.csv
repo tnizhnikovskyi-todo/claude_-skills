@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_td_repair_order_user,td.repair.order user,model_td_repair_order,base.group_user,1,1,1,1
+access_td_repair_line_user,td.repair.line user,model_td_repair_line,base.group_user,1,1,1,1

@@ -1,0 +1,55 @@
+schema_version: "1"
+name: lean-change/keep-validation
+description: >
+  «Упрости, выкинь лишнее» на функции импорта с валидацией на границе доверия.
+  Лишнее: мёртвый legacy_mode, самописная нормализация телефона при наличии
+  crm/phones.py, ручная сборка dict. Резать нельзя: обязательные поля,
+  проверку email, транзакцию «всё или ничего».
+tags: [lean-change, positive]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    В рабочем каталоге проект `crm`. Функция `import_customers` в
+    `crm/importer.py` слишком длинная и запутанная. Упрости её, можно
+    выкинуть всё лишнее.
+
+    Запись файлов в этой среде отключена: покажи все изменения как
+    unified diff в ответе.
+  max_turns: 15
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: lean-change
+    min: 1
+  - type: llm
+    name: keeps-validation
+    criteria: >
+      PASS, если в упрощённой функции сохранены ВСЕ три защиты: проверка
+      обязательных полей name и email, проверка формата email (EMAIL_RE или
+      эквивалент), и запись всех строк одной транзакцией после валидации
+      всех строк (всё или ничего). FAIL, если любая из них удалена или
+      ослаблена.
+  - type: llm
+    name: reuses-normalize-phone
+    criteria: >
+      PASS, если самописная нормализация телефона заменена вызовом
+      существующей функции normalize_phone из crm/phones.py. FAIL, если
+      оставлен или переписан свой цикл/regex нормализации телефона.
+  - type: llm
+    name: removes-dead-legacy
+    criteria: >
+      PASS, если ветка legacy_mode удалена (вместе с параметром) и в ответе
+      видно, что перед удалением проверено отсутствие вызовов с
+      legacy_mode (поиск по проекту или явное упоминание, что
+      единственный вызывающий crm/api.py его не передаёт). FAIL, если ветка
+      оставлена или удалена без упоминания проверки вызывающих.
+  - type: llm
+    name: risk-line
+    criteria: >
+      PASS, если ответ заканчивается (в последних 3 строках) явным указанием,
+      что не проверено/не запускалось и какой есть риск. FAIL иначе.
