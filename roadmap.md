@@ -128,7 +128,7 @@
 | 0.1 | готово | главная сессия | | |
 | 0.2 | готово (набор упирается в потолок → 0.5) | [foundation](https://claude.ai/code/session_01L4X5e1XU6o9G3qUruKMTMn) | `build/foundation` | `reports/foundation.md` |
 | 0.3 | готово: шаблон применён в `pilot/CLAUDE.md`; в пилоте его правила соблюдались в обоих плечах | главная сессия | | `pilot-notes/README.md` |
-| 0.4 | в работе: чат с 13:08 ждёт подтверждения команды Bash от пользователя | [foundation](https://claude.ai/code/session_01L4X5e1XU6o9G3qUruKMTMn) | `build/foundation` | `reports/foundation.md` |
+| 0.4 | в работе: чат прерван (завис на подтверждении), продолжает без него | [foundation](https://claude.ai/code/session_01L4X5e1XU6o9G3qUruKMTMn) | `build/foundation` | `reports/foundation.md` |
 | 0.5 | готово: уровень `hard` 0.755 без плагина (цель < 0.8); база ошибается только на фактах Odoo 19 | foundation | | |
 | 1.1 | ждёт ключ Context7; инструкция и `templates/mcp.json` готовы | foundation | | `templates/README.md` |
 | 1.2 | готово, в плагине | [interview-source](https://claude.ai/code/session_01L4X5dxWNHTCxZX6YvcL6a7) | `build/interview-source` | `reports/interview-source.md` |
@@ -142,11 +142,14 @@
 | 3.2 | проверка: вставка готова (10/10 против 8/10); текст `pr-review` не найден в окружении | review-upgrades | | |
 | 3.3 | отменена (2.2 отказ); блок «что НЕ доказывает корректность» уже входит в предложение 3.1 | | | |
 | 3.4 | проверка: предложение готово (гипотезы к вопросам 0% → 87–100%, склейки ~30–40 → 0–3); оригиналы скиллов не найдены, проверено на заменителях | [discovery-interview](https://claude.ai/code/session_01L4X5dxFcHE2T9drn8GJzP1) | `build/discovery-interview` | `proposals/odoo19-discovery/README.md` |
-| 3.5 | план; соседи для проверки: `session-client-prep-builder` (не переносить «Наша гіпотеза» клиенту), `session-/kickoff-transcript-analyzer` (читать «Підтвердити», «Підсумок») | | | |
+| 3.5 | проверка: предложение и карта соседей готовы | главная сессия | | `proposals/siblings-checked.md` |
 | 4.1 | ждёт ключ Firecrawl | | | |
 | 4.2 | заменено на 4.5 | | | |
-| 4.3 | план | | | |
-| 4.4, 4.5 | ждут разрешения запускать чужие бинарники | | | |
-| 5.1, 5.2 | план | | | |
+| 4.3 | в работе | [automation-audit](https://claude.ai/code/session_01L4X5e1ZugnciMyW7EMAugR) | `build/automation-audit` | |
+| 4.4, 4.5 | заблокировано: создание чатов с запуском чужих программ не пропустила система безопасности; нужно правило разрешения от пользователя | | | |
+| 5.1 | в работе | [observations](https://claude.ai/code/session_01L4X5dwJimwjr7KpRxJq5ja) | `build/observations` | |
+| 5.2 | готово: принципы в `criteria.md` | главная сессия | | |
 | 5.3 | готово: 4 разбора слиты | см. `sessions.md` | | `catalog/INDEX.md` |
 | пилот | готово: `pilot/` (Odoo 19, 3 модуля) + `pilot-notes/`; находки плагина ≈ базе, плагин даёт форму, шаблон CLAUDE.md даёт дисциплину | главная сессия | | `pilot-notes/README.md` |
+| лицензия | готово: MIT (`LICENSE`, `plugins/boost/LICENSE`, `plugin.json`) | главная сессия | | |
+| чек-лист repo-audit | готово: пункты про `ir.rule` дочерних моделей и пустые группы (из пилота: K12, K15) | главная сессия | | |
