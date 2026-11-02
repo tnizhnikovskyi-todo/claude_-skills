@@ -128,7 +128,7 @@
 | 0.1 | готово | главная сессия | | |
 | 0.2 | готово (набор упирается в потолок → 0.5) | [foundation](https://claude.ai/code/session_01L4X5e1XU6o9G3qUruKMTMn) | `build/foundation` | `reports/foundation.md` |
 | 0.3 | готово: шаблон применён в `pilot/CLAUDE.md`; в пилоте его правила соблюдались в обоих плечах | главная сессия | | `pilot-notes/README.md` |
-| 0.4 | в работе: чат прерван (завис на подтверждении), продолжает без него | [foundation](https://claude.ai/code/session_01L4X5e1XU6o9G3qUruKMTMn) | `build/foundation` | `reports/foundation.md` |
+| 0.4 | готово: компактный раздел «Стиль и субагенты» в `templates/CLAUDE.md` (одна строка −27% длины без потери фактов; полный блок `templates/CLAUDE-style.md` не включён) | foundation | `build/foundation` | `reports/foundation.md` |
 | 0.5 | готово: уровень `hard` 0.755 без плагина (цель < 0.8); база ошибается только на фактах Odoo 19 | foundation | | |
 | 1.1 | ждёт ключ Context7; инструкция и `templates/mcp.json` готовы | foundation | | `templates/README.md` |
 | 1.2 | готово, в плагине | [interview-source](https://claude.ai/code/session_01L4X5dxWNHTCxZX6YvcL6a7) | `build/interview-source` | `reports/interview-source.md` |
@@ -145,9 +145,9 @@
 | 3.5 | проверка: предложение и карта соседей готовы | главная сессия | | `proposals/siblings-checked.md` |
 | 4.1 | ждёт ключ Firecrawl | | | |
 | 4.2 | заменено на 4.5 | | | |
-| 4.3 | в работе | [automation-audit](https://claude.ai/code/session_01L4X5e1ZugnciMyW7EMAugR) | `build/automation-audit` | |
+| 4.3 | готово, в плагине (+0.36) | [automation-audit](https://claude.ai/code/session_01L4X5e1ZugnciMyW7EMAugR) | `build/automation-audit` | `reports/automation-audit.md` |
 | 4.4, 4.5 | заблокировано: создание чатов с запуском чужих программ не пропустила система безопасности; нужно правило разрешения от пользователя | | | |
-| 5.1 | в работе | [observations](https://claude.ai/code/session_01L4X5dwJimwjr7KpRxJq5ja) | `build/observations` | |
+| 5.1 | готово, в плагине (+0.45); 5 наблюдений в `observations/`; еженедельная задача не создана, промпт готов | [observations](https://claude.ai/code/session_01L4X5dwJimwjr7KpRxJq5ja) | `build/observations` | `reports/observations.md` |
 | 5.2 | готово: принципы в `criteria.md` | главная сессия | | |
 | 5.3 | готово: 4 разбора слиты | см. `sessions.md` | | `catalog/INDEX.md` |
 | пилот | готово: `pilot/` (Odoo 19, 3 модуля) + `pilot-notes/`; находки плагина ≈ базе, плагин даёт форму, шаблон CLAUDE.md даёт дисциплину | главная сессия | | `pilot-notes/README.md` |
