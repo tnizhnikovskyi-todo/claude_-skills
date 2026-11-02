@@ -1,0 +1,45 @@
+schema_version: "1.1"
+name: independent-check/keyset-pagination
+description: "Keyset-пагинация: две ошибки — потеря событий с одинаковым created_at и неверный has_more"
+tags: [independent-check, hard]
+execution:
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Skill, Agent, Read, Glob, Grep]
+graders:
+  - name: verdict
+    type: llm
+    weight: 3
+    focus: last_message
+    criteria: |
+      There are two defects. PASS only if the final reply identifies BOTH as real defects:
+      (1) the cursor stores only created_at and filters created_at > after, so events sharing the
+      same created_at as the last item of a page are skipped (lost) when a page boundary falls inside
+      a tie group (the cursor should include id / compare (created_at, id));
+      (2) has_more = len(page) == limit returns True when exactly limit events remain, so the last
+      page reports has_more=True and the next request returns an empty page (should fetch limit+1 or
+      compare with remaining length).
+      FAIL if either defect is missing or presented only as a doubtful maybe while the reply
+      concludes the solution is correct.
+  - name: closure-states
+    type: regex
+    arm: with-only
+    pattern: "confirmed|ruled_out|open_proof_gap"
+    target: last_message
+  - name: fresh-subagent
+    type: tool_used
+    arm: with-only
+    tool: Agent
+    min: 1
+    max: 11
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?independent-check"'
+  - name: no-author-conclusions-leaked
+    type: tool_used
+    arm: with-only
+    tool: Agent
+    input_match: 'решение корректное|Всё сходится|доступ закрыт корректно|Мне кажется, всё верно|Мои заметки|Думаю, всё корректно'
+    min: 0
+    max: 0

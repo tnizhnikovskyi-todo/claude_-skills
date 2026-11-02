@@ -1,0 +1,44 @@
+schema_version: "1.1"
+name: independent-check/odoo-stored-compute
+description: "Odoo: stored compute без discount в depends и >= вместо > у лимита"
+tags: [independent-check, hard]
+execution:
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Skill, Agent, Read, Glob, Grep]
+graders:
+  - name: verdict
+    type: llm
+    weight: 3
+    focus: last_message
+    criteria: |
+      There are two defects. PASS only if the final reply identifies BOTH as real defects:
+      (1) _compute_price_subtotal depends only on qty and price_unit, not discount (and not
+      currency), so changing the discount does not recompute the stored price_subtotal and therefore
+      amount_total becomes stale;
+      (2) action_confirm uses amount_total >= limit while the requirement says strictly greater (>),
+      so a request exactly at the limit wrongly goes to to_approve.
+      FAIL if either defect is missing or presented only as a doubtful maybe while the reply
+      concludes the solution is correct.
+  - name: closure-states
+    type: regex
+    arm: with-only
+    pattern: "confirmed|ruled_out|open_proof_gap"
+    target: last_message
+  - name: fresh-subagent
+    type: tool_used
+    arm: with-only
+    tool: Agent
+    min: 1
+    max: 11
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?independent-check"'
+  - name: no-author-conclusions-leaked
+    type: tool_used
+    arm: with-only
+    tool: Agent
+    input_match: 'решение корректное|Всё сходится|доступ закрыт корректно|Мне кажется, всё верно|Мои заметки|Думаю, всё корректно'
+    min: 0
+    max: 0
