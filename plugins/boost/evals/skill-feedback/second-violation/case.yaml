@@ -1,0 +1,53 @@
+schema_version: "1"
+name: skill-feedback/second-violation
+description: >
+  В observations/ уже есть actioned-наблюдение о том же правиле lean-change.
+  Ожидание: новое наблюдение со ссылкой repeat_of и предложением барьера
+  (грейдер/eval-кейс/хук/линт), старая запись не изменена.
+tags: [skill-feedback, positive, repeat]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    lean-change опять не добавил тест: сделал скидку на заказе в Odoo 19
+    (поле discount и пересчёт суммы), а TransactionCase в tests/ нет. Запиши
+    это замечание к скиллу.
+  max_turns: 12
+  timeout_seconds: 600
+  allowed_tools: [Read, Write, Edit, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?skill-feedback"'
+    min: 1
+  - type: file_exists
+    name: observation-created
+    path: "observations/*.md"
+    exists: true
+  - type: tool_used
+    name: repeat-linked
+    tool: Write
+    input_match: '^(?=[\s\S]*observations/)(?=[\s\S]*skill:\s*lean-change)(?=[\s\S]*repeat_of:\s*"?2026-10-20-lean-change-odoo-test)'
+    min: 1
+  - type: tool_used
+    name: barrier-proposed
+    tool: Write
+    input_match: '^(?=[\s\S]*observations/)(?=[\s\S]*fix:\s*barrier)'
+    min: 1
+  - type: tool_used
+    name: prior-untouched
+    tool: Edit
+    input_match: '2026-10-20-lean-change-odoo-test'
+    min: 0
+    max: 0
+  - type: llm
+    name: barrier-not-rewording
+    criteria: >
+      PASS, если агент (в записанном наблюдении или в последнем сообщении)
+      предлагает механическую проверку — eval-кейс/грейдер, хук, линт или
+      скрипт, ловящий отсутствие теста, — а не только новую или более
+      строгую формулировку в тексте скилла, и отмечает, что это повтор
+      прошлого наблюдения. FAIL, если предложена только переформулировка
+      текста или повтор не замечен.
