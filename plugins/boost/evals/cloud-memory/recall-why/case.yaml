@@ -1,4 +1,4 @@
 schema_version: "1.1"
-name: recall-why
+name: cloud-memory/recall-why
 context:
   scaffold_script: ../_scaffold/pdf-project.sh

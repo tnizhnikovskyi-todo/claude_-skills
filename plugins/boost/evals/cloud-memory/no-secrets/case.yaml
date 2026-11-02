@@ -1,4 +1,4 @@
 schema_version: "1.1"
-name: no-secrets
+name: cloud-memory/no-secrets
 context:
   scaffold_script: ../_scaffold/pdf-project.sh

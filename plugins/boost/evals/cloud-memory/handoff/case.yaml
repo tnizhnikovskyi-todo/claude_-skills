@@ -1,4 +1,4 @@
 schema_version: "1.1"
-name: handoff
+name: cloud-memory/handoff
 context:
   scaffold_script: ../_scaffold/pdf-project.sh

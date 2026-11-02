@@ -1,4 +1,4 @@
 schema_version: "1.1"
-name: no-trigger
+name: cloud-memory/no-trigger
 context:
   scaffold_script: ../_scaffold/empty-repo.sh
