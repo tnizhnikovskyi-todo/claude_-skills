@@ -1,0 +1,73 @@
+schema_version: "1"
+name: automation-audit/odoo-pilot
+description: >
+  Копия pilot/: три модуля Odoo 19, тесты TransactionCase и команда odoo-bin
+  в CLAUDE.md; шаблон templates/CLAUDE.md уже применён (без раздела Context7);
+  нет .mcp.json, .claude/, memory/. Правильный ответ: признаёт шаблон
+  применённым, не предлагает дублей boost/встроенных (память, ревьюеры),
+  учитывает облачный контейнер (Odoo+PostgreSQL для тестов), Context7 для 19.0.
+tags: [automation-audit, positive, odoo]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    Что стоит автоматизировать в Claude Code для этого репозитория? Сделай
+    аудит настройки Claude Code: хуки, скиллы, MCP, CLAUDE.md и т.п. Мы
+    работаем в облачных сессиях claude.ai/code. Только рекомендации, ничего
+    не меняй.
+  max_turns: 25
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: automation-audit
+    min: 1
+  - type: llm
+    name: template-applied
+    criteria: >
+      В репозитории CLAUDE.md уже содержит правила «Пол качества», пометку
+      `shortcut:`, строку «Не проверено / риск», правило «Отсутствие не
+      доказывается поиском», стек и команду тестов odoo-bin. PASS, если ответ
+      явно признаёт, что эти правила/шаблон уже есть (в разделе вроде «уже
+      есть» или прямой фразой), и НЕ рекомендует создать CLAUDE.md заново,
+      запустить /init или добавить эти же правила (пол качества, итоговую
+      строку о непроверенном, запрет noqa/skip). Предложить дописать в
+      CLAUDE.md что-то другое (раздел Context7, команду линтера) допустимо.
+      FAIL иначе.
+  - type: llm
+    name: no-duplicates
+    criteria: >
+      В сессии уже есть: плагин boost (cloud-memory — память в memory/ c
+      SessionStart-хуком; repo-audit — аудит кода; odoo-model-map — карта
+      моделей Odoo; source-check), встроенные code-review и security-review,
+      коннекторы GitHub и Odoo. FAIL, если ответ рекомендует как НОВОЕ любое
+      из: Memory MCP или собственный механизм/хук памяти между сессиями;
+      субагента или скилл общего ревью кода/безопасности (code-reviewer,
+      security-reviewer) без ссылки на уже существующие; GitHub MCP;
+      второй Odoo MCP; скилл для поиска наследований моделей. Совет
+      ИСПОЛЬЗОВАТЬ или ВКЛЮЧИТЬ уже установленное (например, создать
+      memory/ для cloud-memory, вызывать security-review перед деплоем)
+      дублем не считается. PASS, если таких дублей нет.
+  - type: llm
+    name: cloud-odoo
+    criteria: >
+      PASS, если ответ содержит рекомендацию сделать тесты Odoo 19 запускаемыми
+      в облачной (эфемерной) сессии — setup-скрипт окружения или
+      SessionStart-хук, который ставит PostgreSQL и Odoo 19 (или эквивалент),
+      со ссылкой на признак в репозитории (команда odoo-bin в CLAUDE.md,
+      tests/ c TransactionCase или __manifest__.py 19.0), И при этом НЕ
+      рекомендует хук, который гоняет весь набор тестов Odoo после каждой
+      правки. FAIL иначе.
+  - type: llm
+    name: evidence-and-cost
+    criteria: >
+      PASS, если почти у каждой рекомендации (допустимо 1 исключение) есть
+      три вещи: зачем она (какое поведение/проблема), чем подтверждена в
+      репозитории (конкретный путь к файлу или его содержимое) и цена
+      (токены/время/ключ/домен/поддержка — хотя бы словами), и при этом в
+      каждой категории не больше 2 рекомендаций. FAIL, если у нескольких
+      рекомендаций нет подтверждения файлом или цены, или в какой-то
+      категории больше 2 рекомендаций.

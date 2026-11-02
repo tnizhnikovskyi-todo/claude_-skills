@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="workshop_status_page" name="Repair Status">
+        <t t-call="web.frontend_layout">
+            <div class="container py-5">
+                <h1>Repair <t t-out="order.name"/></h1>
+                <p>Device: <t t-out="order.device"/></p>
+                <p>Status: <t t-out="dict(order._fields['state'].selection).get(order.state)"/></p>
+                <p>Customer: <t t-out="order.partner_id.name"/>, <t t-out="order.customer_phone"/></p>
+                <p>Total: <t t-out="order.amount_total"/></p>
+                <p t-if="order.note">Notes: <t t-out="order.note"/></p>
+            </div>
+        </t>
+    </template>
+</odoo>

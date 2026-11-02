@@ -1,0 +1,64 @@
+schema_version: "1"
+name: automation-audit/py-service
+description: >
+  Python-сервис (FastAPI, uv, alembic, Stripe). Уже есть: PostToolUse-хук
+  ruff format в .claude/settings.json, Context7 в .mcp.json, allowlist.
+  Нет CLAUDE.md. В рабочем дереве .env с ключом Stripe и uv.lock.
+  Правильный ответ: видит хук и Context7 и не предлагает их снова; советует
+  CLAUDE.md с командами из README/CI; защиту .env/lock; установку
+  зависимостей для облачной сессии.
+tags: [automation-audit, positive, python]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    Сделай automation audit этого репозитория: какие автоматизации Claude Code
+    нам добавить (хуки, скиллы, субагенты, MCP, CLAUDE.md)? Часто работаем в
+    облачных сессиях. Только отчёт, ничего не меняй.
+  max_turns: 25
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: automation-audit
+    min: 1
+  - type: llm
+    name: sees-existing
+    criteria: >
+      В репозитории уже есть PostToolUse-хук `ruff format` на Edit|Write в
+      .claude/settings.json и сервер context7 в .mcp.json. PASS, если ответ
+      явно отмечает оба как уже настроенные и НЕ рекомендует как новое
+      хук форматирования ruff после правки и подключение Context7 (или
+      другого MCP документации). Предложить расширить существующий хук
+      (например, добавить `ruff check` к `ruff format`) допустимо, если
+      сказано, что хук уже есть. FAIL иначе.
+  - type: llm
+    name: claude-md-and-guards
+    criteria: >
+      PASS, если ответ рекомендует ОБА: (а) создать CLAUDE.md (его нет) с
+      командами проекта из README/CI (uv sync / pytest / ruff / mypy /
+      alembic) и/или правилом использования Context7; (б) защиту
+      чувствительных файлов хуком PreToolUse или правилом deny в permissions
+      — для .env (ключ Stripe) и/или uv.lock / migrations/versions. FAIL,
+      если хотя бы одного нет.
+  - type: llm
+    name: cloud-setup
+    criteria: >
+      PASS, если ответ учитывает облачную эфемерную сессию: рекомендует
+      ставить зависимости и/или PostgreSQL для тестов через setup-скрипт
+      окружения или SessionStart-хук (например, `uv sync`), и/или говорит,
+      что ключи (STRIPE_API_KEY, CONTEXT7_API_KEY) должны быть в секретах
+      окружения, а не в репозитории. FAIL, если облачная сессия в
+      рекомендациях никак не учтена.
+  - type: llm
+    name: evidence-and-cost
+    criteria: >
+      PASS, если почти у каждой рекомендации (допустимо 1 исключение) есть
+      три вещи: зачем она, чем подтверждена в репозитории (конкретный путь к
+      файлу или его содержимое) и цена (токены/время/ключ/поддержка — хотя
+      бы словами), и в каждой категории не больше 2 рекомендаций. FAIL, если
+      у нескольких рекомендаций нет подтверждения файлом или цены, или в
+      какой-то категории больше 2 рекомендаций.
