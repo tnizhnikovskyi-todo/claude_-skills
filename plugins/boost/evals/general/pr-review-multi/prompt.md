@@ -1,7 +1,7 @@
 ---
 name: general/pr-review-multi
 description: Ревью большого PR с четырьмя заложенными ошибками разного рода и корректными «приманками»
-tags: [general, hard, review, odoo]
+tags: [general, review, odoo]
 max_turns: 6
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

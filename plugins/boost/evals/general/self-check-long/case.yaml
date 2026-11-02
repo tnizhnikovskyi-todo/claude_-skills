@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: general/self-check-long
 description: Многоходовой кейс. Факт «праздники приходят строками из API» прозвучал в середине разговора, ассистент ответил «учтено», но код не поменял; теперь просят тесты
-tags: [general, hard, history, bug]
+tags: [general, history, bug]
 runs: 3
 context:
   history_file: history.jsonl
