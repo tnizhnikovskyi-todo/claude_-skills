@@ -27,6 +27,7 @@ For each finding check the base branch (`git show <base>:<path>`, `git blame`):
 - **regression** — introduced by this diff → counts toward the verdict;
 - **newly reached** — the defect existed, but this diff is the first to call/expose it → counts as a regression;
 - **pre-existing** — on base, reach unchanged → goes to "Pre-existing (not blocking)", never into the verdict.
+New lines that **repeat** an old defect (same mistake copied into the diff) are a regression for those lines.
 Never block a PR for pre-existing defects; never relabel a regression as pre-existing.
 
 ### Quality floor — any hit is at least REQUIRED

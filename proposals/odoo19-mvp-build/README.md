@@ -58,7 +58,7 @@ tests/
 3. Скопировать `pr-review/proposed/references/review-discipline.md` в `skills/pr-review/references/`.
 4. Проверить на P1/P2 из `tests/fixtures/` (см. ниже) и `claude plugin validate`.
 
-Объём вставки: ~75 строк в SKILL.md + ~70 строк в `references/`.
+Объём вставки: ~76 строк в SKILL.md + ~70 строк в `references/`.
 
 ## Как повторить проверку
 
