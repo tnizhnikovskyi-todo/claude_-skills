@@ -1,6 +1,7 @@
 ---
 type: regex
 match: not_contains
+flags: m
 weight: 2
 ---
-_sql_constraints\s*=
+^[ \t]+_sql_constraints\s*=
