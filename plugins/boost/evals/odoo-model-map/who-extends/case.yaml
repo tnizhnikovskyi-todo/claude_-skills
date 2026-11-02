@@ -1,0 +1,65 @@
+schema_version: "1"
+name: odoo-model-map/who-extends
+description: >
+  «Кто расширяет модель и где все её вью». Grep по class/имени класса
+  находит только базовый класс: расширения — строкой в двойных кавычках и
+  списком, делегирование через _inherits, вью-наследник второго уровня.
+tags: [odoo-model-map, positive, odoo]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    В каталоге `addons/` наши модули Odoo 19. Мне нужно понять модель
+    `td.vehicle`: какие модули и классы её определяют, расширяют или
+    наследуют, и где все её вью (включая унаследованные). Кода не меняй.
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: odoo-model-map
+    min: 1
+  - type: llm
+    name: all-extensions
+    criteria: >
+      PASS, если ответ называет ОБА расширения модели td.vehicle помимо
+      базового определения в td_fleet (класс Vehicle): (1) td_fleet_service,
+      класс FleetMaintenance (_inherit = "td.vehicle"), и (2)
+      td_fleet_report, класс MileageKpi (_inherit = ['td.vehicle']). FAIL,
+      если хотя бы одно из этих двух расширений не упомянуто.
+  - type: llm
+    name: inherits-delegation
+    criteria: >
+      PASS, если ответ упоминает модель td.service.card (класс ServiceCard,
+      модуль td_fleet_service) как делегирующее наследование через
+      _inherits = {'td.vehicle': 'vehicle_id'} и отличает его от обычного
+      _inherit-расширения (например, говорит, что это отдельная модель/
+      таблица, в которой видны поля td.vehicle). FAIL, если td.service.card
+      или _inherits не упомянуты, или он назван обычным расширением.
+  - type: llm
+    name: view-chain
+    criteria: >
+      PASS, если ответ перечисляет вью td.vehicle, включая ОБА
+      унаследованных вью формы по цепочке: td_vehicle_view_form_service
+      (td_fleet_service, inherit_id = td_fleet.td_vehicle_view_form) и
+      td_vehicle_view_form_kpi (td_fleet_report, наследует
+      td_fleet_service.td_vehicle_view_form_service), а также наследник
+      списка td_vehicle_view_list_kpi. FAIL, если какое-либо из этих трёх
+      вью-наследников пропущено.
+  - type: llm
+    name: delegated-view
+    criteria: >
+      PASS, если ответ называет вью td_service_card_view_form (модель
+      td.service.card, файл td_fleet_service/views/td_vehicle_service_views.xml)
+      как место, где через _inherits показаны поля td.vehicle (license_plate,
+      odometer). FAIL, если это вью не упомянуто или сказано, что вью у
+      td.service.card нет.
+  - type: llm
+    name: not-searched
+    criteria: >
+      PASS, если ответ явно оговаривает, где поиск НЕ проводился или чего
+      не видно (например: ядро Odoo/enterprise, другие репозитории или
+      addons_path, данные в базе). FAIL, если такой оговорки нет.

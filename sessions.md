@@ -30,9 +30,11 @@
 
 | slug | Задачи | Ветка | Сессия | Статус |
 |---|---|---|---|---|
-| foundation | 0.2, 0.3, подготовка 1.1 | `build/foundation` | [session_01L4X5e1XU6o9G3qUruKMTMn](https://claude.ai/code/session_01L4X5e1XU6o9G3qUruKMTMn) | слито |
+| foundation | 0.2, 0.3, подготовка 1.1; затем 0.4, 0.5 | `build/foundation` | [session_01L4X5e1XU6o9G3qUruKMTMn](https://claude.ai/code/session_01L4X5e1XU6o9G3qUruKMTMn) | 0.2, 0.3, 0.5 слиты; 0.4 в работе |
 | interview-source | 1.2, 1.3 | `build/interview-source` | [session_01L4X5dxWNHTCxZX6YvcL6a7](https://claude.ai/code/session_01L4X5dxWNHTCxZX6YvcL6a7) | слито |
 | cloud-memory | 2.1 | `build/cloud-memory` | [session_01L4X5dzUi82gav7qHcVBeNe](https://claude.ai/code/session_01L4X5dzUi82gav7qHcVBeNe) | слито |
-| independent-check | 2.2 | `build/independent-check` | [session_01L4X5dyQd2f4Mh8gpmeyMcM](https://claude.ai/code/session_01L4X5dyQd2f4Mh8gpmeyMcM) | не слито (прирост 0) |
+| independent-check | 2.2, 2.2b | `build/independent-check` | [session_01L4X5dyQd2f4Mh8gpmeyMcM](https://claude.ai/code/session_01L4X5dyQd2f4Mh8gpmeyMcM) | отказ (Δ = 0), ветка — архив |
 | lean | 2.3, 2.4 | `build/lean` | [session_01L4X5dxJQwq1GhZzTZqZuEh](https://claude.ai/code/session_01L4X5dxJQwq1GhZzTZqZuEh) | слито |
 | review-upgrades | 3.1, 3.2 | `build/review-upgrades` | [session_01L4X5dxM8fDnFXcEC1bqyAj](https://claude.ai/code/session_01L4X5dxM8fDnFXcEC1bqyAj) | слито (предложения) |
+| odoo-model-map | 2.5 | `build/odoo-model-map` | [session_01L4X5dxEu7FH3tN8TH8JSfr](https://claude.ai/code/session_01L4X5dxEu7FH3tN8TH8JSfr) | слито |
+| discovery-interview | 3.4 | `build/discovery-interview` | [session_01L4X5dxFcHE2T9drn8GJzP1](https://claude.ai/code/session_01L4X5dxFcHE2T9drn8GJzP1) | слито (предложение) |

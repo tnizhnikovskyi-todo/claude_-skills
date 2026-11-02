@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_td_vehicle_service_user,td.vehicle.service user,model_td_vehicle_service,base.group_user,1,1,1,0
+access_td_vehicle_service_manager,td.vehicle.service manager,model_td_vehicle_service,td_fleet.group_fleet_manager,1,1,1,1
+access_td_service_card_manager,td.service.card manager,model_td_service_card,td_fleet.group_fleet_manager,1,1,1,1

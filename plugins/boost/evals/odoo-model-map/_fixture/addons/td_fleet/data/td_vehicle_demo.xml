@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="vehicle_demo_truck" model="td.vehicle">
+        <field name="name">Demo truck</field>
+        <field name="license_plate">AA1234BB</field>
+        <field name="odometer">120500</field>
+        <field name="tag_ids" eval="[(4, ref('tag_truck'))]"/>
+    </record>
+</odoo>

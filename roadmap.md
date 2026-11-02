@@ -127,24 +127,26 @@
 |---|---|---|---|---|
 | 0.1 | готово | главная сессия | | |
 | 0.2 | готово (набор упирается в потолок → 0.5) | [foundation](https://claude.ai/code/session_01L4X5e1XU6o9G3qUruKMTMn) | `build/foundation` | `reports/foundation.md` |
-| 0.3 | проверка: шаблон готов (`templates/`), ждёт пилотного репозитория | foundation | | |
-| 0.4, 0.5 | план | | | |
+| 0.3 | готово: шаблон применён в `pilot/CLAUDE.md`; в пилоте его правила соблюдались в обоих плечах | главная сессия | | `pilot-notes/README.md` |
+| 0.4 | в работе: чат с 13:08 ждёт подтверждения команды Bash от пользователя | [foundation](https://claude.ai/code/session_01L4X5e1XU6o9G3qUruKMTMn) | `build/foundation` | `reports/foundation.md` |
+| 0.5 | готово: уровень `hard` 0.755 без плагина (цель < 0.8); база ошибается только на фактах Odoo 19 | foundation | | |
 | 1.1 | ждёт ключ Context7; инструкция и `templates/mcp.json` готовы | foundation | | `templates/README.md` |
 | 1.2 | готово, в плагине | [interview-source](https://claude.ai/code/session_01L4X5dxWNHTCxZX6YvcL6a7) | `build/interview-source` | `reports/interview-source.md` |
 | 1.3 | готово, в плагине; повторить A/B с Context7 после 1.1 | interview-source | | |
 | 2.1 | готово, в плагине; пилот на рабочем репозитории | [cloud-memory](https://claude.ai/code/session_01L4X5dzUi82gav7qHcVBeNe) | `build/cloud-memory` | `reports/cloud-memory.md` |
-| 2.2 | не включён: прирост 0 на 6 кейсах → 2.2b | [independent-check](https://claude.ai/code/session_01L4X5dyQd2f4Mh8gpmeyMcM) | `build/independent-check` (не слита) | в ветке |
+| 2.2 / 2.2b | **отказ**: Δ = 0 на 8 кейсах (вкл. самопроверку через историю), в 4–5 раз дороже | [independent-check](https://claude.ai/code/session_01L4X5dyQd2f4Mh8gpmeyMcM) | `build/independent-check` (архив, не слита) | `reports/independent-check.md` |
 | 2.3 | готово, в плагине | [lean](https://claude.ai/code/session_01L4X5dxJQwq1GhZzTZqZuEh) | `build/lean` | `reports/lean.md` |
 | 2.4 | готово, в плагине; прогон на рабочем модуле Odoo | lean | | |
-| 2.5 | план | | | |
+| 2.5 | готово, в плагине (+0.11); прогон на ядре Odoo 19 и рабочем модуле | [odoo-model-map](https://claude.ai/code/session_01L4X5dxEu7FH3tN8TH8JSfr) | `build/odoo-model-map` | `reports/odoo-model-map.md` |
 | 3.1 | проверка: предложение готово (15/15 против 13.5/15 на фикстурах) | [review-upgrades](https://claude.ai/code/session_01L4X5dxM8fDnFXcEC1bqyAj) | `build/review-upgrades` | `proposals/odoo19-mvp-build/README.md` |
 | 3.2 | проверка: вставка готова (10/10 против 8/10); текст `pr-review` не найден в окружении | review-upgrades | | |
-| 3.3 | ждёт 2.2b | | | |
-| 3.4 | план (можно начинать: `interview-me` готов) | | | |
-| 3.5 | план | | | |
+| 3.3 | отменена (2.2 отказ); блок «что НЕ доказывает корректность» уже входит в предложение 3.1 | | | |
+| 3.4 | проверка: предложение готово (гипотезы к вопросам 0% → 87–100%, склейки ~30–40 → 0–3); оригиналы скиллов не найдены, проверено на заменителях | [discovery-interview](https://claude.ai/code/session_01L4X5dxFcHE2T9drn8GJzP1) | `build/discovery-interview` | `proposals/odoo19-discovery/README.md` |
+| 3.5 | план; соседи для проверки: `session-client-prep-builder` (не переносить «Наша гіпотеза» клиенту), `session-/kickoff-transcript-analyzer` (читать «Підтвердити», «Підсумок») | | | |
 | 4.1 | ждёт ключ Firecrawl | | | |
 | 4.2 | заменено на 4.5 | | | |
 | 4.3 | план | | | |
 | 4.4, 4.5 | ждут разрешения запускать чужие бинарники | | | |
 | 5.1, 5.2 | план | | | |
 | 5.3 | готово: 4 разбора слиты | см. `sessions.md` | | `catalog/INDEX.md` |
+| пилот | готово: `pilot/` (Odoo 19, 3 модуля) + `pilot-notes/`; находки плагина ≈ базе, плагин даёт форму, шаблон CLAUDE.md даёт дисциплину | главная сессия | | `pilot-notes/README.md` |

@@ -25,6 +25,9 @@
 | [`criteria.md`](criteria.md) | Как оцениваем кандидатов |
 | [`sources.md`](sources.md) | Где ищем |
 | [`roadmap.md`](roadmap.md) | План внедрения найденного, статусы задач |
+| [`plugins/boost/`](plugins/boost/) | Наш плагин: отобранные и проверенные скиллы |
+| [`pilot/`](pilot/) | Пилотный проект Odoo 19 для проверки скиллов на практике |
+| [`pilot-notes/`](pilot-notes/) | Ключ пилота и результаты прогонов |
 | [`synthesis.md`](synthesis.md) | Сводные выводы по разборам |
 | [`sessions.md`](sessions.md) | Реестр чатов анализа |
 | [`catalog/INDEX.md`](catalog/INDEX.md) | Таблица всех разобранных с вердиктами |

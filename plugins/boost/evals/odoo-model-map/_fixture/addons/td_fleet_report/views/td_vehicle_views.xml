@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="td_vehicle_view_form_kpi" model="ir.ui.view">
+        <field name="name">td.vehicle.form.kpi</field>
+        <field name="model">td.vehicle</field>
+        <field name="inherit_id" ref="td_fleet_service.td_vehicle_view_form_service"/>
+        <field name="arch" type="xml">
+            <field name="next_service_km" position="after">
+                <field name="km_per_service"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="td_vehicle_view_list_kpi" model="ir.ui.view">
+        <field name="name">td.vehicle.list.kpi</field>
+        <field name="model">td.vehicle</field>
+        <field name="inherit_id" ref="td_fleet.td_vehicle_view_list"/>
+        <field name="arch" type="xml">
+            <field name="driver_id" position="after">
+                <field name="odometer" optional="show"/>
+            </field>
+        </field>
+    </record>
+</odoo>
