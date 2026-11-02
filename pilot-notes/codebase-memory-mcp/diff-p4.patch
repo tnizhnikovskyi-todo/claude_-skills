@@ -1,0 +1,24 @@
+diff --git a/addons/td_workshop/models/workshop_order.py b/addons/td_workshop/models/workshop_order.py
+index b52a5e2..09b1e7e 100644
+--- a/addons/td_workshop/models/workshop_order.py
++++ b/addons/td_workshop/models/workshop_order.py
+@@ -66,7 +66,8 @@ class WorkshopOrder(models.Model):
+     def _format_phone(self, phone):
+         if not phone:
+             return False
+-        return "".join(c for c in phone if c.isdigit() or c == "+")
++        digits = "".join(c for c in phone if c.isdigit() or c == "+")
++        return " ".join(digits[i:i + 3] for i in range(0, len(digits), 3))
+ 
+     def action_start(self):
+         for order in self:
+diff --git a/addons/td_workshop/models/workshop_order_line.py b/addons/td_workshop/models/workshop_order_line.py
+index 2e8d3d9..d84c18c 100644
+--- a/addons/td_workshop/models/workshop_order_line.py
++++ b/addons/td_workshop/models/workshop_order_line.py
+@@ -20,4 +20,4 @@ class WorkshopOrderLine(models.Model):
+     @api.depends("quantity", "price_unit")
+     def _compute_subtotal(self):
+         for line in self:
+-            line.subtotal = line.quantity * line.price_unit
++            line.subtotal = line.quantity * line.price_unit * (1 - line.order_id.discount / 100)
