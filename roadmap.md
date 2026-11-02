@@ -139,6 +139,7 @@
 | 2.4 | готово, в плагине; прогон на рабочем модуле Odoo | lean | | |
 | 2.5 | готово, в плагине (+0.11); прогон на ядре Odoo 19 и рабочем модуле | [odoo-model-map](https://claude.ai/code/session_01L4X5dxEu7FH3tN8TH8JSfr) | `build/odoo-model-map` | `reports/odoo-model-map.md` |
 | 3.1 | проверка: предложение готово (15/15 против 13.5/15 на фикстурах) | [review-upgrades](https://claude.ai/code/session_01L4X5dxM8fDnFXcEC1bqyAj) | `build/review-upgrades` | `proposals/odoo19-mvp-build/README.md` |
+| 3.1, 3.2, 3.4, 3.5 | в работе: применяются к оригиналам в `todoltd/claude-methodology-marketplace`, ветка `claude/boost-proposals` (по разрешению владельца; слияние и PR решает владелец) | [boost-proposals](https://claude.ai/code/session_01L4X5dziDUMxUkdQ1zXJ1Pf) | | `BOOST_PROPOSALS_REPORT.md` в той ветке |
 | 3.2 | проверка: вставка готова (10/10 против 8/10); текст `pr-review` не найден в окружении | review-upgrades | | |
 | 3.3 | отменена (2.2 отказ); блок «что НЕ доказывает корректность» уже входит в предложение 3.1 | | | |
 | 3.4 | проверка: предложение готово (гипотезы к вопросам 0% → 87–100%, склейки ~30–40 → 0–3); оригиналы скиллов не найдены, проверено на заменителях | [discovery-interview](https://claude.ai/code/session_01L4X5dxFcHE2T9drn8GJzP1) | `build/discovery-interview` | `proposals/odoo19-discovery/README.md` |
@@ -154,3 +155,4 @@
 | пилот | готово: `pilot/` (Odoo 19, 3 модуля) + `pilot-notes/`; находки плагина ≈ базе, плагин даёт форму, шаблон CLAUDE.md даёт дисциплину | главная сессия | | `pilot-notes/README.md` |
 | лицензия | готово: MIT (`LICENSE`, `plugins/boost/LICENSE`, `plugin.json`) | главная сессия | | |
 | чек-лист repo-audit | готово: пункты про `ir.rule` дочерних моделей и пустые группы (из пилота: K12, K15) | главная сессия | | |
+| 5.1 расписание | готово: задача по расписанию «Еженедельный разбор замечаний к скиллам», пн 10:40 по Киеву, первый запуск 2026-11-09; только предлагает решения, правки после одобрения | главная сессия | | |

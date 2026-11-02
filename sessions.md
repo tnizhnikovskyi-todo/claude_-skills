@@ -42,3 +42,4 @@
 | observations | 5.1 | `build/observations` | [session_01L4X5dwJimwjr7KpRxJq5ja](https://claude.ai/code/session_01L4X5dwJimwjr7KpRxJq5ja) | слито |
 | rtk-pilot | 4.4 | `build/rtk-pilot` | [session_01L4X5e1jKV3A2wTSXnx6WP4](https://claude.ai/code/session_01L4X5e1jKV3A2wTSXnx6WP4) | в работе |
 | cbm-pilot | 4.5 | `build/cbm-pilot` | [session_01L4X5dy4DhWq69JxUWuSYwo](https://claude.ai/code/session_01L4X5dy4DhWq69JxUWuSYwo) | в работе |
+| boost-proposals | 3.1, 3.2, 3.4, 3.5 (в репозитории плагинов) | `claude/boost-proposals` в `todoltd/claude-methodology-marketplace` | [session_01L4X5dziDUMxUkdQ1zXJ1Pf](https://claude.ai/code/session_01L4X5dziDUMxUkdQ1zXJ1Pf) | в работе |
