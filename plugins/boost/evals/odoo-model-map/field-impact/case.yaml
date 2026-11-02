@@ -60,11 +60,15 @@ graders:
   - type: llm
     name: no-false-hits
     criteria: >
-      PASS, если ответ НЕ требует переименовывать поле odometer_at модели
-      td.vehicle.service, модель td.odometer.export или метод
-      action_reset_odometer как часть переименования поля (упоминание, что
-      их трогать не нужно или что это отдельное имя, допустимо). FAIL,
-      если какой-либо из них включён в список обязательных правок.
+      Проверяется только одно: не включил ли ответ в список ОБЯЗАТЕЛЬНЫХ
+      правок одноимённые, но другие сущности. FAIL, только если ответ
+      требует переименовать или поправить (а) поле odometer_at модели
+      td.vehicle.service, или (б) имя модели td.odometer.export, или (в)
+      имя метода action_reset_odometer — как часть переименования поля
+      odometer. Всё остальное НЕ ошибка: строка write({'odometer': ...})
+      внутри action_reset_odometer — правильная находка; совет
+      «по желанию переименовать метод», список «не трогать: odometer_at,
+      td.odometer.export» и т.п. допустимы. Иначе PASS.
   - type: llm
     name: not-searched
     criteria: >
