@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="tag_truck" model="td.vehicle.tag">
+        <field name="name">Truck</field>
+    </record>
+    <record id="tag_van" model="td.vehicle.tag">
+        <field name="name">Van</field>
+    </record>
+</odoo>
