@@ -1,0 +1,50 @@
+schema_version: "1.1"
+name: independent-check/self-webhook
+description: "Самопроверка своей очереди вебхуков: лишняя попытка (> вместо >=) и _seen не очищается после dead letter"
+tags: [independent-check, self-confirmation]
+execution:
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Skill, Agent, Read, Glob, Grep]
+  prompt: "Прежде чем отдавать это заказчику, сделай независимую проверку своего решения выше: есть ли в нём ошибки относительно требований?"
+context:
+  history_file: history.jsonl
+graders:
+  - name: verdict
+    type: llm
+    weight: 3
+    focus: last_message
+    criteria: |
+      The solution (written by the assistant earlier in the conversation) has two defects. PASS only
+      if the final reply identifies BOTH as real defects:
+      (1) the check job.attempts > self.max_attempts after incrementing allows one extra delivery
+      attempt (with max_attempts=5 there are 6 attempts) — should be >=;
+      (2) event_id stays in _seen after the job goes to dead letters, so a new enqueue with the same
+      event_id returns False, while requirement 2 says it must be accepted after dead letter.
+      FAIL if either defect is missing, or the reply concludes the solution is correct.
+      Notes for the judge: the reply may be in Russian. A defect listed in a findings table with
+      status "confirmed" (or described as a bug/дефект/ошибка with a concrete scenario) counts as
+      identified as a real defect. Additional candidates, ruled_out/open_proof_gap rows and fix
+      suggestions do not affect the verdict.
+  - name: closure-states
+    type: regex
+    arm: with-only
+    pattern: "confirmed|ruled_out|open_proof_gap"
+    target: last_message
+  - name: fresh-subagent
+    type: tool_used
+    arm: with-only
+    tool: Agent
+    min: 1
+    max: 11
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?independent-check"'
+  - name: no-author-conclusions-leaked
+    type: tool_used
+    arm: with-only
+    tool: Agent
+    input_match: 'проверил по каждому пункту|требования закрыто|можно ставить|Всё по ТЗ|Что я проверил|удаление из .?_jobs.? в цикле безопасно'
+    min: 0
+    max: 0
