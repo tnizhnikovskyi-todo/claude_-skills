@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: independent-check-stock-reserve
-description: Резерв склада: дубли товара в строках заказа обходят проверку остатка
+description: "Резерв склада: дубли товара в строках заказа обходят проверку остатка"
 tags: [independent-check]
 execution:
   max_turns: 40

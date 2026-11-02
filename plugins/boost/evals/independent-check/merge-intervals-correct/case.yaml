@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: independent-check-correct-solution
-description: Корректное слияние интервалов: скилл не должен выдумывать дефекты
+description: "Корректное слияние интервалов: скилл не должен выдумывать дефекты"
 tags: [independent-check]
 execution:
   max_turns: 40

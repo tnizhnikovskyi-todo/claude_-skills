@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: independent-check-portal-pdf
-description: Портал Odoo: PDF-маршрут проверяет только check_access_rights (модель), не владельца
+description: "Портал Odoo: PDF-маршрут проверяет только check_access_rights (модель), не владельца"
 tags: [independent-check]
 execution:
   max_turns: 40
