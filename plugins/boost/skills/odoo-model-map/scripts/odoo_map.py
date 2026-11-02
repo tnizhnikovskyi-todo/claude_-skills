@@ -183,9 +183,14 @@ def scan_xml(path, module, root, out):
                 'domain': ' '.join((flds['domain_force'].text or '').split())
                 if 'domain_force' in flds else ''})
         elif model.startswith('ir.actions'):
-            if 'res_model' in flds:
+            # act_window: res_model; report: model; server: model_id ref
+            target = flds.get('res_model') if 'res_model' in flds else flds.get('model')
+            name = (target.text or '').strip() if target is not None else ''
+            if not name and 'model_id' in flds:
+                name = '@' + flds['model_id'].get('ref', '')
+            if name:
                 out['actions'].append({'id': f'{module}.{xml_id}', 'where': loc,
-                                       'model': (flds['res_model'].text or '').strip()})
+                                       'model': name, 'kind': model})
         elif model:
             out['records'].append({'model': model, 'module': module, 'where': loc})
     for tpl in tree.iter('template'):
@@ -223,7 +228,8 @@ def scan(paths):
     for module, mpath in sorted(find_modules(paths).items()):
         man = read_manifest(mpath)
         out['modules'][module] = {'depends': man.get('depends', []),
-                                  'data': man.get('data', []), 'path': rel(mpath, root)}
+                                  'data': man.get('data', []), 'demo': man.get('demo', []),
+                                  'path': rel(mpath, root)}
         for dirpath, dirnames, filenames in os.walk(mpath):
             dirnames[:] = sorted(d for d in dirnames if d not in SKIP_DIRS)
             for fn in sorted(filenames):
@@ -237,6 +243,9 @@ def scan(paths):
     known = {c['model'] for c in out['classes']}
     for item in out['rules'] + out['acl']:
         item['model'] = model_from_ref(item['model_ref'], known)
+    for a in out['actions']:
+        if a['model'].startswith('@'):
+            a['model'] = model_from_ref(a['model'][1:], known)
     out['root'] = root
     return out
 
@@ -260,8 +269,8 @@ def render(out, model=None, field=None):
     p.append(f"# Карта Odoo: {model or 'все модели'}\n\nКорень скана: `{out['root']}`\n")
 
     p.append('## Модули (__manifest__.py)\n')
-    p.append(table(['модуль', 'depends', 'data'], [
-        (m, ', '.join(v['depends']) or '—', len(v['data']))
+    p.append(table(['модуль', 'depends', 'data', 'demo'], [
+        (m, ', '.join(v['depends']) or '—', len(v['data']), len(v['demo']))
         for m, v in out['modules'].items()]))
 
     p.append('\n## Модели и наследование\n')
@@ -327,10 +336,10 @@ def render(out, model=None, field=None):
     ext = sorted({v['inherit'] for v in views if v['inherit'] and v['inherit'] not in ids})
     if ext:
         p.append('Родительские вью вне скана: ' + ', '.join(f'`{e}`' for e in ext) + '\n')
-    acts = [(a['id'], a['model'], a['where']) for a in out['actions']
+    acts = [(a['id'], a['kind'], a['model'], a['where']) for a in out['actions']
             if not model or a['model'] == model]
     if acts:
-        p.append('\nДействия (res_model):\n' + table(['xml id', 'модель', 'где'], acts))
+        p.append('\nДействия и отчёты:\n' + table(['xml id', 'тип', 'модель', 'где'], acts))
 
     p.append('\n## Права (ir.model.access.csv)\n')
     p.append(table(['модель', 'группа', 'rwcd', 'id', 'где'], [

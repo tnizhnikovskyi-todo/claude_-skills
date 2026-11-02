@@ -74,14 +74,24 @@ class OdooMapTest(unittest.TestCase):
         paths = {(r[0], r[2]) for r in rows}
         self.assertIn(('td.vehicle.service', 'vehicle_id.odometer'), paths)
         self.assertIn(('td.vehicle.service', 'vehicle_id.company_id'), paths)
+        # многострочный @api.depends(...) через Many2one
+        self.assertIn(('td.vehicle.service', 'vehicle_id.odometer'),
+                      {(r[0], r[2]) for r in rows if r[1].startswith('depends')})
+
+    def test_actions_bound_to_model(self):
+        acts = {a['id']: a['model'] for a in self.out['actions']}
+        self.assertEqual(acts['td_fleet_report.td_vehicle_report_action'], 'td.vehicle')
+        self.assertEqual(acts['td_fleet_service.action_mark_service_due'], 'td.vehicle')
 
     def test_field_hits(self):
         text = odoo_map.field_hits(self.out, 'odometer')
         for where in ('td_fleet_service/views/td_vehicle_views.xml:8',      # xpath
                       'td_fleet_service/views/td_vehicle_service_views.xml:29',  # _inherits
-                      'td_fleet_report/models/kpi.py:19',                    # related
+                      'td_fleet_report/models/kpi.py:20',                    # related
                       'td_fleet_report/wizard/odometer_export.py:22',        # домен
-                      'td_fleet/views/td_vehicle_views.xml:49'):             # фильтр
+                      'td_fleet/views/td_vehicle_views.xml:49',              # фильтр
+                      'td_fleet_service/data/td_vehicle_service_actions.xml:9',  # код
+                      'td_fleet_report/report/td_vehicle_report.xml:18'):    # QWeb
             self.assertIn(where, text)
         self.assertNotIn("_name = 'td.odometer.export'", text)
         self.assertNotIn('odometer_at = ', text)

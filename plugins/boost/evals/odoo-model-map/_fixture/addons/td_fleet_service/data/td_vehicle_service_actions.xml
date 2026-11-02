@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_mark_service_due" model="ir.actions.server">
+        <field name="name">Mark vehicles due for service</field>
+        <field name="model_id" ref="td_fleet.model_td_vehicle"/>
+        <field name="binding_model_id" ref="td_fleet.model_td_vehicle"/>
+        <field name="state">code</field>
+        <field name="code">
+due = records.filtered(lambda v: v.odometer &gt;= v.next_service_km)
+due.write({'state': 'repair'})
+        </field>
+    </record>
+</odoo>

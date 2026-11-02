@@ -10,6 +10,9 @@
         "data/td_vehicle_tag_data.xml",
         "views/td_vehicle_views.xml",
     ],
+    "demo": [
+        "data/td_vehicle_demo.xml",
+    ],
     "license": "LGPL-3",
     "installable": True,
     "application": True,

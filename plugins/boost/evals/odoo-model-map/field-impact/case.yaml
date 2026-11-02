@@ -47,6 +47,17 @@ graders:
       high_mileage в td_fleet/views/td_vehicle_views.xml. FAIL, если
       пропущено хотя бы одно из четырёх.
   - type: llm
+    name: hidden-places
+    criteria: >
+      PASS, если ответ называет хотя бы 3 из 4 мест, которые не являются
+      ни Python-полями, ни вью: (1) _order = 'odometer desc, name' в
+      td_fleet_report/models/kpi.py; (2) код серверного действия
+      action_mark_service_due (v.odometer) в
+      td_fleet_service/data/td_vehicle_service_actions.xml; (3) t-field="v.odometer"
+      в QWeb-отчёте td_fleet_report/report/td_vehicle_report.xml; (4)
+      демо-данные <field name="odometer"> в td_fleet/data/td_vehicle_demo.xml.
+      FAIL, если названо меньше трёх.
+  - type: llm
     name: no-false-hits
     criteria: >
       PASS, если ответ НЕ требует переименовывать поле odometer_at модели

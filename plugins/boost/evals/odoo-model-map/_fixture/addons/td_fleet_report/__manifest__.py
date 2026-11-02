@@ -8,6 +8,7 @@
         "security/ir.model.access.csv",
         "views/td_vehicle_views.xml",
         "wizard/td_odometer_export_views.xml",
+        "report/td_vehicle_report.xml",
     ],
     "license": "LGPL-3",
 }

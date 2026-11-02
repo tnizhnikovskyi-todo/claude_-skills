@@ -9,6 +9,7 @@
         "security/ir.model.access.csv",
         "views/td_vehicle_service_views.xml",
         "views/td_vehicle_views.xml",
+        "data/td_vehicle_service_actions.xml",
     ],
     "license": "LGPL-3",
 }
