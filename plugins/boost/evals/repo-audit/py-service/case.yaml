@@ -1,0 +1,52 @@
+schema_version: "1"
+name: repo-audit/py-service
+description: >
+  Маленький Python-сервис рассылки с заложенными долгами:
+  (1) неудачная отправка всё равно помечается sent (потеря писем);
+  (2) parse_schedule ломается на "9:30" и не покрыт тестом;
+  (3) дубль render / fill_template;
+  (4) BaseSender + make_sender с одной реализацией (yagni);
+  (5) неиспользуемые ENABLE_SMS, RETRY_BACKOFF_MODE;
+  (6) неиспользуемые зависимости requests, jinja2;
+  (7) мёртвая legacy_format.
+tags: [repo-audit, positive]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    Сделай аудит репозитория в рабочем каталоге: что тут лишнее, мёртвое,
+    дублируется, где долги и риски. Только отчёт, код не трогай.
+  max_turns: 20
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: repo-audit
+    min: 1
+  - type: llm
+    name: finds-must-fix
+    criteria: >
+      PASS, если отчёт называет ОБЕ проблемы и ставит их среди самых важных:
+      (а) в notify/queue.py ошибка отправки проглатывается, а задание всё
+      равно помечается 'sent' (письмо теряется); (б) parse_schedule
+      неверно разбирает время без ведущего нуля (например "9:30") или
+      вообще хрупкий разбор по позициям. FAIL, если хотя бы одна не названа.
+  - type: llm
+    name: finds-lean-debts
+    criteria: >
+      Посчитай, сколько из следующих долгов названо как находки: дубль
+      render и fill_template; BaseSender/make_sender с одной реализацией;
+      неиспользуемые флаги ENABLE_SMS и RETRY_BACKOFF_MODE; неиспользуемые
+      зависимости requests и jinja2; мёртвая функция legacy_format. PASS,
+      если названо не меньше 4 из 5. FAIL иначе.
+  - type: llm
+    name: four-part-format
+    criteria: >
+      PASS, если находки пронумерованы сквозной нумерацией, сгруппированы
+      по важности, и КАЖДАЯ находка содержит четыре части: что это, в чём
+      проблема, конкретный фикс, что будет, если не чинить. В конце есть
+      вердикт и строка о том, что не проверено. FAIL, если хотя бы одного
+      из этого нет.
