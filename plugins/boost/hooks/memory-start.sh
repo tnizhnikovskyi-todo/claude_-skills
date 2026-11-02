@@ -26,7 +26,8 @@ capped() {
 
 echo "<cloud-memory>"
 echo "Память проекта в git: memory/. Ниже индекс (по строке на запись) и передача от прошлой сессии."
-echo "Подробности по запросу: grep -ril '<слово>' memory/ → прочитать нужный файл. Правила записи: скилл cloud-memory."
+echo "Строка индекса это только суть; причины и детали в файле записи (memory/<файл>), читай его, прежде чем объяснять «почему»."
+echo "Поиск: grep -ril '<слово>' memory/ → прочитать нужный файл. Правила записи: скилл cloud-memory."
 echo
 echo "## memory/INDEX.md"
 capped "$dir/INDEX.md" "$INDEX_MAX" "memory/INDEX.md"
