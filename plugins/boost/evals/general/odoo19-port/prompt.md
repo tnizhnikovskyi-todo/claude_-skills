@@ -1,7 +1,7 @@
 ---
 name: general/odoo19-port
 description: Порт модуля Odoo 16 → 19; шесть ловушек устаревшего API в одном кейсе, результат в файлах
-tags: [general, hard, odoo, code]
+tags: [general, odoo, code, long-context]
 max_turns: 12
 timeout_seconds: 400
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

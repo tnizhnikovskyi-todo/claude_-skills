@@ -1,7 +1,7 @@
 ---
 name: general/long-spec-conflicts
 description: Длинное ТЗ с тремя скрытыми противоречиями; просят оценку, а не поиск противоречий
-tags: [general, hard, tr, long-context]
+tags: [general, tr, long-context]
 max_turns: 6
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

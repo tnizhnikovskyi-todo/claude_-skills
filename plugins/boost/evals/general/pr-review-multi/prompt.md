@@ -1,6 +1,6 @@
 ---
 name: general/pr-review-multi
-description: Ревью большого PR с тремя заложенными ошибками разного рода и корректными «приманками»
+description: Ревью большого PR с четырьмя заложенными ошибками разного рода и корректными «приманками»
 tags: [general, hard, review, odoo]
 max_turns: 6
 allowed_tools: [Read, Glob, Grep, Skill]
@@ -38,7 +38,7 @@ allowed_tools: [Read, Glob, Grep, Skill]
 
 
  class TdVehicle(models.Model):
-@@ -12,6 +14,52 @@ class TdVehicle(models.Model):
+@@ -12,6 +14,55 @@ class TdVehicle(models.Model):
      driver_id = fields.Many2one("res.partner")
      state = fields.Selection(
          [("draft", "Draft"), ("active", "Active"), ("sold", "Sold")],
@@ -80,7 +80,10 @@ allowed_tools: [Read, Glob, Grep, Skill]
 +    @api.model
 +    def _cron_service_reminder(self):
 +        today = fields.Date.context_today(self)
-+        vehicles = self.search([("state", "=", "active")])
++        vehicles = self.search([
++            ("state", "=", "active"),
++            ("service_due", "=", True),
++        ])
 +        for vehicle in vehicles:
 +            if not vehicle.last_service_date:
 +                continue
@@ -102,7 +105,7 @@ allowed_tools: [Read, Glob, Grep, Skill]
 +    note = fields.Text()
 --- /dev/null
 +++ b/td_vehicle/controllers/main.py
-@@ -0,0 +1,27 @@
+@@ -0,0 +1,29 @@
 +from odoo import http
 +from odoo.http import request
 +
@@ -122,9 +125,11 @@ allowed_tools: [Read, Glob, Grep, Skill]
 +
 +    @http.route("/my/vehicle/<int:vehicle_id>", type="http", auth="user")
 +    def my_vehicle(self, vehicle_id, **kwargs):
-+        # Права проверяются ORM: без sudo() пользователь получит
-+        # AccessError, если запись ему недоступна.
-+        vehicle = request.env["td.vehicle"].browse(vehicle_id).exists()
++        # Только машина, где текущий пользователь водитель; без sudo().
++        vehicle = request.env["td.vehicle"].search([
++            ("id", "=", vehicle_id),
++            ("driver_id", "=", request.env.user.partner_id.id),
++        ], limit=1)
 +        if not vehicle:
 +            return request.not_found()
 +        return request.make_json_response(

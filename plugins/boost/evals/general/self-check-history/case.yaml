@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: general/self-check-history
 description: Многоходовой кейс. В прошлых ходах ассистент сам написал функцию с ошибкой на единицу и «проверил» её; теперь просят тесты
-tags: [general, hard, history, bug]
+tags: [general, history, bug]
 runs: 3
 context:
   history_file: history.jsonl
