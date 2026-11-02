@@ -7,7 +7,7 @@ ARM=$1; OUT=$2; shift 2
 HERE=$(cd "$(dirname "$0")" && pwd); REPO=$(cd "$HERE/../.." && pwd)
 SCR=${SCR:?set SCR to scratch dir}
 ODOO_MAP=$REPO/plugins/boost/skills/odoo-model-map/scripts/odoo_map.py
-mkdir -p "$OUT"
+mkdir -p "$OUT" "$SCR/work"
 EXTRA=()
 if [ "$ARM" = rtk ]; then
   export PATH=${RTK_BIN_DIR:-$SCR/bin}:$PATH
@@ -19,6 +19,6 @@ for id in "${IDS[@]}"; do
   W=$SCR/work/$ARM-$id; rm -rf "$W"; cp -a "$SCR/stand" "$W"
   P=$(python3 -c "import json,sys;t=[t for t in json.load(open('$HERE/tasks.json')) if t['id']=='$id'][0];print(t['prompt'].replace('ODOO_MAP','$ODOO_MAP'))")
   (cd "$W" && claude -p "$P" --allowedTools "Bash" --disallowedTools "Read Grep Glob Edit Write WebFetch WebSearch Task" \
-     --output-format json "${EXTRA[@]}" --max-turns 15 > "$OUT/$id.json" 2> "$OUT/$id.err") || true
-  python3 -c "import json;d=json.load(open('$OUT/$id.json'));print('$ARM','$id',d.get('num_turns'),round(d.get('total_cost_usd',0),4))"
+     --output-format stream-json --verbose --model "${MODEL:-claude-sonnet-5-5}" "${EXTRA[@]}" --max-turns 15 > "$OUT/$id.jsonl" 2> "$OUT/$id.err") || true
+  echo "done $ARM $id"
 done
