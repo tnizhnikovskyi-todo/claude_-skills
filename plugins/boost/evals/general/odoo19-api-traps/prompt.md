@@ -59,5 +59,9 @@ class TdVehicleCost(models.Model):
    - поле `driver_mobile` — мобильный телефон водителя, только для показа на
      форме.
 
-Запиши оба файла (`td_vehicle/models/td_vehicle.py` целиком,
-`td_vehicle/security/td_vehicle_security.xml`). В ответе коротко: что сделано.
+3. Файл `td_vehicle/data/ir_cron.xml`: крон для `_cron_recompute_costs`,
+   раз в сутки, без ограничения числа запусков.
+
+Запиши все три файла (`td_vehicle/models/td_vehicle.py` целиком,
+`td_vehicle/security/td_vehicle_security.xml`, `td_vehicle/data/ir_cron.xml`).
+В ответе коротко: что сделано.

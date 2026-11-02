@@ -1,6 +1,6 @@
 ---
 name: general/reconcile-payments
-description: Длинные данные (60 счетов, 60 оплат): найти 5 расхождений, не поднимая ложных; данные сгенерированы _tools/mk_reconcile.py
+description: "Длинные данные (60 счетов и 60 оплат), найти 5 расхождений без ложных; данные из _tools/mk_reconcile.py"
 tags: [general, hard, research, long-context]
 max_turns: 6
 allowed_tools: [Read, Glob, Grep, Skill]
