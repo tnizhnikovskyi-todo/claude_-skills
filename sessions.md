@@ -11,3 +11,4 @@
 | graphify | [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) | `analysis/graphify` | [session_01L4X5dzGPU9HbjnW9ig6rgT](https://claude.ai/code/session_01L4X5dzGPU9HbjnW9ig6rgT) | в работе | |
 | strix | [usestrix/strix](https://github.com/usestrix/strix) | `analysis/strix` | [session_01L4X5dwsYiXhNn7mao9ovur](https://claude.ai/code/session_01L4X5dwsYiXhNn7mao9ovur) | в работе | |
 | firecrawl | [firecrawl/firecrawl](https://github.com/firecrawl/firecrawl) | `analysis/firecrawl` | [session_01L4X5dzJzieWxJo5JZUS8fD](https://claude.ai/code/session_01L4X5dzJzieWxJo5JZUS8fD) | в работе | |
+| freellmapi | [tashfeenahmed/freellmapi](https://github.com/tashfeenahmed/freellmapi) | `analysis/freellmapi` | [session_01L4X5dyeyVTH4TxyPUUuj4a](https://claude.ai/code/session_01L4X5dyeyVTH4TxyPUUuj4a) | в работе | |
