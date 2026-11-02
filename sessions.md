@@ -19,3 +19,7 @@
 | headroom-desktop | [gglucass/headroom-desktop](https://github.com/gglucass/headroom-desktop) | `analysis/headroom-desktop` | [session_01L4X5dzqxpAzZ8kRZtJSSAN](https://claude.ai/code/session_01L4X5dzqxpAzZ8kRZtJSSAN) | слито | отклонить |
 | claude-code-setup | [маркетплейс: claude-code-setup](https://claude.com/marketplace/plugins/claude-code-setup) | `analysis/claude-code-setup` | [session_01L4X5dy9sm8pVDovmeAq1QX](https://claude.ai/code/session_01L4X5dy9sm8pVDovmeAq1QX) | слито | адаптировать |
 | one-skill-to-rule-them-all | [rebelytics/one-skill-to-rule-them-all](https://github.com/rebelytics/one-skill-to-rule-them-all) | `analysis/one-skill-to-rule-them-all` | [session_01L4X5dx5NcvZcnMG9SYxw4R](https://claude.ai/code/session_01L4X5dx5NcvZcnMG9SYxw4R) | слито | адаптировать |
+| rtk | [rtk-ai/rtk](https://github.com/rtk-ai/rtk) | `analysis/rtk` | [session_01L4X5dxa9VjT2sSxKe7FyhB](https://claude.ai/code/session_01L4X5dxa9VjT2sSxKe7FyhB) | в работе | |
+| caveman | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) | `analysis/caveman` | [session_01L4X5e1H4RqcF1WgcYFW6e1](https://claude.ai/code/session_01L4X5e1H4RqcF1WgcYFW6e1) | в работе | |
+| serena | [oraios/serena](https://github.com/oraios/serena) (проверяется) | `analysis/serena` | [session_01L4X5dzR6qNzDRNKnZA4sPT](https://claude.ai/code/session_01L4X5dzR6qNzDRNKnZA4sPT) | в работе | |
+| codebase-memory-mcp | ищется чатом | `analysis/codebase-memory-mcp` | [session_01L4X5e1KgfykFe4JrAaFYQo](https://claude.ai/code/session_01L4X5e1KgfykFe4JrAaFYQo) | в работе | |

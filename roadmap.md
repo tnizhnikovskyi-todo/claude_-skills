@@ -105,18 +105,18 @@
 отдельным чатом в ветке `build/<slug>`. Главный чат ставит задачу, сводит
 результаты, ведёт статусы в этом файле.
 
-| # | Статус | Чат |
-|---|---|---|
-| 0.1 | план | |
-| 0.2 | план | |
-| 0.3 | план | |
-| 1.1 | план | |
-| 1.2 | план | |
-| 1.3 | план | |
-| 2.1 | план | |
-| 2.2 | план | |
-| 2.3 | план | |
-| 2.4 | план | |
-| 3.1–3.5 | план | |
-| 4.1–4.3 | план | |
-| 5.1–5.3 | план | |
+| # | Статус | Чат | Ветка |
+|---|---|---|---|
+| 0.1 | готово | главная сессия | (в ветке по умолчанию) |
+| 0.2, 0.3, подготовка 1.1 | в работе | [foundation](https://claude.ai/code/session_01L4X5e1XU6o9G3qUruKMTMn) | `build/foundation` |
+| 1.1 | ждёт ключ Context7 | | |
+| 1.2, 1.3 | в работе | [interview-source](https://claude.ai/code/session_01L4X5dxWNHTCxZX6YvcL6a7) | `build/interview-source` |
+| 2.1 | в работе | [cloud-memory](https://claude.ai/code/session_01L4X5dzUi82gav7qHcVBeNe) | `build/cloud-memory` |
+| 2.2 | в работе | [independent-check](https://claude.ai/code/session_01L4X5dyQd2f4Mh8gpmeyMcM) | `build/independent-check` |
+| 2.3, 2.4 | в работе | [lean](https://claude.ai/code/session_01L4X5dxJQwq1GhZzTZqZuEh) | `build/lean` |
+| 3.1, 3.2 | в работе (как предложения) | [review-upgrades](https://claude.ai/code/session_01L4X5dxM8fDnFXcEC1bqyAj) | `build/review-upgrades` |
+| 3.3, 3.4 | план (после 2.2 и 1.2) | | |
+| 3.5 | план | | |
+| 4.1–4.3 | план | | |
+| 5.1, 5.2 | план | | |
+| 5.3 | в работе | 4 чата анализа, см. `sessions.md` | `analysis/{rtk,caveman,serena,codebase-memory-mcp}` |
