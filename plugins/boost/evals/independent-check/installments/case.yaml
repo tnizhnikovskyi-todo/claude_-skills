@@ -1,5 +1,5 @@
 schema_version: "1.1"
-name: independent-check-installments
+name: independent-check/installments
 description: "Рассрочка: int(total*100) теряет копейку из-за float"
 tags: [independent-check]
 execution:

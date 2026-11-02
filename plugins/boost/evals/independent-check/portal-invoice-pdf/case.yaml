@@ -1,5 +1,5 @@
 schema_version: "1.1"
-name: independent-check-portal-pdf
+name: independent-check/portal-invoice-pdf
 description: "Портал Odoo: PDF-маршрут проверяет только check_access_rights (модель), не владельца"
 tags: [independent-check]
 execution:

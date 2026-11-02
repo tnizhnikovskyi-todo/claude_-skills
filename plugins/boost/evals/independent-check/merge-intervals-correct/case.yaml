@@ -1,5 +1,5 @@
 schema_version: "1.1"
-name: independent-check-correct-solution
+name: independent-check/merge-intervals-correct
 description: "Корректное слияние интервалов: скилл не должен выдумывать дефекты"
 tags: [independent-check]
 execution:
