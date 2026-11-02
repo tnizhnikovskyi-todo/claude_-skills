@@ -17,6 +17,10 @@ graders:
       record rules or ownership, so a portal user can download any other partner invoice PDF by id
       (IDOR), followed by sudo() rendering.
       FAIL if the reply does not flag the PDF route, or accepts check_access_rights as sufficient.
+      Notes for the judge: the reply may be in Russian. A defect listed in a findings table with
+      status "confirmed" (or described as a bug/дефект/ошибка with a concrete scenario) counts as
+      identified as a real defect. Additional candidates, ruled_out/open_proof_gap rows and fix
+      suggestions do not affect the verdict.
   - name: closure-states
     type: regex
     arm: with-only
