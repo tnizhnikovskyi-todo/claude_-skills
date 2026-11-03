@@ -83,3 +83,16 @@
 - Включать ли чек-лист в первое сообщение каждой сессии анализа или сделать
   из него отдельный скилл `skill-vetting` в `plugins/boost`? Решает главная
   сессия.
+
+## 2026-11-03 · сверка с нашими текстами (по сообщению главной сессии)
+
+- Текущий `odoo19-mvp-build:security-review` взят из
+  `~/.claude/skills/synced/…/security-review/SKILL.md` (192 строки). Приватный
+  `todoltd/claude-methodology-marketplace` для этого не понадобился, ничего
+  оттуда не копировалось.
+- `proposals/odoo19-mvp-build/security-review/proposed/SKILL.md` уже требует
+  то, что дал бы этот репозиторий: для каждого кандидата trace с file:line,
+  состояния `confirmed`/`ruled_out`/`open_proof_gap`, counterevidence, таблицу
+  покрытия, недоверие к описанию PR. Значит, для Odoo-скилла **нового нет**.
+  Ценность разбора только в проверке скиллов и плагинов (чек-лист) и в
+  шаблоне карточки.
