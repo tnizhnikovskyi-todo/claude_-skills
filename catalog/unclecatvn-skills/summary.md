@@ -16,7 +16,7 @@
   нет. Минусы: триггер «Mandatory … ANY Odoo change», ~2× токенов,
   `odoo-commit` запрещает AI-атрибуцию.
 - **Вердикт:** **адаптировать**, 13/18. Плагин не ставить.
-- **Взять:** (1) `api-highlights.md` 19.0 + наши дополнения с `file:line` в
+- **Взять** (источники `путь@SHA`, способ и лицензия — таблица «Что взять» в `README.md`; всё MIT): (1) `api-highlights.md` 19.0 + наши дополнения с `file:line` в
   `boost:source-check/references/`; (2) формат Context Brief и правило
   «сломанный grep ≠ NOT FOUND» в `source-check` и предложение для
   `code-dev`; (3) рецепт sparse-клона `odoo/odoo@19.0` в облаке как

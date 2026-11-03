@@ -41,7 +41,7 @@ translation, view. Плюс `api-highlights.md` (50 строк): что изме
 | Поддержка | 1 | Активно, но факты 19.0 нужно сверять при каждом обновлении |
 | **Итого** | **13/18** | |
 
-## Что взять
+## Что взять (подробно — таблица в `../README.md`, строка 1)
 
 `api-highlights.md` → `plugins/boost/skills/source-check/references/odoo19-api-changes.md`
 с атрибуцией и строками `file:line` для каждого пункта, плюс наши
