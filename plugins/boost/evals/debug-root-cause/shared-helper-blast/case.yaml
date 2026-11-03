@@ -1,0 +1,67 @@
+schema_version: "1"
+name: debug-root-cause/shared-helper-blast
+description: >
+  Баг: у строк-скидок td_bonus_points неверны (-2.5 → -2 вместо -3).
+  Корень в общем хелпере td.amount.mixin._td_round_half_up (int(value+0.5)
+  для отрицательных). Хелпер используют ещё td_refund_ext (кредит-ноты,
+  отрицательные суммы — фикс МЕНЯЕТ их значения: подтверждённый риск) и
+  td_stock_ext через env['td.amount.mixin'] (кол-во не отрицательное —
+  снятый риск; grep по _inherit его не находит).
+tags: [debug-root-cause, positive, odoo]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    Odoo 19, наши аддоны в рабочем каталоге. Жалоба: у строк заказа со
+    скидкой (отрицательная сумма) бонусные баллы `td_bonus_points`
+    считаются неправильно: при сумме -25 должно быть -3 (округление от нуля),
+    а получается -2. Почему так и как починить? Дифф в ответе, файлы не
+    меняй.
+  max_turns: 25
+  timeout_seconds: 700
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: debug-root-cause
+    min: 1
+  - type: llm
+    name: root-cause
+    weight: 1
+    criteria: >
+      PASS, если корень назван в общем хелпере _td_round_half_up
+      (td_amount/models/amount_mixin.py): int(value + 0.5) неверно округляет
+      отрицательные числа (int усекает к нулю: -2.5+0.5=-2), и предложен
+      фикс в хелпере (например через math.copysign / floor(abs+0.5) со знаком
+      / float_round с rounding_method='HALF-UP') — а не обход только в
+      td_sale_ext. FAIL иначе.
+  - type: llm
+    name: blast-radius
+    weight: 2
+    criteria: >
+      PASS, если ответ ДО или вместе с фиксом разбирает, кого ещё затронет
+      правка хелпера, и называет ОБА других места: (1) td_refund_ext
+      (account.move, кредит-ноты с отрицательной amount_total_signed —
+      значения td_refund_units изменятся, это надо подтвердить с бизнесом
+      или проверить); (2) td_stock_ext (stock.move вызывает хелпер через
+      self.env['td.amount.mixin'], кол-во не отрицательное — не затронуто).
+      FAIL, если не упомянут хотя бы один из двух, или td_refund_ext назван
+      безопасным без оговорки, что его отрицательные значения изменятся.
+  - type: llm
+    name: risks-split
+    weight: 1
+    criteria: >
+      PASS, если затронутые места разделены на подтверждённые риски (что
+      изменится и где) и снятые/безопасные (что проверено и почему не
+      затронуто), с указанием файлов. FAIL, если всё одним списком без
+      вывода по каждому месту.
+  - type: llm
+    name: report
+    weight: 1
+    criteria: >
+      PASS, если ответ заканчивается структурированным отчётом с явно
+      помеченными полями: симптом, корень (файл), правка, затронутые места /
+      blast radius, проверка/доказательство, регрессионный тест и статус.
+      FAIL, если такого блока нет или нет поля статуса.

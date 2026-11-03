@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_td_depot_user,td.depot user,model_td_depot,base.group_user,1,1,1,0
+access_td_depot_zone_user,td.depot.zone user,model_td_depot_zone,base.group_user,1,1,1,0

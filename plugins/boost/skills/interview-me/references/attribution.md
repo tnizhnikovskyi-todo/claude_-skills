@@ -15,6 +15,29 @@
 вместо `spec-driven-development`/`idea-refine`; убраны пример с дашбордом и
 таблица рационализаций (ради компактности).
 
+## Дополнения (boost-pass4, 2026-11-03)
+
+- **Порядок по радиусу поражения, «полировку предложить, а не спрашивать»,
+  чекпоинт «уже решили», стоп «дешевле выяснить потом», флаг противоречия**
+  — перевод/адаптация шагов 2, 4, 5 и ограждения 3 из
+  [Neeeophytee/finding-unknowns-skills](https://github.com/Neeeophytee/finding-unknowns-skills)
+  `skills/interview-me/SKILL.md@ca5696a`, MIT, © 2026 Neeeophytee.
+  Не взято: «you decide» как валидный ответ (противоречит нашему шагу 6) и
+  обязательные 2–3 варианта в каждом вопросе. Разбор:
+  `catalog/finding-unknowns/items/interview-me.md`.
+- **Флаг противоречия** объединён с правилом «Contradiction Handling» из
+  [MadurangaDev/requirement-engineer](https://github.com/MadurangaDev/requirement-engineer)
+  `skill/references/reasoning-framework.md@b728406`, MIT, © 2026 Maduranga
+  Jayasena: назвать обе версии, объяснить влияние, спросить, не решено —
+  записать как открытый конфликт, сторону не выбирать. Пересказ.
+- **«Не знаю, покажите»: 3–5 вариантов и критерий из реакции** — идея
+  шагов 4–5 `skills/brainstorm-prototypes/SKILL.md@ca5696a`
+  (finding-unknowns, MIT), своими словами.
+
+Оба первоисточника под MIT; уведомление: «Permission is hereby granted…»
+(текст ниже совпадает дословно, меняются только строки копирайта:
+© 2026 Neeeophytee; © 2026 Maduranga Jayasena).
+
 Текст лицензии MIT оригинала:
 
 > Permission is hereby granted, free of charge, to any person obtaining a copy
