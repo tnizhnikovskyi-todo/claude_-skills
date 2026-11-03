@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_fleet" model="ir.module.category">
+        <field name="name">Fleet</field>
+    </record>
+    <record id="privilege_fleet" model="res.groups.privilege">
+        <field name="name">Fleet</field>
+        <field name="category_id" ref="module_category_fleet"/>
+    </record>
+    <record id="group_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="privilege_id" ref="privilege_fleet"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="privilege_id" ref="privilege_fleet"/>
+        <field name="implied_ids" eval="[(4, ref('group_user'))]"/>
+        <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+    <record id="base.user_demo" model="res.users">
+        <field name="group_ids" eval="[(4, ref('group_user'))]"/>
+    </record>
+</odoo>

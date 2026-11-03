@@ -1,0 +1,2 @@
+id,name,users/id,category_id/id
+g_x,X,base.user_admin,base.module_category_hidden

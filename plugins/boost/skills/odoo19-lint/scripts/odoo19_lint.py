@@ -543,6 +543,10 @@ def check_arch(path, arch, view_model, linter, lines):
         expr = node.attrib.get('expr', '')
         if re.search(r'(^|/)tree\b', expr):
             linter.add(path, node.line, 'view-tree', f'xpath {expr!r}', lines)
+        if expr and view_model in ORDER_MODELS and re.search(r"@name=['\"]product_uom['\"]", expr):
+            linter.add(path, node.line, 'line-product-uom', f'xpath {expr!r}', lines)
+        if expr and view_model == 'res.partner' and re.search(r"field\[@name=['\"](mobile|title)['\"]", expr):
+            linter.add(path, node.line, 'partner-mobile-title', f'xpath {expr!r}', lines)
         if node.tag == 'field' and 'name' in node.attrib:
             fname = node.attrib['name']
             if view_model == 'res.partner' and fname in ('mobile', 'title') and \
@@ -653,7 +657,8 @@ def lint(paths):
     return linter
 
 
-def print_text(linter, out=sys.stdout):
+def print_text(linter, out=None):
+    out = out or sys.stdout
     errors = sum(1 for x in linter.findings if x['severity'] == 'ERROR')
     warns = len(linter.findings) - errors
     print(f'odoo19-lint: {errors} ERROR, {warns} WARN; файлов просмотрено: {linter.files}', file=out)
