@@ -1,7 +1,8 @@
 # competitive-deal-prep
 
 - **Тип:** скилл (241 строка)
-- **Источник:** https://github.com/LMTYdotcom/skills/tree/18667e0/skills/competitive-deal-prep (MIT)
+- **Источник:** https://github.com/LMTYdotcom/skills/tree/18667e0c2f3e4872c17eb827d4e44983049b6829/skills/competitive-deal-prep
+- **Коммит / лицензия / дата разбора:** `18667e0` · MIT, © LMTY · 2026-11-03
 - **Вердикт:** **взять отдельные приёмы** в `defence-brief` / `brief-prep-pack`; сам скилл — дубль нашей цепочки
 
 ## Что делает

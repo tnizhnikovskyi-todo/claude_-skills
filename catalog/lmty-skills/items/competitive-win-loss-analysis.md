@@ -1,7 +1,8 @@
 # competitive-win-loss-analysis
 
 - **Тип:** скилл (`SKILL.md` 195 строк + `METHODOLOGY.md` + шаблон `assets/win-loss-template.md`)
-- **Источник:** https://github.com/LMTYdotcom/skills/tree/18667e0/skills/competitive-win-loss-analysis (MIT)
+- **Источник:** https://github.com/LMTYdotcom/skills/tree/18667e0c2f3e4872c17eb827d4e44983049b6829/skills/competitive-win-loss-analysis
+- **Коммит / лицензия / дата разбора:** `18667e0` · MIT, © LMTY · 2026-11-03
 - **Вердикт:** **адаптировать** → `odoo19-sales-offer:loss-pattern-analyzer`
 
 ## Что делает

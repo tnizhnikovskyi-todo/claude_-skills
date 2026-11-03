@@ -1,7 +1,8 @@
 # competitive-objection-response
 
 - **Тип:** скилл (`SKILL.md` 346 строк, самый длинный в наборе)
-- **Источник:** https://github.com/LMTYdotcom/skills/tree/18667e0/skills/competitive-objection-response (MIT)
+- **Источник:** https://github.com/LMTYdotcom/skills/tree/18667e0c2f3e4872c17eb827d4e44983049b6829/skills/competitive-objection-response
+- **Коммит / лицензия / дата разбора:** `18667e0` · MIT, © LMTY · 2026-11-03
 - **Вердикт:** **адаптировать** → `odoo19-sales-offer:defence-brief` (подготовка ответов на возражения) и `demo-debrief`
 
 ## Что делает
