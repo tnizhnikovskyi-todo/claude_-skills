@@ -1,0 +1,52 @@
+schema_version: "1"
+name: skill-feedback/rule-trigger
+description: >
+  Новые правила формата (U10): правило записано как ситуация, видимая до
+  ошибки, а не как реакция; есть confidence и evidence; нет выдуманных
+  запретов на ошибки, которых не было. Кейс написан под правку U10 — в
+  решение о слиянии не входит, показывает «починили».
+tags: [skill-feedback, positive, u10]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    repo-audit опять сработал не так, как надо: в модуле td_portal публичный
+    маршрут (auth='public') делает request.env['sale.order'].sudo().search([])
+    без фильтра по партнёру, и аудит этого не назвал. Я это заметил сам при
+    ревью. Запиши замечание к скиллу для ревью скиллов. Наши скиллы в skills/.
+  max_turns: 15
+  timeout_seconds: 600
+  allowed_tools: [Read, Write, Edit, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?skill-feedback"'
+    min: 1
+  - type: tool_used
+    name: confidence-evidence
+    tool: Write
+    input_match: '^(?=[\s\S]*observations/)(?=[\s\S]*confidence:\s*(?:low|medium|high))(?=[\s\S]*evidence:)'
+    min: 1
+  - type: tool_used
+    name: skill-not-edited
+    tool: Edit
+    input_match: '"file_path"\s*:\s*"[^"]*skills/repo-audit'
+    min: 0
+    max: 0
+  - type: llm
+    name: rule-is-situation
+    focus: files
+    criteria: >
+      Найди файл наблюдения в observations/. PASS, только если ВСЕ пункты
+      верны: (1) поле rule (или первая строка «Предложения») описывает
+      ситуацию, которую видно в коде ДО ошибки — например «публичный
+      маршрут auth='public' с sudo() без домена по пользователю/партнёру»;
+      FAIL, если rule описывает реакцию («когда пользователь поправил»,
+      «аудит пропустил находку») или тавтологию («проверять безопасность»,
+      «быть внимательнее»); (2) правило не привязано обязательным условием
+      к имени модуля td_portal или модели sale.order (они могут быть
+      примером); (3) «Предложение» не добавляет запретов или проверок на
+      ошибки, о которых пользователь не говорил (список других
+      уязвимостей «на всякий случай» — FAIL).
