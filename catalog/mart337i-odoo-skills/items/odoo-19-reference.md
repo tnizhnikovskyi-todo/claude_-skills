@@ -39,6 +39,10 @@ performance, reports, security, testing, transactions, translation, views.
 
 ## Что взять
 
+Источник: `skills/odoo-19.0/references/*@634b2db` (как антипример).
+Куда: `plugins/boost/skills/source-check/references/odoo19-traps.md`.
+Как: только идея, данные — наша сверка с `odoo/odoo@e0b25b7`.
+
 Не текст, а идею: короткий файл значений «ловушки 19.0» с путём и строкой
 исходника на каждую, рядом с `boost:source-check`
 (`references/odoo19-sources.md` или отдельный `odoo19-traps.md`).

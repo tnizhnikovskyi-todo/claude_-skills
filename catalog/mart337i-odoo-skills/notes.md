@@ -103,10 +103,33 @@ OWL, отчёты, веб-безопасность, OCA-миграции.
 
 - (нет пока)
 
+## 2026-11-03 — дополнение по сообщениям главной сессии
+
+- Новое правило п.5 `CLAUDE.md` (провенанс): `README.md` раздел «Что
+  взять» переписан таблицей `путь@SHA → что → куда → как → лицензия`.
+- Наши тексты для сравнения: в ветке по умолчанию
+  (`claude/admiring-cannon-25jueb`) есть `proposals/odoo19-mvp-build/`:
+  `pr-review/BASELINE-STANDIN.md` (заменитель, оригинал не найден),
+  `pr-review/proposed/INSERT.md`, `security-review/current|proposed`.
+  Прочитаны через `git show`, в нашу папку не копировались.
+- `add_repo` для `todoltd/claude-methodology-marketplace` (чтение) —
+  **отклонён** классификатором прав, как и `todo_timur`. Оригиналы
+  `pr-review` и `testing` не видели; `testing` сравнен только по описанию.
+- Итог пересравнения:
+  - `pr-review`: наше предложение уже покрывает «что не проверено»,
+    regression/pre-existing, формат находки, мутации. Нового у них одно:
+    правило стабильной ветки.
+  - `security-review`: падающий тест до фикса, `AccessError` vs 404,
+    таблица покрытия уже есть в proposed. `odoo-web-security` → отклонить.
+  - Попутно: наш `security-review` (current и proposed, Dimension 5)
+    пишет `type='json'`; в 19.0 правильно `type='jsonrpc'`.
+
+
 ### Открытые вопросы
 
-1. Построчно сравнить с `odoo19-mvp-build:pr-review` и `:testing`, когда
-   будут тексты (нужен доступ к synced-плагинам или к `todo_timur`).
+1. Построчно сравнить с оригиналами `odoo19-mvp-build:pr-review` и
+   `:testing` (нужен доступ к `todoltd/claude-methodology-marketplace`;
+   `add_repo` отклонён, нужно разрешение пользователя).
 2. A/B не делали. Предложение: 3 кейса на Odoo 19 (JSON-контроллер,
    тест с пользователем в группе, хуки манифеста), три прогона:
    база / с `odoo-19.0` в контексте / с `boost:source-check`.

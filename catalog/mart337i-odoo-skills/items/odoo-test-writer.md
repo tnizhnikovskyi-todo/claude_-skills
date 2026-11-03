@@ -34,6 +34,13 @@
 
 ## Сравнение с нашим
 
-Текст `odoo19-mvp-build:testing` в контейнере недоступен; вероятно,
-большая часть уже там. Проверить при доступе и добавить недостающее
-+ ловушки 19.0 (`group_ids`, `new_test_user`).
+Текст `odoo19-mvp-build:testing` недоступен: в контейнере его нет,
+подключить приватный `todoltd/claude-methodology-marketplace` не дала
+система прав. Сравнение только по описанию. Проверить при доступе.
+
+## Что взять
+
+Источник: `skills/odoo-test-writer/SKILL.md@634b2db`,
+`ODOO-TESTING-SOP.md@634b2db`. Куда: `odoo19-mvp-build:testing` через
+`proposals/`. Как: только идея своими словами (лицензии нет). Плюс наше из
+сверки: `new_test_user(env, groups='…')` и `group_ids` в 19.0.

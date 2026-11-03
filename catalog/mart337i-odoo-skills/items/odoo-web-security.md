@@ -2,7 +2,7 @@
 
 - **Путь:** `skills/odoo-web-security/` — `SKILL.md` (~30 строк) +
   `references/SECURITY-CHECKLIST.md` (39 строк)
-- **Вердикт:** **взять формат находки** в `security-review`
+- **Вердикт:** **отклонить** — полезное уже есть в нашем proposed `security-review`
 
 ## Что это
 
@@ -21,13 +21,18 @@
 - Пункт «отказ в доступе и отсутствие записи неразличимы, если важна
   перечислимость» — легко забывается.
 
-## Хуже
+## Хуже / уже есть у нас
 
+- Падающий до исправления тест и `with_user(portal)` в `HttpCase` уже есть
+  в `proposals/odoo19-mvp-build/security-review/proposed/SKILL.md` и
+  `references/fix-gates.md`; там же «семантика ошибок `AccessError` vs
+  404 намеренна», таблица покрытия, состояния кандидатов (Strix).
 - Про `type='json'` vs `jsonrpc` в 19.0 ничего; общий, не версионный.
-- Пересекается с `anthropic-skills:security-review` (чек-лист Odoo) и
-  перенесённой методологией Strix.
+  (Наш `security-review` в Dimension 5 тоже пишет `type='json'` — стоит
+  поправить на `jsonrpc`, это наша находка из сверки с 19.0.)
 
 ## Что взять
 
-В `security-review`: формат находки с падающим тестом и пункт про
-неразличимость «нет доступа / нет записи» для портальных маршрутов.
+Ничего сверх уже сделанного. Источник для справки:
+`skills/odoo-web-security/SKILL.md@634b2db`,
+`skills/odoo-web-security/references/SECURITY-CHECKLIST.md@634b2db`.
