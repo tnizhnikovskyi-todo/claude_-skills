@@ -43,8 +43,7 @@ Guide, Effort Summary). Гипотеза из поиска подтвержда�
 
 ## Проверка
 
-A/B не проводился: нужен запуск на нашем брифе и тексты наших скиллов
-(в окружении не найдены, см. `notes.md`).
+A/B не проводился: нужен запуск на нашем журнале дискавери и разрешение.
 
 | Задача | Без него | С ним |
 |---|---|---|
@@ -54,7 +53,7 @@ A/B не проводился: нужен запуск на нашем бриф�
 
 | Критерий | Балл (0–3) | Комментарий |
 |---|---|---|
-| Прирост | 2 | Правила «state, don't assume», Information Required с якорем срока, чек-лист ревью — поведение, которого нет по умолчанию. Не измерено; часть может уже быть в наших скиллах |
+| Прирост | 2 | Сверено с нашими текстами: пробелы реальные (нет «нужно от клиента» у позиции со сроком, допущения как штатный раздел, нет содержательных проверок формулировок). В оценке прироста нет. Не измерено A/B |
 | Частота | 2 | Пресейл/скоуп у нас каждую неделю, но сам плагин под Salesforce — нам нужна только методика |
 | Надёжность | 1 | Несостыковки (35 vs 40 ч/нед, hypercare 1 vs 4–8 нед, неопределённые «Shared Activities»); генератор не проверяет то, что обещает `SKILL.md` |
 | Стоимость контекста | 2 | Грузится по триггеру, но в сумме ~18 тыс. токенов за прогон |
@@ -64,19 +63,28 @@ A/B не проводился: нужен запуск на нашем бриф�
 
 ## Сравнение с нашими скиллами
 
-Тексты `preliminary-estimate`, `presale-pack-builder`, `discovery-scope-mapper`
-в окружении не найдены; сравнение по описанию цепочек и соседним скиллам,
-пункты «у нас нет» — **сверить с оригиналом**.
+Сверено с текстами (2026-11-03):
+`tnizhnikovskyi-todo/sale_todo_claude@2a7f7c1` —
+`plugins/odoo19-sales-prep/skills/preliminary-estimate/SKILL.md`,
+`plugins/odoo19-sales-demo/skills/presale-pack-builder/SKILL.md`;
+приватный `todoltd/claude-methodology-marketplace@7acde05` —
+`plugins/odoo19-discovery-closeout/skills/discovery-scope-mapper/SKILL.md` и
+соседний `discovery-sow-builder/SKILL.md`. Из приватного репо сюда ничего не
+копируем — только выводы и названия разделов.
 
-| Тема | presales-agent | Наша цепочка | Итог |
+| Тема | presales-agent | Наши скиллы | Итог |
 |---|---|---|---|
-| Оценка | Одна точка на требование, 2–16 ч «проверки AI-сборки», без вилки и резерва; видна клиенту | Вилка с коэффициентом (`preliminary-estimate`), детальная оценка на уровне ТР (`tr-effort-instruction`) | **Мы сильнее**, их модель не брать |
-| Исключения | `notIncluded[]` на строку, без источника | `X-N` только с источником и статусом | **Мы сильнее**; у них лучше формулировка «что читатель мог ожидать для этой строки» |
-| Что нужно от клиента | Отдельная колонка на каждую строку + якорь срока; всё неизвестное обязано попасть сюда | `Q-N`/`A-N` в журнале, вероятно без привязки к строке скоупа | **Взять** |
-| Запрет «предполагаем» / выдумки | Жёсткое правило + чек-лист + `sourceRefs` на каждую цифру | Принцип «только с джерелом» в журнале | Взять как проверку в `discovery-scope-mapper` |
-| Двуязычие строки | Бизнес-язык в описании, техника только в Solution Approach | Неизвестно | Взять (термины Odoo — только в «Підхід») |
-| Ревью со скорингом | 40 проверок, формула, вердикт READY/NEEDS REVISION/NOT READY, стоп на CRITICAL | `discovery-gap-analyzer`, `tr-review` — по ТР | Взять 15–20 проверок «клиентская читаемость + факты + защита скоупа» |
-| План спринтов | Ёмкость, пред-/пост-спринтовые фазы, отдельная миграция | Есть ли в продажной цепочке — не видно | Идея «миграция вне ёмкости разработки» переносима |
+| Оценка | Одна точка на требование, 2–16 ч «проверки AI-сборки», без вилки; видна клиенту | `preliminary-estimate`: вилка = нижняя граница по `G-N`/аналогам из таймшитов × коэффициент полноты; строка покрытия «оценено N из M»; белые пятна с последствием в часах; история версий; сверка с уже названной клиенту цифрой | **Мы намного сильнее.** Ничего не берём |
+| Неизвестное в оценке | Пункт в Information Required, часы всё равно ставятся | `невідомо` — без часов, «объём определяется на обследовании», в пару — уточнение | **Мы сильнее** |
+| Исключения | `notIncluded[]` на строку, без источника | `X-N` только с источником; в клиентских документах — «у цей етап не входить» | **Мы сильнее** по доказательности. У них сильнее идея «исключение, которое читатель этой строки мог бы ожидать» — у нас список только из журнала, без поиска вероятных пере-прочтений |
+| Что нужно от клиента | Отдельная колонка у каждой строки + якорь срока; всё неизвестное обязано туда попасть | `discovery-scope-mapper`: открытые `Q-N`/`C-N` с приоритетом и влиянием на скоуп, но не у строки и без срока. `presale-pack-builder`: список «уточнений для точной оценки» без привязки к строке и сроку; зависящие от клиента даты — условием. `discovery-sow-builder`: оценка = «диапазон + допущения», отдельный раздел «Допущения и зависимости» | **Взять** — это наш реальный пробел |
+| «Предполагаем» / открытые списки | Запрещены; каждая формулировка — «делаем / даёт клиент / не входит» | В `discovery-sow-builder` допущения — штатный раздел; запрета «тощо»/открытых обещаний («усі звіти») нет ни в одном из трёх | **Взять** |
+| Источник цифр | `sourceRefs` у строки | У `discovery-scope-mapper` источник у каждого пункта, у `preliminary-estimate` — аналог назван | Паритет |
+| Ревью содержания | 40 проверок с severity, скоринг, стоп на CRITICAL | Pre-save чек-листы — структурные (файлы, источники, плейсхолдеры, совпадение цифр в пакете), содержательных проверок формулировок нет | **Взять** 10–15 содержательных проверок |
+| Строка = одна принимаемая возможность | Правило декомпозиции; интеграция и группа миграции — свои строки | `scope-mapper` группирует по областям (процессы, данные, интеграции, роли, NFR, запуск) | Взять для `discovery-sow-builder` («Обсяг робіт») |
+| Интеграция / миграция | Строка обязана сказать: что, куда, когда, что при сбое; объёмы, источник, сверка | `scope-mapper`: системы и направление; источники и объёмы. Частоты, сбоя и сверки нет | **Взять** как обязательные поля |
+| Описание процесса + глоссарий | Отдельный лист для клиента | Нет в этих трёх | Идея, низкий приоритет |
+| Клиентский язык / Humizer | Правило «термины платформы только в Solution Approach» | Humizer со скриптом-проверкой, регистры, `.docx` | **Мы сильнее** |
 
 ## Что переносимо на Odoo
 
@@ -93,26 +101,26 @@ A/B не проводился: нужен запуск на нашем бриф�
 ## Что взять
 
 Пути от корня репозитория источника, `@14cb687` = `14cb687089d6a87d5b7fc7f49bc449cedc87b623`.
-MIT разрешает всё ниже, включая дословное копирование, при сохранении
-копирайта и текста лицензии. Мы везде выбираем пересказ, поэтому достаточно
-строки атрибуции в `references/ATTRIBUTION.md` скилла-получателя.
+MIT разрешает и дословное копирование при сохранении копирайта и лицензии; мы
+везде пересказываем по-украински, поэтому достаточно строки атрибуции в
+`references/ATTRIBUTION.md` скилла-получателя.
 
-| Идея | Исходный файл | Куда у нас | Как | Лицензия |
-|---|---|---|---|---|
-| «Три места» вместо «предполагаем»: делаем / нужно от клиента со сроком / не входит | `plugins/wd-presales-skill2/skills/presales-agent/references/requirement_writing.md@14cb687` | `odoo19-discovery-closeout:discovery-scope-mapper`, правила строки скоупа | пересказ своими словами (укр.) | MIT — да |
-| Анти-паттерны текста: «тощо», открытые списки, техтермины в описании, пункт без срока | `plugins/wd-presales-skill2/skills/presales-agent/references/requirement_writing.md@14cb687` (Anti-patterns) | `discovery-scope-mapper`, тот же блок | пересказ | MIT — да |
-| Бизнес-язык в описании, термины платформы только в «Підхід» | `plugins/wd-presales-skill2/skills/presales-agent/references/scope_building.md@14cb687` (Solution Approach) | `discovery-scope-mapper` | только идея | MIT — да |
-| Одна строка = одна принимаемая возможность; интеграция и группа миграции — свои строки | `plugins/wd-presales-skill2/skills/presales-agent/references/scope_building.md@14cb687` (decomposition) | `discovery-scope-mapper` | пересказ | MIT — да |
-| Чек-лист ревью скоупа с severity и стопом на CRITICAL (15–20 из 40, без Salesforce) | `plugins/wd-presales-skill2/skills/presales-agent/references/review_checklist.md@14cb687`, `plugins/wd-presales-skill2/skills/presales-agent/references/scope_review.md@14cb687` | самопроверка `discovery-scope-mapper` или `discovery-gap-analyzer` | пересказ, отбор и перевод пунктов | MIT — да |
-| Таблица типовых «нужно от клиента / не входит» по областям | `plugins/wd-presales-skill2/skills/presales-agent/references/scope_boundary_patterns.md@14cb687` | `discovery-scope-mapper/references/` (новая таблица под области Odoo) | только идея (структура), содержание своё | MIT — да |
-| Миграция — отдельная сумма вне ёмкости разработки; строки выше диапазона дробить | `plugins/wd-presales-skill2/skills/presales-agent/references/sprint_planning.md@14cb687`, `plugins/wd-presales-skill2/skills/presales-agent/references/effort_estimation.md@14cb687` | `odoo19-sales-prep:preliminary-estimate` | только идея | MIT — да |
-| Описание процесса шагами + глоссарий аббревиатур клиента | `plugins/wd-presales-skill2/skills/presales-agent/references/requirement_writing.md@14cb687` (Business Process Guide) | `odoo19-sales-demo:presale-pack-builder` | только идея | MIT — да |
+| # | Идея | Исходный файл | Куда у нас | Как | Лицензия |
+|---|---|---|---|---|---|
+| 1 | «Три места» вместо допущений: делаем / нужно от клиента **со сроком** / не входит; раздел «Допущения и зависимости» превращается в колонку «Потрібно від замовника» у каждой позиции | `plugins/wd-presales-skill2/skills/presales-agent/references/requirement_writing.md@14cb687` | `odoo19-discovery-closeout:discovery-sow-builder` (обсяг робіт, оценка, раздел допущений) | пересказ | MIT — да |
+| 2 | То же на входе: у пункта «У scope» колонка «Потрібно від замовника / до коли», неизвестное — туда, а не догадкой | `plugins/wd-presales-skill2/skills/presales-agent/references/requirement_writing.md@14cb687` | `odoo19-discovery-closeout:discovery-scope-mapper`, шаг «Інвентар scope» | пересказ | MIT — да |
+| 3 | Анти-паттерны: «тощо», «за потреби», «усі звіти», открытые списки; люди — ролями; пункт клиента без срока | `plugins/wd-presales-skill2/skills/presales-agent/references/requirement_writing.md@14cb687` (Anti-patterns), `plugins/wd-presales-skill2/skills/presales-agent/references/review_checklist.md@14cb687` (кат. 2, 4.1) | `discovery-sow-builder` и `presale-pack-builder`, pre-save; кандидат на правило в `check-humizer.py` | пересказ | MIT — да |
+| 4 | 10–15 содержательных проверок с severity и стопом на CRITICAL (цифра без источника, открытое обещание, интеграция без направления/частоты/сбоя, миграция без объёма/сверки, внешняя зависимость без пункта клиента) | `plugins/wd-presales-skill2/skills/presales-agent/references/review_checklist.md@14cb687`, `plugins/wd-presales-skill2/skills/presales-agent/references/scope_review.md@14cb687` | `discovery-sow-builder`, pre-save | пересказ, отбор | MIT — да |
+| 5 | Обязательные поля интеграции (что, куда, когда, что при сбое) и миграции (объём, источник, сверка) | `plugins/wd-presales-skill2/skills/presales-agent/references/requirement_writing.md@14cb687` (Integration/Data migration rows) | `discovery-scope-mapper`, строки «Інтеграції», «Дані та міграція» | только идея | MIT — да |
+| 6 | Поиск «вероятных пере-прочтений»: для строк с ИИ, порталом, аналитикой, обратной записью в ERP предложить кандидата в исключения (как `Q-N` на подтверждение, не как `X-N`) | `plugins/wd-presales-skill2/skills/presales-agent/references/review_checklist.md@14cb687` (4.5), `plugins/wd-presales-skill2/skills/presales-agent/references/scope_boundary_patterns.md@14cb687` | `discovery-scope-mapper`, шаг «Поза scope» | только идея; таблица областей своя, под Odoo | MIT — да |
+| 7 | Одна позиция = одна возможность, которую клиент принимает отдельно; каждая интеграция и группа миграции — своя позиция | `plugins/wd-presales-skill2/skills/presales-agent/references/scope_building.md@14cb687` (decomposition) | `discovery-sow-builder`, «Обсяг робіт» | пересказ | MIT — да |
+| 8 | Описание нового процесса шагами + глоссарий аббревиатур клиента | `plugins/wd-presales-skill2/skills/presales-agent/references/requirement_writing.md@14cb687` (Business Process Guide) | `discovery-report-builder` или `presale-pack-builder` — решить владельцу | только идея, низкий приоритет | MIT — да |
 
-Не берём: модель часов «AI-assisted» (`effort_estimation.md`), SKU и паттерны
-Salesforce (`products_catalog.md`, `scope_patterns.md`,
-`solution_approach_patterns.md`), код генератора и установщики.
+Не берём: всю модель оценки (`effort_estimation.md`, `effort_reference.md`,
+`sprint_planning.md`) — `preliminary-estimate` сильнее; SKU и паттерны
+Salesforce; код генератора и установщики.
 
-Детали вставок: [`items/brd-boundary-method.md`](items/brd-boundary-method.md).
+Детали: [`items/brd-boundary-method.md`](items/brd-boundary-method.md).
 
 ## Риски и заметки
 
