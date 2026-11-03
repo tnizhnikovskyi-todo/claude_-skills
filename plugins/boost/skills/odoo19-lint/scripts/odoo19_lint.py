@@ -78,7 +78,7 @@ RULES = {
     'cron-numbercall': (
         'ERROR', 'у ir.cron в 19.0 нет numbercall/doall: запись крона не загрузится',
         'убрать numbercall/doall; крон бессрочный, пока active; разовый — деактивировать в коде',
-        SRC + 'odoo/addons/base/models/ir_cron.py:106-122 (поля IrCron)'),
+        SRC + 'odoo/addons/base/models/ir_cron.py:99-122 (поля IrCron, _inherits ir.actions.server); numbercall/doall в odoo/ 19.0 нет'),
     'name-get': (
         'ERROR', 'name_get в 19.0 не существует: переопределение не вызывается, вызов падает AttributeError',
         'переопределить _compute_display_name (+ @api.depends), читать record.display_name',
