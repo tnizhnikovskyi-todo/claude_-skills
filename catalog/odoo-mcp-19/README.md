@@ -81,7 +81,7 @@ companion-приложения CLORAG.
 | | `odoo-connector` main `7acde05` | T3 `claude/odoo-connector-safety` `c1e5462` | odoo-mcp-19 | erpipe-mcp-odoo |
 |---|---|---|---|---|
 | Протокол | XML-RPC | XML-RPC | JSON-2 (только 19+) | XML-RPC / JSON-2 |
-| Заблокированные модели | нет | нет (`create`/`write` на `*`) | 40, вкл. прокси | частично |
+| Заблокированные модели | нет | нет (`create`/`write` на `*`) | 40, вкл. прокси | в карточке erpipe не описано |
 | Запись в запрещённую модель через x2many / `default_*` / `load` | нет | нет | **да**, fail-closed | нет |
 | `default_get` как чтение | — | **да (дыра)** | нет | — |
 | Allowlist `model.method` | нет | да (в git, с ревью) | да (env, `locked`) | да |
