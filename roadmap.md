@@ -217,3 +217,13 @@
 | T2 | первый круг слит в хаб (23 правила, кейсы +0.30, general/hard 0.755 → 1.00); второй круг: ≈15 правил из panus/odoo-migrate-to-20/odoo-spec-kit, в т.ч. ERROR `@api.model create` | [T2](https://claude.ai/code/session_01L4X5dyWpMXotVz4BwTqWyE) | `build/odoo19-lint` | `reports/odoo19-lint.md` |
 | T3 | первый круг (0.2.0, 27 тестов); второй круг: `default_get`/`onchange` не чтение, блок-лист привилегированных моделей и методов, x2many/`default_*`/`load`, `unlink` ≤ 1, маркер стенда | [T3](https://claude.ai/code/session_01L4X5dwynXX8w5Vk8Mu4QK2) | `claude/odoo-connector-safety` (маркетплейс) | `T3_REPORT.md` |
 | T4 | готово, слито в хаб: F5 исправлен + режим «трасса от точки входа», 17 тестов, Δ +0.22 ($3.5); ждёт публикации вместе с T2 | [T4](https://claude.ai/code/session_01L4X5dxi7y9ihHDLZzemase) | `build/odoo-model-map-f5` | `reports/odoo-model-map-f5.md` |
+| U3… | в работе: U3, T14, U10, T13 (память) | [eval-feedback-loop](https://claude.ai/code/session_01L4X5dz8s2fhuggS3wZ24VC) | `build/eval-feedback-loop` | `reports/eval-feedback-loop.md` |
+| U4… | в работе: U4 | [skill-prescan](https://claude.ai/code/session_01L4X5e1uX9yvXTuHu8Bd2TE) | `build/skill-prescan` | `reports/skill-prescan.md` |
+| U8… | в работе: U8 (`interview-me`), U12, `source-check`, `repo-audit` | [boost-pass4](https://claude.ai/code/session_01L4X5e17u1jqRvjUEg5tw9x) | `build/boost-pass4` | `reports/boost-pass4.md` |
+| T5/U5… | в работе: T5/U5, T12, T13 (`build-orchestrator`) | [mvp-build-pass4](https://claude.ai/code/session_01L4X5dzzKrTbWWy1jgXLDPm) | `claude/mvp-build-pass4` в маркетплейсе (от T1) | `MVP_BUILD_PASS4_REPORT.md` |
+| T6… | в работе: T6, T7, U8 (дискавери) | [discovery-pass4](https://claude.ai/code/session_01L4X5dwunfS1yoyCvLRQ2B3) | `claude/discovery-pass4` в маркетплейсе | `DISCOVERY_PASS4_REPORT.md` |
+| T9… | в работе: T9, U8 (ТР), T8 (`tr-effort-instruction`) | [tr-pass4](https://claude.ai/code/session_01L4X5dwkPrjvzommx6kdtyU) | `claude/tr-pass4` в маркетплейсе | `TR_PASS4_REPORT.md` |
+| T11… | в работе: T11, U7 | [uat-test-book](https://claude.ai/code/session_01L4X5dyiW4w5HTW2Qi9cKwg) | `claude/uat-test-book` в маркетплейсе | `UAT_TEST_BOOK_REPORT.md` |
+| U6… | в работе: U6 (апостроф `ʼ`) | [humizer-uk-pass4](https://claude.ai/code/session_01L4X5e1uPxnWnBvhELUGDuz) | `claude/humizer-uk-pass4` в sale_todo_claude | `HUMIZER_PASS4_REPORT.md` |
+| T10… | в работе: T10, U9, T8 (`preliminary-estimate`) | [sales-pass4](https://claude.ai/code/session_01L4X5dyMPpMfQehWMCwG9RD) | `claude/sales-pass4` в sale_todo_claude | `SALES_PASS4_REPORT.md` |
+| U11, T15 | ждут: JSON-2 — после T3; ROI-скилл — решение пользователя | | | |

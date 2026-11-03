@@ -115,3 +115,19 @@
 | odoo19-lint | T2 | `build/odoo19-lint` | [session_01L4X5dyWpMXotVz4BwTqWyE](https://claude.ai/code/session_01L4X5dyWpMXotVz4BwTqWyE) | первый круг слит; второй круг (≈15 правил) |
 | odoo-connector-safety | T3 (F1) | `claude/odoo-connector-safety` в маркетплейсе | [session_01L4X5dwynXX8w5Vk8Mu4QK2](https://claude.ai/code/session_01L4X5dwynXX8w5Vk8Mu4QK2) | второй круг (дыры: `default_get`, привилегированные модели, x2many) |
 | odoo-model-map-f5 | T4 (F5) | `build/odoo-model-map-f5` | [session_01L4X5dxi7y9ihHDLZzemase](https://claude.ai/code/session_01L4X5dxi7y9ihHDLZzemase) | слито в хаб (Δ +0.22; F5 воспроизводится и у голой модели) |
+
+## Реализация четвёртого прохода
+
+Забираем всё полезное из третьего и четвёртого проходов; архив сессий анализа — после.
+
+| slug | Задачи | Ветка | Сессия | Статус |
+|---|---|---|---|---|
+| eval-feedback-loop | U3, T14, U10, T13 (память) | `build/eval-feedback-loop` | [session_01L4X5dz8s2fhuggS3wZ24VC](https://claude.ai/code/session_01L4X5dz8s2fhuggS3wZ24VC) | в работе |
+| skill-prescan | U4 | `build/skill-prescan` | [session_01L4X5e1uX9yvXTuHu8Bd2TE](https://claude.ai/code/session_01L4X5e1uX9yvXTuHu8Bd2TE) | в работе |
+| boost-pass4 | U8 (`interview-me`), U12, `source-check`, `repo-audit` | `build/boost-pass4` | [session_01L4X5e17u1jqRvjUEg5tw9x](https://claude.ai/code/session_01L4X5e17u1jqRvjUEg5tw9x) | в работе |
+| mvp-build-pass4 | T5/U5, T12, T13 (`build-orchestrator`) | `claude/mvp-build-pass4` в маркетплейсе (от T1) | [session_01L4X5dzzKrTbWWy1jgXLDPm](https://claude.ai/code/session_01L4X5dzzKrTbWWy1jgXLDPm) | в работе |
+| discovery-pass4 | T6, T7, U8 (дискавери) | `claude/discovery-pass4` в маркетплейсе | [session_01L4X5dwunfS1yoyCvLRQ2B3](https://claude.ai/code/session_01L4X5dwunfS1yoyCvLRQ2B3) | в работе |
+| tr-pass4 | T9, U8 (ТР), T8 (`tr-effort-instruction`) | `claude/tr-pass4` в маркетплейсе | [session_01L4X5dwkPrjvzommx6kdtyU](https://claude.ai/code/session_01L4X5dwkPrjvzommx6kdtyU) | в работе |
+| uat-test-book | T11, U7 | `claude/uat-test-book` в маркетплейсе | [session_01L4X5dyiW4w5HTW2Qi9cKwg](https://claude.ai/code/session_01L4X5dyiW4w5HTW2Qi9cKwg) | в работе |
+| humizer-uk-pass4 | U6 (апостроф `ʼ`) | `claude/humizer-uk-pass4` в sale_todo_claude | [session_01L4X5e1uPxnWnBvhELUGDuz](https://claude.ai/code/session_01L4X5e1uPxnWnBvhELUGDuz) | в работе |
+| sales-pass4 | T10, U9, T8 (`preliminary-estimate`) | `claude/sales-pass4` в sale_todo_claude | [session_01L4X5dyMPpMfQehWMCwG9RD](https://claude.ai/code/session_01L4X5dyMPpMfQehWMCwG9RD) | в работе |
