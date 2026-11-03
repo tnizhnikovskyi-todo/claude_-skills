@@ -1,0 +1,28 @@
+schema_version: "1"
+name: skill-feedback/neighbor-memory
+description: >
+  Задача соседа (cloud-memory): просьба запомнить правило проекта в
+  репозитории скиллов. skill-feedback не срабатывает и не пишет в
+  observations/.
+tags: [skill-feedback, negative, neighbor]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    Запомни для этого проекта: новые скиллы сначала проходят A/B в ветке
+    build/*, и только потом сливаются в main — так решили на созвоне.
+  max_turns: 10
+  timeout_seconds: 300
+  allowed_tools: [Read, Write, Edit, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: not-fired
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?skill-feedback"'
+    min: 0
+    max: 0
+  - type: file_exists
+    name: no-observation
+    path: "observations/*.md"
+    exists: false

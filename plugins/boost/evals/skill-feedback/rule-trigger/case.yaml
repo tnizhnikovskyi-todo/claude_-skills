@@ -1,0 +1,51 @@
+schema_version: "1"
+name: skill-feedback/rule-trigger
+description: >
+  Новые правила формата (U10): правило записано как ситуация, видимая до
+  ошибки, а не как реакция; есть confidence и evidence; нет выдуманных
+  запретов на ошибки, которых не было. Кейс написан под правку U10 — в
+  решение о слиянии не входит, показывает «починили». Грейдеры по
+  содержимому Write: у llm-грейдера нет фокуса на файл с заранее
+  неизвестным именем (glob в focus не работает, focus: files даёт только
+  список путей).
+tags: [skill-feedback, positive, u10]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    repo-audit опять сработал не так, как надо: в модуле td_portal публичный
+    маршрут (auth='public') делает request.env['sale.order'].sudo().search([])
+    без фильтра по партнёру, и аудит этого не назвал. Я это заметил сам при
+    ревью. Запиши замечание к скиллу для ревью скиллов. Наши скиллы в skills/.
+  max_turns: 15
+  timeout_seconds: 600
+  allowed_tools: [Read, Write, Edit, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?skill-feedback"'
+    min: 1
+  - type: tool_used
+    name: confidence-evidence
+    tool: Write
+    input_match: '^(?=[\s\S]*observations/)(?=[\s\S]*confidence:\s*(?:low|medium|high))(?=[\s\S]*evidence:)'
+    min: 1
+  - type: tool_used
+    name: skill-not-edited
+    tool: Edit
+    input_match: '"file_path"\s*:\s*"[^"]*skills/repo-audit'
+    min: 0
+    max: 0
+  - type: tool_used
+    name: rule-is-situation
+    tool: Write
+    input_match: 'observations/(?=[\s\S]*rule:\s*(?:\\")?[^\\]{0,200}?(?:auth|public|sudo|публичн))'
+    min: 1
+  - type: tool_used
+    name: rule-not-reaction
+    tool: Write
+    input_match: 'observations/(?=[\s\S]*rule:\s*(?:\\")?[^\\]{0,200}?(?:когда\s+пользовател|пользователь\s+(?:поправил|заметил|указал|сказал|нашёл)|(?:аудит|скилл|repo-audit)\s+(?:пропустил|не\s+назвал|не\s+заметил)|td_portal))'
+    min: 0
+    max: 0
