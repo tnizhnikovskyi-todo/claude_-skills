@@ -64,6 +64,7 @@ BINARY_EXT = {".exe", ".dll", ".so", ".dylib", ".bin", ".pyz", ".pyc", ".jar",
 MEDIA_EXT = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".bmp", ".pdf",
              ".ttf", ".otf", ".woff", ".woff2", ".mp3", ".mp4", ".wav"}
 OFFICE_EXT = {".docx", ".xlsx", ".pptx", ".odt"}
+WHOLE_FILE_CLS = {"lint", "permissions", "claim-vs-behavior", "hooks", "mcp", "duplicates", "broad-trigger", "install-hook"}
 TEST_DIRS = {"evals", "tests", "test", "__tests__", "fixtures", "_fixture", "fixture", "spec"}
 SKIPPED_ELSEWHERE = {"build", "dist", "vendor", "out", "target", "node_modules", "coverage"}
 
@@ -797,7 +798,7 @@ class Scanner:
         # одна строка — одна находка класса (берём самый высокий уровень)
         seen: dict[tuple, Finding] = {}
         for f in best.values():
-            key = (f.cls, f.file, f.line) if f.line else (f.cls, f.rule, f.file, f.text)
+            key = (f.cls, f.file, f.line) if f.line and f.cls not in WHOLE_FILE_CLS else (f.cls, f.rule, f.file, f.text)
             if key not in seen or RANK[f.level] < RANK[seen[key].level]:
                 seen[key] = f
         self.findings = sorted(seen.values(), key=lambda f: (RANK[f.level], f.cls, f.file, f.line))
