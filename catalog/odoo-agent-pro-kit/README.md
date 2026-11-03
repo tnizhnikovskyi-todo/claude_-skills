@@ -2,7 +2,8 @@
 
 - **Тип:** плагин (31 скилл, 5 команд, хуки на 7 событий, MCP-сервер) + Docker-песочница и установщики
 - **Источник:** https://github.com/infovpcs/odoo-agent-pro-kit (★8, Apache-2.0 + NOTICE)
-- **Версия / коммит:** плагин 0.8.2, коммит `99515db` (2026-10-29)
+- **Версия / коммит:** плагин 0.8.2, коммит `99515dbc3526e6877cccb5f8a0de3b7bd1050574` (2026-10-29)
+- **Лицензия:** Apache-2.0, файл `NOTICE` (Copyright 2026 Vinay Rana) — при дословном переносе нужны атрибуция, копия лицензии и текст `NOTICE`
 - **Дата разбора:** 2026-11-03
 - **Вердикт:** адаптировать (выборочно: линтер ловушек и проверенные факты Odoo 19); как плагин — не ставить
 
@@ -81,20 +82,20 @@ A/B не проводилась (внешний код не запускаем �
 
 ## Что и куда перенести
 
-1. **`boost:odoo19-lint`** (новый скилл, задача в `roadmap.md`): stdlib-скрипт,
-   явный вызов + опциональный PostToolUse-хук только с предупреждениями, без
-   VCS-блокировок. Правила 19 из кита (L1, L2, L3 только для 19, L4, L5) плюс
-   наши: `_sql_constraints` (игнорируется), `res.partner` `mobile`/`title`,
-   `res.groups.users`, `ir.cron` `numbercall`/`doall`, `view_mode` с `tree`,
-   `self._context`. У каждого правила — ссылка на строку исходника 19.0.
-   A/B: 3–4 задачи «напиши модуль» с базовой моделью и с линтером.
-2. **`boost:lean-change/references/odoo19.md`** (или `source-check/references/`):
-   проверенные факты — группы, поиск без `expand`, `jsonrpc`, `NewId` + `.get()`,
-   чек-лист ревью роута.
-3. **Предложение владельцам `odoo19-tr-authoring` / `odoo19-sales-prep`**:
-   входной контроль ТЗ и проверка технических имён модулей по манифестам.
-4. Атрибуция: при переносе регэкспов/формулировок — `references/ATTRIBUTION.md`
-   со ссылкой на коммит и текстом `NOTICE`.
+SHA везде `99515db` (полный — в шапке). Лицензия Apache-2.0 разрешает всё ниже;
+для дословного переноса — `references/ATTRIBUTION.md` с URL, SHA, текстом `NOTICE`
+и пометкой «изменено».
+
+| # | Исходный файл (`путь@SHA`) | Что берём | Куда у нас | Как | Лицензия |
+|---|---|---|---|---|---|
+| 1 | `plugin/hooks/checks/odoo_lint.py@99515db` | Регэкспы правил L1, L2, L3 (только 19), L4, L5; приём «вырезать комментарии → определить тип файла по пути → серьёзность по версии → сообщение + исправление» | новый `plugins/boost/skills/odoo19-lint/scripts/lint.py` | регэкспы дословно с атрибуцией (короткие, проще не переписывать); остальной код свой; свои правила: `_sql_constraints`, `res.partner` `mobile`/`title`, `res.groups.users`, `ir.cron` `numbercall`/`doall`, `view_mode` с `tree`, `self._context` | да, Apache-2.0 с атрибуцией и NOTICE |
+| 2 | `plugin/hooks/odoo_hook.py@99515db` (`_handle_post_tool`), `plugin/hooks/hooks.json@99515db` | Схема PostToolUse на `Write\|Edit\|MultiEdit`, fail-open, молчание вне модуля | `plugins/boost/skills/odoo19-lint/` + `plugins/boost/hooks/` (опционально, только warn) | только идея, код свой | да |
+| 3 | `plugin/skills/Odoo19CodingStandard/SKILL.md@99515db` (разделы «Odoo 19 Security Model», «Search View `<group>`», «Compute methods… `NewId`», «Controllers And Routes») | Факты: `privilege_id`/`user_ids`, поиск без `expand`/`string`, `counts.get(rec.id, 0)`, чек-лист ревью `@route` | `plugins/boost/skills/lean-change/references/odoo19.md` | пересказ своими словами, каждый факт с цитатой из исходника 19.0 (не из кита) | да (факты не охраняются; при пересказе атрибуция как источник идеи) |
+| 4 | `plugin/skills/OdooRequirementGapAnalysis/SKILL.md@99515db` (Phase 0, Phase 2), `…/scripts/verify_modules.py@99515db` | Входной контроль ТЗ (11 пунктов), проверка технических имён модулей по `__manifest__.py`, таблица доказательств для Fit | предложение владельцам `odoo19-sales-prep` / `odoo19-tr-authoring` (файл `proposals/…` — по решению главной сессии) | только идея / пересказ; скрипт не берём (не читали целиком) | да |
+| 5 | `plugin/hooks/checks/gates.py@99515db`, `_handle_stop` в `odoo_hook.py@99515db` | Ворота между шагами хуком («Record only what the tests showed») | никуда сейчас; в `observations/`, если `odoo19-mvp-build` начнёт пропускать шаги | только идея | да |
+
+Не берём: команды и `CommandingSystem`, `odoo_mcp` (дубль `odoo19-mvp-build` и
+`odoo-connector`), `guard.py` (блокирует наш `git push`), `OdooTools19` (ошибки).
 
 ## Риски и заметки
 

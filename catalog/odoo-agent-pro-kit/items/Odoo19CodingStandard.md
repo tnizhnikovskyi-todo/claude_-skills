@@ -51,3 +51,5 @@
 `<group>` в поиске, `jsonrpc`, `_sql_constraints` игнорируется, `ir.cron`, `NewId`+`.get()`,
 чек-лист ревью роута (auth / methods / csrf / save_session / readonly / sitemap). Текст писать
 свой, факты с цитатой из исходника.
+
+Источник, куда и как (лицензия Apache-2.0, SHA `99515dbc3526e6877cccb5f8a0de3b7bd1050574`): см. таблицу «Что и куда перенести» в [`../README.md`](../README.md).
