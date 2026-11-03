@@ -31,9 +31,9 @@ ISO/IEC 25010:2023, ISTQB, ISO/IEC/IEEE 29148: от стейкхолдер-ан�
 
 | Скилл | Строк SKILL.md | Есть у нас? | Что взять |
 |---|---|---|---|
-| `requirements-stakeholders` | 47 | Частично: раздел «Ключові стейкхолдери» в `sales-handover-analyzer`, блок вопросов в `kickoff-question-builder` | **Да**: чек-лист ролей, метки фактов, 1 A в RACI, признаки неполного списка → [item](items/requirements-stakeholders.md) |
+| `requirements-stakeholders` | 47 | Частично: блок 2 досье `handover-dossier-builder` (роль в решении, владелец бюджета, приватность — уже есть), `sales-handover-analyzer` §2, тема kick-off | **Да**: чек-лист ролей, признаки неполного списка, 1 A в RACI → [item](items/requirements-stakeholders.md) |
 | `requirements-elicitation` | 42 | Да: `kickoff-/session-question-builder`, `session-transcript-analyzer` | **Частично**: «без наводящих вопросов» vs наши гипотезы, черновик письма-подтверждения, глоссарий → [item](items/requirements-elicitation.md) |
-| `business-case-strategy` | 54 (+`fin.py`) | **Нет** | Идея на будущее: «не выдумывать числа», «вариант ничего не делать», расчёт кодом → [item](items/business-case-strategy.md) |
+| `business-case-strategy` | 54 (+`fin.py`) | **Нет** (в `odoo19-sales-*` нет ни ROI, ни окупаемости — проверено grep по `sale_todo_claude@2a7f7c1`) | Идея на будущее: «не выдумывать числа», «вариант ничего не делать», расчёт кодом → [item](items/business-case-strategy.md) |
 | `story-writer` | 42 | `tr-usecases-acceptance` | Правило «число, которого не дали, не пишем даже как допущение — `[N]` и вопрос» |
 | `requirements-review` | 55 | `tr-review` | Колонка Тип = Дефект / Подозрение; «не превращать пройденный пункт в находку»; вердикт Ready/Conditional/Not ready с границей проверки |
 | `requirements-trace` | 44 | Частично `tr-review` (покрытие AC) | Нет: в ТР у нас AC-ID и так сквозные |
@@ -56,9 +56,9 @@ ISO/IEC 25010:2023, ISTQB, ISO/IEC/IEEE 29148: от стейкхолдер-ан�
 
 | # | Идея | Исходный файл (`путь@SHA`) | Куда у нас | Как | Лицензия |
 |---|---|---|---|---|---|
-| 1 | Чек-лист стандартных ролей + «не применимо + причина» (Odoo-версия ролей) | `skills/requirements-stakeholders/references/analysis.md@214f852` §1 | `sales-handover-analyzer` §2 «Ключові стейкхолдери»; тема «Стейкхолдери» в `kickoff-question-builder` | Пересказ, роли переписаны под Odoo | MIT — да |
+| 1 | Чек-лист стандартных ролей + «не применимо + причина» (Odoo-версия ролей) | `skills/requirements-stakeholders/references/analysis.md@214f852` §1 | `handover-dossier-builder` блок 2; `sales-handover-analyzer` §2 «Ключові стейкхолдери»; тема «Стейкхолдери» в `kickoff-question-builder` | Пересказ, роли переписаны под Odoo | MIT — да |
 | 2 | Признаки неполного списка стейкхолдеров | `skills/requirements-stakeholders/references/analysis.md@214f852` §5 | `session-transcript-analyzer` (новые T-N/Q-N «нет владельца процесса») | Пересказ | MIT — да |
-| 3 | Отношение/влияние людей — `[Inferred]`, неизвестное «?» + как узнать; отказ «придумать людей» | `skills/requirements-stakeholders/SKILL.md@214f852` Hard rules 1–3 | `sales-handover-analyzer` §2 | Пересказ | MIT — да |
+| 3 | ~~Отношение/влияние людей — `[Inferred]`~~ | `skills/requirements-stakeholders/SKILL.md@214f852` Hard rules 1–3 | — уже есть в `odoo19-sales-offer:handover-dossier-builder` Крок 3а | Не берём | — |
 | 4 | Одна A на строку RACI | `skills/requirements-stakeholders/references/maps-raci-persona.md@214f852` §RACI | Матрица ролей в плане дискавери (`odoo19-discovery-initiation`), если появится | Только идея | MIT — да |
 | 5 | Без наводящих вопросов: гипотеза — для уточнения после ответа, не в формулировке | `skills/requirements-elicitation/SKILL.md@214f852` Principles 3 | `proposals/odoo19-discovery/proposed/references/question-method.md` (задача 3.4) | Пересказ, одна строка | MIT — да |
 | 6 | Уточняющие «зонды»: последний реальный пример / что если / кто ещё участвует | `skills/requirements-elicitation/templates/elicitation-plan.md@214f852` Interview guide | Там же, `question-method.md` | Пересказ | MIT — да |
