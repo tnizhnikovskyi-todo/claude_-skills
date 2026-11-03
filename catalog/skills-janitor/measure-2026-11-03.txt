@@ -1,0 +1,32 @@
+skill                              chars words jan~tok cyr% ascii_kw uni_kw
+boost:automation-audit               717    99     129   64       11     57
+boost:cloud-memory                   555    73      95   74        5     49
+boost:interview-me                   892   132     172   72        5     77
+boost:lean-change                    694    93     121   77        1     65
+boost:odoo-model-map                 777   104     135   64       15     71
+boost:repo-audit                     533    83     108   74        3     49
+boost:skill-feedback                 763   104     135   72        9     59
+boost:source-check                   754   107     139   71        8     55
+org:ite-konsultant                   639    83     108   62       12     55
+org:security-review                  785   105     136    7       56     61
+org:meeting-protocol-builder         384    49      64   76        3     31
+org:session-transcript-analyzer      795    98     127   67        8     57
+org:odoo-spec-writer                 851   133     173    9       50     56
+org:kickoff-survey-protocol          714    80     104   76        4     53
+org:tr-review                        647    90     117   76        0     45
+org:tr-odoo-tech-design              737    94     122   70        5     53
+org:tr-usecases-acceptance           678    92     120   62        6     50
+org:tr-registry-update               509    76      99   76        2     40
+org:sales-handover-analyzer          541    74      96   79        3     43
+TOTAL                              12965  1769    2300
+
+Пары с Jaccard > 0.30 (janitor-порог). ascii = как у janitor, uni = Unicode-слова, стем 6 букв
+  uni=0.47 ascii=0.75  org:meeting-protocol-builder <-> org:kickoff-survey-protocol
+  uni=0.15 ascii=0.00  org:tr-review <-> org:tr-registry-update
+  uni=0.14 ascii=0.00  org:session-transcript-analyzer <-> org:tr-registry-update
+  uni=0.14 ascii=0.27  boost:automation-audit <-> boost:repo-audit
+  uni=0.14 ascii=0.00  org:tr-review <-> org:tr-odoo-tech-design
+  uni=0.12 ascii=0.17  boost:cloud-memory <-> boost:skill-feedback
+  uni=0.12 ascii=0.00  org:tr-odoo-tech-design <-> org:tr-usecases-acceptance
+  uni=0.11 ascii=0.07  boost:lean-change <-> boost:odoo-model-map
+  пар выше 0.30: ascii = 3  uni = 1
