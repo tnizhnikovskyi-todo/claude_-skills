@@ -17,8 +17,8 @@
 | claude-code-setup | официальный плагин (аудит автоматизаций) | [маркетплейс](https://claude.com/marketplace/plugins/claude-code-setup) | адаптировать | 11/18 | [claude-code-setup](claude-code-setup/README.md) |
 | arena-skill | скилл: турнир субагентов | [Jakeschincariol/arena-skill](https://github.com/Jakeschincariol/arena-skill) | адаптировать («арена-лайт») | 10/18 | [arena-skill](arena-skill/README.md) |
 | one-skill-to-rule-them-all | мета-скилл самоулучшения скиллов | [rebelytics/one-skill-to-rule-them-all](https://github.com/rebelytics/one-skill-to-rule-them-all) | адаптировать | 10/18 | [one-skill-to-rule-them-all](one-skill-to-rule-them-all/README.md) |
-| codebase-memory-mcp | MCP: граф кода (C, локально) | [DeusData/codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp) | адаптировать (сервер с пином, без хуков) | 13/18 | [codebase-memory-mcp](codebase-memory-mcp/README.md) |
-| rtk | бинарник + хук: сжатие вывода Bash | [rtk-ai/rtk](https://github.com/rtk-ai/rtk) | адаптировать (пилот) | 14/18 | [rtk](rtk/README.md) |
+| codebase-memory-mcp | MCP: граф кода (C, локально) | [DeusData/codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp) | **отложить** после пилота: правильность без него уже 28.5/29, строковый `_inherit`/XML не видит | 13/18 | [codebase-memory-mcp](codebase-memory-mcp/README.md) |
+| rtk | бинарник + хук: сжатие вывода Bash | [rtk-ai/rtk](https://github.com/rtk-ai/rtk) | **отложить** после пилота: вывод Bash ≈ 2.7% входа, экономия 1–3% | 14/18 | [rtk](rtk/README.md) |
 | caveman | скилл стиля + прокси сжатия | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) | адаптировать стиль (`cavecrew` 15/18); рантайм отклонить | 11/18 | [caveman](caveman/README.md) |
 | serena | MCP: навигация по коду через LSP | [oraios/serena](https://github.com/oraios/serena) | отклонить для Odoo | 9/18 | [serena](serena/README.md) |
 | headroom-desktop | десктоп-прокси сжатия токенов | [gglucass/headroom-desktop](https://github.com/gglucass/headroom-desktop) | **отклонить** | 11/18 | [headroom-desktop](headroom-desktop/README.md) |

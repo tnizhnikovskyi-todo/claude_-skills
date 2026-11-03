@@ -139,7 +139,7 @@
 | 2.4 | готово, в плагине; прогон на рабочем модуле Odoo | lean | | |
 | 2.5 | готово, в плагине (+0.11); прогон на ядре Odoo 19 и рабочем модуле | [odoo-model-map](https://claude.ai/code/session_01L4X5dxEu7FH3tN8TH8JSfr) | `build/odoo-model-map` | `reports/odoo-model-map.md` |
 | 3.1 | проверка: предложение готово (15/15 против 13.5/15 на фикстурах) | [review-upgrades](https://claude.ai/code/session_01L4X5dxM8fDnFXcEC1bqyAj) | `build/review-upgrades` | `proposals/odoo19-mvp-build/README.md` |
-| 3.1, 3.2, 3.4, 3.5 | в работе: применяются к оригиналам в `todoltd/claude-methodology-marketplace`, ветка `claude/boost-proposals` (по разрешению владельца; слияние и PR решает владелец) | [boost-proposals](https://claude.ai/code/session_01L4X5dziDUMxUkdQ1zXJ1Pf) | | `BOOST_PROPOSALS_REPORT.md` в той ветке |
+| 3.1, 3.2, 3.4, 3.5 | проверка у владельца: применено в `claude/boost-proposals` (`todoltd/claude-methodology-marketplace`); на оригиналах `pr-review` 8.5 → 10 из 10, вопросы дискавери: гипотезы 0 → 100%, склейки 9–12 → 2–5; версии подняты, validate проходит | [boost-proposals](https://claude.ai/code/session_01L4X5dziDUMxUkdQ1zXJ1Pf) | | `BOOST_PROPOSALS_REPORT.md` в той ветке |
 | 3.2 | проверка: вставка готова (10/10 против 8/10); текст `pr-review` не найден в окружении | review-upgrades | | |
 | 3.3 | отменена (2.2 отказ); блок «что НЕ доказывает корректность» уже входит в предложение 3.1 | | | |
 | 3.4 | проверка: предложение готово (гипотезы к вопросам 0% → 87–100%, склейки ~30–40 → 0–3); оригиналы скиллов не найдены, проверено на заменителях | [discovery-interview](https://claude.ai/code/session_01L4X5dxFcHE2T9drn8GJzP1) | `build/discovery-interview` | `proposals/odoo19-discovery/README.md` |
@@ -147,8 +147,8 @@
 | 4.1 | ждёт ключ Firecrawl | | | |
 | 4.2 | заменено на 4.5 | | | |
 | 4.3 | готово, в плагине (+0.36) | [automation-audit](https://claude.ai/code/session_01L4X5e1ZugnciMyW7EMAugR) | `build/automation-audit` | `reports/automation-audit.md` |
-| 4.4 | в работе (разрешено пользователем) | [rtk-pilot](https://claude.ai/code/session_01L4X5e1jKV3A2wTSXnx6WP4) | `build/rtk-pilot` | |
-| 4.5 | в работе (разрешено пользователем) | [cbm-pilot](https://claude.ai/code/session_01L4X5dy4DhWq69JxUWuSYwo) | `build/cbm-pilot` | |
+| 4.4 | отложено: база 18/18, вывод Bash ≈ 2.7% входа → потолок экономии 1–3%; 3 из 6 ловушек в зоне урезания rtk; плечо rtk не запущено (блок классификатора) | [rtk-pilot](https://claude.ai/code/session_01L4X5e1jKV3A2wTSXnx6WP4) | `build/rtk-pilot` | `reports/rtk-pilot.md` |
+| 4.5 | отложено: без MCP 28.5/29, с `boost` 29/29; граф по исходникам не моделирует строковый `_inherit`, XML и права; ~5.7k токенов схем; запуск бинарника заблокирован | [cbm-pilot](https://claude.ai/code/session_01L4X5dy4DhWq69JxUWuSYwo) | `build/cbm-pilot` | `reports/cbm-pilot.md` |
 | 5.1 | готово, в плагине (+0.45); 5 наблюдений в `observations/`; еженедельная задача не создана, промпт готов | [observations](https://claude.ai/code/session_01L4X5dwJimwjr7KpRxJq5ja) | `build/observations` | `reports/observations.md` |
 | 5.2 | готово: принципы в `criteria.md` | главная сессия | | |
 | 5.3 | готово: 4 разбора слиты | см. `sessions.md` | | `catalog/INDEX.md` |
