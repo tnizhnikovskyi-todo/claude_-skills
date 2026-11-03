@@ -1,0 +1,53 @@
+schema_version: "1"
+name: odoo-model-map/trace-entry
+description: >
+  Трасса от точки входа: кнопка «Reset odometer» на форме td.vehicle.
+  Метод переопределён в другом модуле (super() по порядку depends), пишет
+  поле, от которого зависят constrains/compute/related в трёх модулях.
+tags: [odoo-model-map, positive, odoo, trace]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    В каталоге `addons/` наши модули Odoo 19. Что выполнится по всем этим
+    модулям, когда пользователь нажимает кнопку «Reset odometer» на форме
+    машины? Перечисли код в порядке выполнения и что после этого
+    проверится или пересчитается. Кода не меняй.
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: odoo-model-map
+    min: 1
+  - type: llm
+    name: override-chain
+    criteria: >
+      PASS, если ответ называет ОБА определения action_reset_odometer и
+      верный порядок: сначала переопределение в td_fleet_service
+      (FleetMaintenance, td_fleet_service/models/maintenance.py), которое
+      вызывает super(), затем базовый метод в td_fleet (Vehicle,
+      write({'odometer': 0.0})), после возврата — запись note в service_ids
+      (td.vehicle.service). FAIL, если переопределение в td_fleet_service
+      пропущено или порядок перепутан (базовый метод назван первым, а
+      переопределение после него без объяснения super()).
+  - type: llm
+    name: triggers
+    criteria: >
+      PASS, если ответ называет хотя бы 4 из 5 зависимостей записи поля
+      odometer: (1) @api.constrains _check_odometer (td_fleet); (2) compute
+      _compute_next_service_km (td_fleet_service, store=True); (3) compute
+      _compute_km_per_service (td_fleet_report); (4) хранимое related
+      vehicle_odometer = vehicle_id.odometer у td.vehicle.service
+      (td_fleet_report); (5) compute _compute_km_since_service с depends
+      vehicle_id.odometer (td_fleet_report). FAIL, если названо меньше 4.
+  - type: llm
+    name: not-proven
+    criteria: >
+      PASS, если ответ явно оговаривает, что не проверено или не видно в
+      этих модулях (например: переопределения write/метода в ядре Odoo или
+      других модулях, автоматизации/серверные действия в базе, трекинг
+      mail.thread, порядок модулей). FAIL, если такой оговорки нет.
