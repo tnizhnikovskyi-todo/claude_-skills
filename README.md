@@ -28,6 +28,7 @@
 | [`plugins/boost/`](plugins/boost/) | Наш плагин: отобранные и проверенные скиллы |
 | [`pilot/`](pilot/) | Пилотный проект Odoo 19 для проверки скиллов на практике |
 | [`pilot-notes/`](pilot-notes/) | Ключ пилота и результаты прогонов |
+| [`PROVENANCE.md`](PROVENANCE.md) | Что мы взяли и откуда: источник, коммит, лицензия, как взято |
 | [`synthesis.md`](synthesis.md) | Сводные выводы по разборам |
 | [`sessions.md`](sessions.md) | Реестр чатов анализа |
 | [`catalog/INDEX.md`](catalog/INDEX.md) | Таблица всех разобранных с вердиктами |

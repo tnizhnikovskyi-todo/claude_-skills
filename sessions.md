@@ -45,3 +45,35 @@
 | rtk-pilot | 4.4 | `build/rtk-pilot` | [session_01L4X5e1jKV3A2wTSXnx6WP4](https://claude.ai/code/session_01L4X5e1jKV3A2wTSXnx6WP4) | слито (частично) |
 | cbm-pilot | 4.5 | `build/cbm-pilot` | [session_01L4X5dy4DhWq69JxUWuSYwo](https://claude.ai/code/session_01L4X5dy4DhWq69JxUWuSYwo) | слито (частично) |
 | boost-proposals | 3.1, 3.2, 3.4, 3.5 (в репозитории плагинов) | `claude/boost-proposals` в `todoltd/claude-methodology-marketplace` | [session_01L4X5dziDUMxUkdQ1zXJ1Pf](https://claude.ai/code/session_01L4X5dziDUMxUkdQ1zXJ1Pf) | влито в main (`e4c70d8`) |
+
+## Третий проход (2026-11-03)
+
+Список кандидатов: `HANDOFF_candidates_2026-11-03.md` из ветки `claude/bold-bell-5okjhm` этого репозитория (поиск по GitHub, только описания и метаданные; коммиты `22b4733`, `6a6d764`). Пользователь выбрал все 25.
+
+| slug | Репозиторий | Ветка | Сессия | Статус | Вердикт |
+|---|---|---|---|---|---|
+| nacl | [ITSalt/NaCl](https://github.com/ITSalt/NaCl) | `analysis/nacl` | [session_01L4X5dx6rfRDR7pnq2p2UyR](https://claude.ai/code/session_01L4X5dx6rfRDR7pnq2p2UyR) | в работе | |
+| dooservice-odoo-skills | [dooservice/odoo-skills](https://github.com/dooservice/odoo-skills) | `analysis/dooservice-odoo-skills` | [session_01L4X5dyn7reWQqkXKAFpHR2](https://claude.ai/code/session_01L4X5dyn7reWQqkXKAFpHR2) | в работе | |
+| lmty-skills | [LMTYdotcom/skills](https://github.com/LMTYdotcom/skills) | `analysis/lmty-skills` | [session_01L4X5dxfXC9qBLWTwT47m7s](https://claude.ai/code/session_01L4X5dxfXC9qBLWTwT47m7s) | в работе | |
+| unclecatvn-skills | [unclecatvn/agent-skills](https://github.com/unclecatvn/agent-skills) | `analysis/unclecatvn-skills` | [session_01L4X5e1KgvmNEu7sGzbCzfA](https://claude.ai/code/session_01L4X5e1KgvmNEu7sGzbCzfA) | в работе | |
+| odoo-agent-pro-kit | [infovpcs/odoo-agent-pro-kit](https://github.com/infovpcs/odoo-agent-pro-kit) | `analysis/odoo-agent-pro-kit` | [session_01L4X5dwaQb2qTpG5YJDp5WJ](https://claude.ai/code/session_01L4X5dwaQb2qTpG5YJDp5WJ) | в работе | |
+| kevinlin-skills | [kevinlin/skills](https://github.com/kevinlin/skills) | `analysis/kevinlin-skills` | [session_01L4X5e1qfUwRHsUNYkGCBKK](https://claude.ai/code/session_01L4X5e1qfUwRHsUNYkGCBKK) | в работе | |
+| erpipe-mcp-odoo | [erpipe-org/mcp-odoo](https://github.com/erpipe-org/mcp-odoo) | `analysis/erpipe-mcp-odoo` | [session_01L4X5e1MSbTCLm22tPNfx6Q](https://claude.ai/code/session_01L4X5e1MSbTCLm22tPNfx6Q) | в работе | |
+| planning-with-files | [OthmanAdi/planning-with-files](https://github.com/OthmanAdi/planning-with-files) | `analysis/planning-with-files` | [session_01L4X5dzH29wjx1C56Vd6qr8](https://claude.ai/code/session_01L4X5dzH29wjx1C56Vd6qr8) | в работе | |
+| skillopt | [microsoft/SkillOpt](https://github.com/microsoft/SkillOpt) | `analysis/skillopt` | [session_01L4X5dyG6ptPUM3AUwoKAwJ](https://claude.ai/code/session_01L4X5dyG6ptPUM3AUwoKAwJ) | в работе | |
+| mart337i-odoo-skills | [mart337i/odoo-skills](https://github.com/mart337i/odoo-skills) | `analysis/mart337i-odoo-skills` | [session_01L4X5dz4P9Cet1g56tJg5ty](https://claude.ai/code/session_01L4X5dz4P9Cet1g56tJg5ty) | в работе | |
+| odoo-lens | [ChengyanOo/odoo-lens](https://github.com/ChengyanOo/odoo-lens) | `analysis/odoo-lens` | [session_01L4X5dxtGAAESFBNYCGUEQe](https://claude.ai/code/session_01L4X5dxtGAAESFBNYCGUEQe) | в работе | |
+| ai-presales-skills | [hangljoe/AI-PreSales-Skills](https://github.com/hangljoe/AI-PreSales-Skills) | `analysis/ai-presales-skills` | [session_01L4X5dzdN2TKcP2uaeYVDkr](https://claude.ai/code/session_01L4X5dzdN2TKcP2uaeYVDkr) | в работе | |
+| presales-agent-skill | [namit-jpg/presales-agent-skill](https://github.com/namit-jpg/presales-agent-skill) | `analysis/presales-agent-skill` | [session_01L4X5e1GFK6BcMbCYm8CLaj](https://claude.ai/code/session_01L4X5e1GFK6BcMbCYm8CLaj) | в работе | |
+| software-estimation-skills | [Leanware-io/software-estimation-skills](https://github.com/Leanware-io/software-estimation-skills) | `analysis/software-estimation-skills` | [session_01L4X5dwXEb5SFDn2BGX5HM8](https://claude.ai/code/session_01L4X5dwXEb5SFDn2BGX5HM8) | в работе | |
+| ukr-follow-up | [s1vanov/follow-up](https://github.com/s1vanov/follow-up) | `analysis/ukr-follow-up` | [session_01L4X5e1M6GGN5JeCJ159mwh](https://claude.ai/code/session_01L4X5e1M6GGN5JeCJ159mwh) | в работе | |
+| ba-skills | [uycung/ba-skills](https://github.com/uycung/ba-skills) | `analysis/ba-skills` | [session_01L4X5dwtHNuafEFfRYJwhrQ](https://claude.ai/code/session_01L4X5dwtHNuafEFfRYJwhrQ) | в работе | |
+| requirement-engineer | [MadurangaDev/requirement-engineer](https://github.com/MadurangaDev/requirement-engineer) | `analysis/requirement-engineer` | [session_01L4X5dyLNnq1V3RkZBfhKCY](https://claude.ai/code/session_01L4X5dyLNnq1V3RkZBfhKCY) | в работе | |
+| mastering-technical-sales | [tokenaissance/mastering-technical-sales](https://github.com/tokenaissance/mastering-technical-sales) | `analysis/mastering-technical-sales` | [session_01L4X5e1CKv6kQ8A5TjttBj7](https://claude.ai/code/session_01L4X5e1CKv6kQ8A5TjttBj7) | в работе | |
+| ai-first-estimation | [antondrob/ai-first-estimation](https://github.com/antondrob/ai-first-estimation) | `analysis/ai-first-estimation` | [session_01L4X5dxAK2XmwrwXUwtsXsZ](https://claude.ai/code/session_01L4X5dxAK2XmwrwXUwtsXsZ) | в работе | |
+| modularity | [vladikk/modularity](https://github.com/vladikk/modularity) | `analysis/modularity` | [session_01L4X5dxoxTbEafpRozzjimb](https://claude.ai/code/session_01L4X5dxoxTbEafpRozzjimb) | в работе | |
+| security-harness | [dmdhrumilmistry/security-harness](https://github.com/dmdhrumilmistry/security-harness) | `analysis/security-harness` | [session_01L4X5dyBnrvcavQsu1BKiPn](https://claude.ai/code/session_01L4X5dyBnrvcavQsu1BKiPn) | в работе | |
+| opencode-power-pack | [waybarrios/opencode-power-pack](https://github.com/waybarrios/opencode-power-pack) | `analysis/opencode-power-pack` | [session_01L4X5dyg11GL13fg7DvhkTR](https://claude.ai/code/session_01L4X5dyg11GL13fg7DvhkTR) | в работе | |
+| claude-sow-creation | [SB-Celebal/claude-sow-creation](https://github.com/SB-Celebal/claude-sow-creation) | `analysis/claude-sow-creation` | [session_01L4X5dxMqpfSA7BAwAVokoD](https://claude.ai/code/session_01L4X5dxMqpfSA7BAwAVokoD) | в работе | |
+| generate-test-book | [Androbito/generate-test-book](https://github.com/Androbito/generate-test-book) | `analysis/generate-test-book` | [session_01L4X5dxo4sNdFyXxjKik3va](https://claude.ai/code/session_01L4X5dxo4sNdFyXxjKik3va) | в работе | |
+| repo-security-review | [Consensys/repo-security-review](https://github.com/Consensys/repo-security-review) | `analysis/repo-security-review` | [session_01L4X5dyNRpdg6tCciq8eVHn](https://claude.ai/code/session_01L4X5dyNRpdg6tCciq8eVHn) | в работе | |
