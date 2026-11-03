@@ -123,7 +123,7 @@
 | slug | Задачи | Ветка | Сессия | Статус |
 |---|---|---|---|---|
 | eval-feedback-loop | U3, T14, U10, T13 (память) | `build/eval-feedback-loop` | [session_01L4X5dz8s2fhuggS3wZ24VC](https://claude.ai/code/session_01L4X5dz8s2fhuggS3wZ24VC) | в работе |
-| skill-prescan | U4 | `build/skill-prescan` | [session_01L4X5e1uX9yvXTuHu8Bd2TE](https://claude.ai/code/session_01L4X5e1uX9yvXTuHu8Bd2TE) | в работе |
+| skill-prescan | U4 | `build/skill-prescan` | [session_01L4X5e1uX9yvXTuHu8Bd2TE](https://claude.ai/code/session_01L4X5e1uX9yvXTuHu8Bd2TE) | слито в хаб |
 | boost-pass4 | U8 (`interview-me`), U12, `source-check`, `repo-audit` | `build/boost-pass4` | [session_01L4X5e17u1jqRvjUEg5tw9x](https://claude.ai/code/session_01L4X5e17u1jqRvjUEg5tw9x) | в работе |
 | mvp-build-pass4 | T5/U5, T12, T13 (`build-orchestrator`) | `claude/mvp-build-pass4` в маркетплейсе (от T1) | [session_01L4X5dzzKrTbWWy1jgXLDPm](https://claude.ai/code/session_01L4X5dzzKrTbWWy1jgXLDPm) | готово, 0.9.4, PR не открыт; A/B: находок столько же (потолок), выигрыш в полноте отчёта |
 | discovery-pass4 | T6, T7, U8 (дискавери) | `claude/discovery-pass4` в маркетплейсе | [session_01L4X5dwunfS1yoyCvLRQ2B3](https://claude.ai/code/session_01L4X5dwunfS1yoyCvLRQ2B3) | в работе |

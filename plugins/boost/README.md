@@ -13,7 +13,9 @@
 
 Публикуется в маркетплейсе организации `todoltd/claude-methodology-marketplace`
 как внешний плагин (`external-plugins.txt`). Правки делаются здесь, затем
-переносятся туда PR-ом без папки `evals/`, с поднятой `version`.
+переносятся туда PR-ом без папки `evals/`, с поднятой `version`. Перед PR —
+барьер `python3 -I -B scripts/skill-prescan.py plugins/boost --exclude evals --fail-on warn`
+(выход 0; WARN на `__pycache__` — удалить кэш, на XML-теги в `description` — убрать теги).
 
 ## Состав
 

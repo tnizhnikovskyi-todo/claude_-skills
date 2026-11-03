@@ -24,6 +24,16 @@
 | `odoo-model-map`: правило `_inherit` списком (F5) и режим «трасса» | odoo/odoo `odoo/orm/models.py@19.0:240–249`, `odoo/models.py@18.0:245–250`; идея трассы — odoo-lens, mart337i/odoo-skills | LGPL-3 (ссылки); нет лицензии | идея | `plugins/boost/skills/odoo-model-map/references/attribution.md` |
 | `independent-check` (**отклонён**, ветка-архив) | agent-skills (`doubt-driven-development`), [Jakeschincariol/arena-skill](https://github.com/Jakeschincariol/arena-skill), [usestrix/strix](https://github.com/usestrix/strix) | MIT; MIT; Apache-2.0 | идея | ветка `build/independent-check`, `references/attribution.md` |
 
+## Скрипты (`scripts/`)
+
+| Что у нас | Источник (репозиторий @ коммит, файл) | Лицензия | Как взято | Атрибуция |
+|---|---|---|---|---|
+| `scripts/skill-prescan.py`: 14 регулярок (`inj-*`, `sh-*`, помечены `[janitor]`), идея правил `uni-hidden`, `md-htmlcomment` | [khendzel/skills-janitor](https://github.com/khendzel/skills-janitor) @ `4b42f39`, `scripts/security.sh` стр. 93–134 | MIT | дословно (регулярки) с атрибуцией; остальное своё | docstring скрипта, `scripts/README.md`, `scripts/tests/skill-prescan/LICENSE-skills-janitor` |
+| `skill-prescan.py`: дубли триггеров, lint frontmatter | skills-janitor @ `4b42f39`, `scripts/detect_dupes.sh`, `scripts/lint.sh` | MIT | идея, код свой (Unicode, стем, RU/UK) | `scripts/README.md` |
+| `skill-prescan.py`: канал наружу, «заявление против поведения», закодированный мёртвый код, слепые зоны описи | [berabuddies/Semia](https://github.com/berabuddies/Semia) @ `379bc25` через `catalog/semia/items/skill_prescan.py` | Apache-2.0 | пересказ, код свой | docstring скрипта, `scripts/README.md` |
+| `skill-prescan.py`: исключение для справок | [alchaincyf/darwin-skill](https://github.com/alchaincyf/darwin-skill) @ `8a8b662` | MIT | идея | `scripts/README.md` |
+| `skill-prescan.py`: поверхности исполнения (хуки, MCP, манифесты) | [Consensys/repo-security-review](https://github.com/Consensys/repo-security-review) @ `d5128b0` | нет лицензии | только идея | `scripts/README.md` |
+
 ## Шаблоны (`templates/`)
 
 | Что у нас | Источник | Лицензия | Как взято | Атрибуция |
