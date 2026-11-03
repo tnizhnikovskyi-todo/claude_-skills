@@ -3,11 +3,11 @@ name: odoo19-lint
 description: >
   Барьер на ловушки Odoo 19: проверка файлов модуля (Python, XML вью/данных/прав,
   CSV, __manifest__.py) на API и поля, удалённые или переименованные в 18–19
-  (<tree>, attrs=/states=, view_mode tree, _sql_constraints, res.partner.mobile/
+  (корень вью tree, attrs=/states=, view_mode tree, _sql_constraints, res.partner.mobile/
   title, res.groups.users/category_id, groups_id, _inherit списком без _name,
   ir.cron numbercall, name_get, read_group, self._context, type='json',
   uom category_id, product type 'product', sale.order.line.product_uom/tax_id,
-  @api.model create, oe_chatter, <group expand> в поиске, удалённые аддоны).
+  @api.model create, oe_chatter, group expand в поиске, удалённые аддоны).
   Вызывай ПОСЛЕ того, как написал или изменил файлы модуля Odoo 19 (модели,
   вью, группы, крон, данные, контроллер) и ДО ответа «готово»/ревью/коммита;
   или по просьбе «проверь модуль на ловушки 19», «odoo19-lint», «установится
