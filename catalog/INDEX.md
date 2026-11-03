@@ -3,7 +3,7 @@
 Ведёт главная сессия по итогам слияния веток `analysis/*`.
 Общие выводы и план действий: [`../synthesis.md`](../synthesis.md).
 
-Сводка на 2026-11-03 (три прохода, 42 репозитория).
+Сводка на 2026-11-03 (четыре прохода, 64 репозитория).
 
 | Что | Тип | Источник | Вердикт | Итог | Карточка |
 |---|---|---|---|---|---|
@@ -58,3 +58,32 @@
 | opencode-power-pack | сборник 55 скиллов | [waybarrios/opencode-power-pack](https://github.com/waybarrios/opencode-power-pack) | MIT/Apache; часть CC BY-SA | отклонить; 4 идеи | 8/18 | [opencode-power-pack](opencode-power-pack/README.md) |
 | repo-security-review | аудит кода и скиллов | [Consensys/repo-security-review](https://github.com/Consensys/repo-security-review) | нет | отклонить; идеи для проверки скиллов | 8/18 | [repo-security-review](repo-security-review/README.md) |
 | AI-PreSales-Skills | пресейл по «The PreSales Handbook» | [hangljoe/AI-PreSales-Skills](https://github.com/hangljoe/AI-PreSales-Skills) | MIT (тексты книги — нет) | адаптировать выборочно | 7/18 | [ai-presales-skills](ai-presales-skills/README.md) |
+
+## Четвёртый проход (поиск 2026-11-03)
+
+Все 22 — «как есть не ставить». Лицензия по файлу `LICENSE`, не по поиску.
+
+| Что | Тип | Источник | Лицензия | Вердикт | Итог | Карточка |
+|---|---|---|---|---|---|---|
+| gstack | 71 скилл «виртуальной команды» + браузер | [garrytan/gstack](https://github.com/garrytan/gstack) | MIT | установку отклонить; 5 методов (Gate Integrity, планка теста, «утверждение — доказательство») | 10/18 | [gstack](gstack/README.md) |
+| mcp-server-odoo | MCP Odoo 16–20 (права на стороне модуля Odoo) | [ivnvxd/mcp-server-odoo](https://github.com/ivnvxd/mcp-server-odoo) | MPL-2.0 (модуль Odoo — OPL-1) | адаптировать модель прав «модель × операция» в T3 | 13/18 | [mcp-server-odoo](mcp-server-odoo/README.md) |
+| odoo-mcp-19 | MCP Odoo 19 через JSON-2 | [AlanOgic/odoo-mcp-19](https://github.com/AlanOgic/odoo-mcp-19) | MIT | адаптировать (блок-лист моделей, x2many; нашёл дыры в T3) | 12/18 | [odoo-mcp-19](odoo-mcp-19/README.md) |
+| odoo-functional-agent | требование → конфигурация Odoo 20 на демо | [xmglord/odoo-functional-agent](https://github.com/xmglord/odoo-functional-agent) | MIT | адаптировать (маркер стенда, правила одобрения) | 9/18 | [odoo-functional-agent](odoo-functional-agent/README.md) |
+| odoo-migrate-to-20 | миграция 14–19 → 20 | [tanim913/odoo-migrate-to-20](https://github.com/tanim913/odoo-migrate-to-20) | MIT | адаптировать (0 ошибок в фактах, 13 в версиях; правила для T2) | 11/18 | [odoo-migrate-to-20](odoo-migrate-to-20/README.md) |
+| odoo-lsp-claude | обёртка над `odoo-ls` | [softagram/odoo-lsp-claude-code](https://github.com/softagram/odoo-lsp-claude-code) | MIT (`odoo-ls` — LGPL-3) | отклонить; идея `odoo-ls --parse` вторым слоем к T2 | 9/18 | [odoo-lsp-claude](odoo-lsp-claude/README.md) |
+| panus-odoo-dev-skill | скилл Odoo 16–19 + сканер | [panusbodee-owen/odoo-dev-skill](https://github.com/panusbodee-owen/odoo-dev-skill) | нет | отклонить; 3 правила в T2 (идеи) | 9/18 | [panus-odoo-dev-skill](panus-odoo-dev-skill/README.md) |
+| odoo-spec-kit | кит стандартов Odoo (OpenSpec) | [focuz-ai/odoo-spec-kit](https://github.com/focuz-ai/odoo-spec-kit) | MIT, внутри чужое | **отклонить** (14 из 17 утверждений неверны для 19) | 5/18 | [odoo-spec-kit](odoo-spec-kit/README.md) |
+| caliper | A/B агента со скиллами/MCP и без | [edonadei/caliper](https://github.com/edonadei/caliper) | MIT | методику адаптировать, CLI не ставить | 13/18 | [caliper](caliper/README.md) |
+| upskill | генерация и оценка скиллов | [huggingface/upskill](https://github.com/huggingface/upskill) | Apache-2.0 | идеи адаптировать (leave-one-out, правило принятия) | 10/18 | [upskill](upskill/README.md) |
+| darwin-skill | эволюция скилла с откатом | [alchaincyf/darwin-skill](https://github.com/alchaincyf/darwin-skill) | MIT | идеи (парное A/B, лимит роста текста) | 8/18 | [darwin-skill](darwin-skill/README.md) |
+| skills-janitor | цена контекста, дубли, скан инъекций | [khendzel/skills-janitor](https://github.com/khendzel/skills-janitor) | MIT | адаптировать (линтер плагинов перед публикацией) | 8/18 | [skills-janitor](skills-janitor/README.md) |
+| semia | статический аудит скиллов | [berabuddies/Semia](https://github.com/berabuddies/Semia) | Apache-2.0 | инструмент отклонить; идеи + наш префильтр 16/18 | 9/18 | [semia](semia/README.md) |
+| cloudflare-security-audit | многофазный аудит безопасности | [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill) | MIT | скилл отклонить; 12 вопросов и барьер покрытия → T5 | 10/18 | [cloudflare-security-audit](cloudflare-security-audit/README.md) |
+| claude-smart | поправки → правила (always-on) | [ReflexioAI/claude-smart](https://github.com/ReflexioAI/claude-smart) | Apache-2.0 | плагин отклонить; промпты извлечения → `skill-feedback` | 9/18 | [claude-smart](claude-smart/README.md) |
+| ecc | сборник 314 скиллов, 28 хуков | [affaan-m/ECC](https://github.com/affaan-m/ECC) | MIT; часть CC BY-SA / Apache | установку отклонить (≈33k токенов always-on); 6 вставок | 7/18 | [ecc](ecc/README.md) |
+| finding-unknowns | поиск неизвестного (рамка 2×2) | [Neeeophytee/finding-unknowns-skills](https://github.com/Neeeophytee/finding-unknowns-skills) | MIT | адаптировать (`blindspot-pass`, «вкус показывают») | 12/18 | [finding-unknowns](finding-unknowns/README.md) |
+| awesome-qa-skills | 169 QA-скиллов | [naodeng/awesome-qa-skills](https://github.com/naodeng/awesome-qa-skills) | **PolyForm Noncommercial** | только идеи (статусы UAT, матрица AC → кейсы) → T11 | 12/18 | [awesome-qa-skills](awesome-qa-skills/README.md) |
+| claude-sdlc-skills | SDLC: аудит требований, гейт | [TsCarpe/claude-sdlc-skills](https://github.com/TsCarpe/claude-sdlc-skills) | MIT | адаптировать частично (блок «Повнота» в `tr-review`) | 11/18 | [claude-sdlc-skills](claude-sdlc-skills/README.md) |
+| buyer-eval | оценка поставщика глазами покупателя | [salespeak-ai/buyer-eval-skill](https://github.com/salespeak-ai/buyer-eval-skill) | MIT | точечно (измерения закупки); не запускать — шлёт данные вендору | 8/18 | [buyer-eval](buyer-eval/README.md) |
+| humanizer-uk | редактура украинского от ИИ-следов | [panchlab/humanizer-uk](https://github.com/panchlab/humanizer-uk) | MIT | адаптировать в `check-humizer.py` | 11/18 | [humanizer-uk](humanizer-uk/README.md) |
+| anti-ai-slop-writing | письмо en/ru/uk + детектор | [git-voitenko/anti-ai-slop-writing](https://github.com/git-voitenko/anti-ai-slop-writing) | MIT | адаптировать (бот-хвосты, кальки) | 11/18 | [anti-ai-slop-writing](anti-ai-slop-writing/README.md) |

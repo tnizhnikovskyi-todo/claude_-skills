@@ -140,6 +140,26 @@
 | T14 | низкий | `skill-feedback/references/weekly-review.md`, `criteria.md`, `catalog/_TEMPLATE.md` | Слияние по отложенным кейсам, no-regression по каждому кейсу, ≤4 правки за ревью; чек-лист «безопасность скилла/плагина», признаки supply-chain риска; разделы «Условия использования / Отклонённые подозрения / Что не проверено» | skillopt, repo-security-review, opencode-power-pack |
 | T15 | решение пользователя | новый скилл бизнес-кейса / ROI для продаж | В `odoo19-sales-*` ROI нет | ba-skills |
 
+## Четвёртый проход: что берём (план, 2026-11-03)
+
+Источник: `catalog/INDEX.md` («Четвёртый проход»), 22 разбора. Ни один инструмент не ставим.
+
+| # | Приоритет | Куда | Что | Источники |
+|---|---|---|---|---|
+| U1 | высокий, в работе | `odoo-connector` | второй круг T3 (см. статус T3) | odoo-mcp-19, mcp-server-odoo, odoo-functional-agent |
+| U2 | высокий, в работе | `boost:odoo19-lint`, `odoo-version-notes.md` | второй круг T1/T2; правило «у факта две ссылки: N-1 и N» | panus-odoo-dev-skill, odoo-migrate-to-20, odoo-spec-kit |
+| U3 | высокий | `plugins/boost/evals/README.md`, `weekly-review.md` | правила A/B: табло активации, «задача соседа», контроль без скилла не перезапускать, шум вне знаменателя, шапка окружения; парное A/B старой и новой версии; leave-one-out; правило принятия Δ > 0.05; лимит роста `SKILL.md`; кейс «конкурирующий промпт». Пометить +0.11 (`odoo-model-map`) и +0.23 (`repo-audit`) как «в пределах шума» или перепроверить `--runs 5`. Связать с T14 | caliper (`catalog/caliper/evals-rules-draft.md`), upskill, darwin-skill, ecc |
+| U4 | высокий | новый `scripts/skill-prescan.py` + шаг −1 сессий анализа + проверка перед публикацией в маркетплейс | stdlib-префильтр (Semia: 20/21 вредоносов → BLOCK, 0 ложных на `boost`), регулярки `security.sh` (MIT) + рус./укр. фразы, хуки/MCP/`allowed-tools`, tag-символы; дубли триггеров по Unicode-Jaccard; лимит описания 1 536 | semia (`items/skill_prescan.py`), skills-janitor, repo-security-review |
+| U5 | высокий | T5: `security-review`, `pr-review` | 12 вопросов Access control / Business logic для Odoo; различитель high/medium; барьер «каждая строка диффа с `route`/`sudo()`/`cr.execute`/ACL — в таблице покрытия»; Gate Integrity; карточка ценности теста; сверка scope ТР/SPEC с диффом | cloudflare-security-audit, gstack, ecc, claude-sdlc-skills |
+| U6 | средний, решение пользователя | `sale_todo_claude`: `scripts/check-humizer.py`, `shared/registers.md` §3/§7 | бот-хвосты (блок), чужие буквы/невидимые символы, ~25 русизмов, кальки, канцелярит (предупреждения); чистые фикстуры из реальных КП. Решить стандарт апострофа (`ʼ` или `’`); «блокуючий» → «блокувальний» | humanizer-uk, anti-ai-slop-writing |
+| U7 | средний | T11 `uat-test-book`; `testing`, `acceptance-act-builder`, `hypercare-tracker` | статусы строки UAT, матрица AC → кейсы → пробел, fail-closed критерии выхода, «Test plan / Not tested», роли без админ-групп; доказательство установки (rc 0, `state='installed'`, HttpCase реально шли) | awesome-qa-skills (только идеи, PolyForm NC), odoo-functional-agent, odoo-migrate-to-20 |
+| U8 | средний | дискавери и ТР: `kickoff-question-builder`, `demo-debrief`, `tr-review`, `tr-usecases-acceptance`, журнал дискавери, `boost:interview-me` | «Розвідка» (`blindspot-pass`) перед вопросами; «вкус показывают» (3–5 вариантов); блок «Повнота» в `tr-review`; AC «Не повинно» и «Перевірка: метод»; G1–G4 сохранения по `state`; реестр «термин клиента → объект Odoo»; 4 правила в `interview-me` | finding-unknowns, claude-sdlc-skills, ecc |
+| U9 | средний | продажи: `defence-brief`, `presale-pack-builder`, `offer-finalizer`, `demo-runbook` (с T10) | измерения закупки (референсы, SLA, хостинг, рост цены лицензий, устойчивость интегратора), «як це побачить клієнт», банк вопросов покупателя | buyer-eval (`items/buyer-diligence-questions.md`) |
+| U10 | средний | `boost:skill-feedback`, `cloud-memory` | промпты извлечения правила (триггер = ситуация, тест тавтологии, расширенные сигналы поправки, формат пути успеха); `confidence`, общее правило только при повторе в 2+ проектах | claude-smart, ecc |
+| U11 | низкий | `odoo-connector` | JSON-2 вторым транспортом по версии (XML-RPC в 19 deprecated, удаление в 22); после U1 | odoo-mcp-19, mcp-server-odoo |
+| U12 | низкий, после A/B | `boost:debug-root-cause`; правила `boost` | стоп после 3 гипотез, DEBUG REPORT, blast radius; «лестница правки» против разбухания скиллов | gstack (pstack, skill-diet — разобрать первоисточники) |
+| U13 | решение пользователя | плагины discovery-initiation / anthropic-skills | дубль триггеров `meeting-protocol-builder` ↔ `kickoff-survey-protocol` | skills-janitor |
+
 ## Что нужно от пользователя
 
 | Решение | Для задач | Вариант по умолчанию |
@@ -193,7 +213,7 @@
 | перенос в локальную папку | готово 2026-11-03: коммит `e0977ed` в монорепо (ветка `feat/bi-dashboards`) — ровно 21 файл; посторонние файлы снова незакоммичены; PR #7 закрыт; локальный клон маркетплейса на `8e97644`, `--gated --dry-run`: все плагины «без змін» | главная сессия | | |
 | доставка сотрудникам | готово 2026-11-03: PR #8 влит (`9e19e33`); организация подхватила: в синхронизированных плагинах `boost` 0.4.0 (8 скиллов), `odoo19-mvp-build` 0.9.1, `odoo19-discovery-sessions` 0.6.0, `odoo19-discovery-initiation` 0.11.0; скиллы доступны в новой сессии | главная сессия | | |
 | предупреждения синка claude.ai | готово 2026-11-03: `boost` 0.4.1 (#9); продажи 0.4.1 без `$schema`/`defaultEnabled` + накопленные правки (#10, `7acde05`); пользователь включил право Actions открывать PR | главная сессия | | |
-| T1 | в работе: факты Odoo 19 + F2–F4 → PR в маркетплейс | [T1](https://claude.ai/code/session_01L4X5dzPx8aMQudE8KAChEx) | `claude/odoo19-facts-fix` (маркетплейс) | `T1_REPORT.md` |
-| T2 | в работе: `boost:odoo19-lint` | [T2](https://claude.ai/code/session_01L4X5dyWpMXotVz4BwTqWyE) | `build/odoo19-lint` | `reports/odoo19-lint.md` |
-| T3 | в работе: защита записи `odoo-connector` (F1) → PR в маркетплейс | [T3](https://claude.ai/code/session_01L4X5dwynXX8w5Vk8Mu4QK2) | `claude/odoo-connector-safety` (маркетплейс) | `T3_REPORT.md` |
-| T4 | в работе: F5 в `odoo-model-map` | [T4](https://claude.ai/code/session_01L4X5dxi7y9ihHDLZzemase) | `build/odoo-model-map-f5` | `reports/odoo-model-map-f5.md` |
+| T1 | второй круг: M12 (`@api.model create` получает список), вернуть CRLF в `spec-template.md`, факты JSON-2 и 18→19 из четвёртого прохода | [T1](https://claude.ai/code/session_01L4X5dzPx8aMQudE8KAChEx) | `claude/odoo19-facts-fix` (маркетплейс) | `T1_REPORT.md` |
+| T2 | первый круг слит в хаб (23 правила, кейсы +0.30, general/hard 0.755 → 1.00); второй круг: ≈15 правил из panus/odoo-migrate-to-20/odoo-spec-kit, в т.ч. ERROR `@api.model create` | [T2](https://claude.ai/code/session_01L4X5dyWpMXotVz4BwTqWyE) | `build/odoo19-lint` | `reports/odoo19-lint.md` |
+| T3 | первый круг (0.2.0, 27 тестов); второй круг: `default_get`/`onchange` не чтение, блок-лист привилегированных моделей и методов, x2many/`default_*`/`load`, `unlink` ≤ 1, маркер стенда | [T3](https://claude.ai/code/session_01L4X5dwynXX8w5Vk8Mu4QK2) | `claude/odoo-connector-safety` (маркетплейс) | `T3_REPORT.md` |
+| T4 | готово, слито в хаб: F5 исправлен + режим «трасса от точки входа», 17 тестов, Δ +0.22 ($3.5); ждёт публикации вместе с T2 | [T4](https://claude.ai/code/session_01L4X5dxi7y9ihHDLZzemase) | `build/odoo-model-map-f5` | `reports/odoo-model-map-f5.md` |
