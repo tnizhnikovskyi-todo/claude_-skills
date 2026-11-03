@@ -4,7 +4,7 @@
   `/presales:<фаза>:<имя>`, общая библиотека `references/`). Хуков и MCP нет.
 - **Источник:** https://github.com/hangljoe/AI-PreSales-Skills (автор книги
   *The PreSales Handbook*, Dr. Johannes Hangl)
-- **Версия / коммит:** 2.5.0 / `ab0752b` (2026-09-28)
+- **Версия / коммит:** 2.5.0 / `ab0752b84c9014aa47d9a00cf508a69bac54f07d` (2026-09-28)
 - **Лицензия:** MIT на скиллы, команды и скрипты. Тексты книги и справочники
   автора в `references/` закрыты («All rights reserved», распространять
   нельзя). Гипотеза «лицензии нет» не подтвердилась.
@@ -79,28 +79,24 @@ LinkedIn, генераторы PPTX/DOCX/Excalidraw и инструменты р
 | После сделки | `deal-revival-check`, `loss-pattern-analyzer` | `win-loss-analyzer` (соло и групповой разбор) | формат группового разбора без поиска виноватых | дублирует |
 | Вне нашего набора | — | second-brain, LinkedIn, генераторы PPTX/DOCX, TOC/BBiT, инструменты руководителя, RFX, анкеты безопасности | `rfx-navigator` (если часто тендеры) | остальное не нужно или уже есть |
 
-## Что и куда перенести
+## Что взять
 
-Подробно в `items/`. Всё своими словами, с атрибуцией «идея: AI PreSales
-Skills (MIT)» в `references/`.
+Коммит `ab0752b84c9014aa47d9a00cf508a69bac54f07d` (ниже `@ab0752b`).
+Лицензия скиллов MIT: идеи и пересказ разрешены, дословно можно с
+сохранением копирайта MIT. Мы везде **пересказываем своими словами** и
+ставим атрибуцию «идея: AI PreSales Skills, Dr. Johannes Hangl (MIT)» в
+`references/` нашего скилла. `references/` автора (All rights reserved) не
+используем никак. Подробно в `items/`.
 
-1. **Теги уверенности + чистая копия** → `odoo19-sales-prep` (бриф, журнал) и
-   `odoo19-sales-offer:offer-finalizer`. `items/confidence-tagging.md`.
-2. **Шлюз квалификации перед демо** (обязательные критерии без усреднения,
-   стоп-лист под Odoo, «нет данных = 🔴») → новый шаг между
-   `preliminary-estimate` и `demo-build-plan`. `items/qualification-gate.md`.
-3. **Таблица соответствия требований** Стандарт / Настройка / Доработка /
-   Разрыв с вето обязательного → вход `preliminary-estimate` и далее ТР.
-   `items/requirement-fit-table.md`.
-4. **Правила сценария демо и проверка прогона** → `demo-build-plan`,
-   `demo-runbook`. `items/demo-storyboard.md`.
-5. **Бизнес-проблемы против симптомов, риск «ничего не делать», сила
-   чемпиона** → `brief-transcript-analyzer`, `deal-revival-check`.
-   `items/deal-diagnostics.md`.
-6. **Стресс-тест бизнес-кейса и позиции переговоров** → `defence-brief`.
-   `items/business-case-stress-test.md`.
-7. Для `plugins/boost`: идея `desc_budget.py` (бюджет описаний и формат
-   frontmatter в CI с самотестом). Своими словами, в `notes.md`.
+| # | Идея | Исходный файл | Куда у нас | Как | Лицензия |
+|---|---|---|---|---|---|
+| 1 | Теги 🟢/🟡/🔴, таблица пробелов, чистая копия для клиента | `skills/confidence-tagger/SKILL.md@ab0752b`, `skills/confidence-tagger/references/confidence-tagging.md@ab0752b` | `odoo19-sales-prep:brief-transcript-analyzer`, журнал продажи; `odoo19-sales-offer:offer-finalizer`, `client-followup-writer` | пересказ своими словами | MIT, да |
+| 2 | Неусредняемый шлюз «вкладываться / условно / пауза», стоп-лист, «нет данных = 🔴», веса в отдельном файле | `skills/tfq/SKILL.md@ab0752b`, `skills/tfq/references/scoring-model.md@ab0752b`, `skills/deal-prequal/SKILL.md@ab0752b` | новый шаг/скилл в `odoo19-sales-prep` между `preliminary-estimate` и `demo-build-plan` | только идея; критерии, веса и стоп-лист свои | MIT, да |
+| 3 | Таблица соответствия требований (стандарт / настройка / доработка / разрыв), вето обязательного | `skills/capability-mapper/SKILL.md@ab0752b` (шаг 5b) | `odoo19-sales-prep` перед `preliminary-estimate`; далее дискавери и `journal-to-tr-builder` | пересказ своими словами, колонки под Odoo 19 | MIT, да |
+| 4 | Модуль демо = подтверждённая боль, ≤ 10 мин, первое лицо персоны, пауза и вопрос; проверка прогона и времени | `skills/demo-storyboard/SKILL.md@ab0752b`, `skills/demo-dryrun-coach/SKILL.md@ab0752b` | `odoo19-sales-demo:demo-build-plan`, `demo-runbook` | пересказ своими словами; термины книги только как названия | MIT, да (текст книги не берём) |
+| 5 | Проблема против симптома/хотелки, событие-срок; риск «ничего не делать»; сила чемпиона по поведению | `skills/critical-business-issue-finder/SKILL.md@ab0752b`, `skills/do-nothing-buster/SKILL.md@ab0752b`, `skills/champion-health/SKILL.md@ab0752b` | `odoo19-sales-prep:brief-transcript-analyzer`, `odoo19-sales-*:deal-revival-check` | только идея; список причин бездействия пишем свой (их перечень из книги, гл. 20.1) | MIT, да; перечень из книги не копировать |
+| 6 | Стресс-тест бизнес-кейса, позиции «идеал / приемлемо / уходим», диагностика «дорого» | `skills/business-case-stress-tester/SKILL.md@ab0752b`, `skills/negotiation-prep/SKILL.md@ab0752b`, `skills/pricing-positioning/SKILL.md@ab0752b` | `odoo19-sales-offer:defence-brief`, `offer-finalizer` | пересказ своими словами | MIT, да |
+| 7 | CI-аудит бюджета описаний и формата frontmatter с самотестом | `scripts/desc_budget.py@ab0752b`, `.github/workflows/validate.yml@ab0752b` | `plugins/boost` (свой скрипт проверки) | только идея, код пишем сами | MIT, да |
 
 ## Проверка
 
