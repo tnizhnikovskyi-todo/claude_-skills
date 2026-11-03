@@ -113,8 +113,9 @@
 | # | Где | Что не так | Кто нашёл |
 |---|---|---|---|
 | F1 | `odoo-connector` (сервер, ~144 строки) | Нет проверок на стороне сервера: `unlink` и любой метод проходят, защита только текстом в `SKILL.md`; одна база | `analysis/erpipe-mcp-odoo` (сверено с маркетплейсом `@7acde05`) |
-| F2 | `odoo19-mvp-build:code-dev`, `references/odoo-version-notes.md` | Раздел 19.0 в основном неверен: Python 3.12+/PG 16+ (в исходниках 3.10–3.14, PG ≥ 13), несуществующее `fields.AiSuggestion`, аддон `discuss` в community 19.0, совет `read_group` (deprecated в 19.0) | `analysis/unclecatvn-skills` (сверено с `odoo@19.0`) |
+| F2 | `odoo19-mvp-build:code-dev`, `references/odoo-version-notes.md` | Раздел 19.0 в основном неверен: Python 3.12+/PG 16+ (в исходниках 3.10–3.14, PG ≥ 13), несуществующее `fields.AiSuggestion`, аддон `discuss` в community 19.0, совет `read_group` (deprecated в 19.0) | `analysis/unclecatvn-skills` и независимо `analysis/dooservice-odoo-skills` (сверено с `odoo@19.0`) |
 | F3 | `odoo19-mvp-build:security-review` (Dimension 5) | `type='json'` — устаревший алиас в 19.0, правильно `jsonrpc` (`odoo/http.py:812–818`) | `analysis/mart337i-odoo-skills` |
+| F4 | `odoo19-mvp-build:pr-review` | Ложная проверка «Odoo 19+: `mail` вместо `discuss`» — следствие ошибки F2 | `analysis/dooservice-odoo-skills` |
 
 ## Что нужно от пользователя
 
