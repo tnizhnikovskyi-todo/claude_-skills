@@ -69,7 +69,7 @@ CC BY 4.0) и из наших прогонов (`synthesis.md`, `pilot-notes/`).
 Клон — в scratchpad, ничего из него не запускаем.
 
 **−1. Префильтр** `scripts/skill-prescan.py` (U4; как в `CLAUDE.md`, шаг −1):
-`python3 -I -B scripts/skill-prescan.py <клон>`. BLOCK → безопасность 0; HIGH → каждую строку
+`python3 -I -B scripts/skill-prescan.py <клон>`. BLOCK → безопасность 0; WARN → каждую строку
 закрыть находкой или отклонённым подозрением. Чистый вывод ничего не
 доказывает: префильтр не видит поток данных, п. 2–3 — руками.
 
