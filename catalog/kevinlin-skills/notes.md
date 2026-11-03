@@ -16,3 +16,41 @@
   `todoltd/claude-methodology-marketplace` через `add_repo` отклонена
   классификатором прав. Сравнение пока по описаниям (список скиллов окружения,
   `proposals/siblings-checked.md`) — см. открытые вопросы.
+
+## 2026-11-03 — разбор
+
+Что прочитано целиком: `README.md`, `CLAUDE.md`, манифесты, `versions.json`,
+`gap-analysis/SKILL.md` + `references/conventions.md`,
+`individual-report.md` (частично), `spec-coding/SKILL.md`, `spec-lint/SKILL.md`
+(шаги 1–2, 5.8–5.9, отчёт), `spec-compact/SKILL.md` (шаги 1–3).
+Начала прочитаны у `research-plan-implement`, `code-review-expert`,
+`declawed`, `agent-insights`.
+
+Безопасность (просмотр импортов и вызовов, ничего не запускалось):
+- хуков, MCP, `curl|bash`, установщиков нет; workflows только
+  scorecard и dependency-review;
+- `agent_insights.py`: stdlib + sqlite3, без сетевых модулей; читает логи
+  агентов в домашнем каталоге — в облаке бесполезен, в песочнице сам отказывается;
+- `html_to_png.py`: `http.server` на 127.0.0.1 + headless-браузер
+  (`--no-sandbox`) через subprocess, только локально;
+- `scan.py`: только regex.
+
+Наблюдения:
+- `gap-analysis`: версия 1.1.0 в SKILL.md против 1.0.0 в `versions.json`,
+  то есть их собственный инвариант синхронизации нарушен.
+- `gap-analysis/gap-register.html`: заполненный реестр на 120 разрывов
+  (26 Critical, 51 High), упоминания BSC/Zühlke/JARVIS (161), замаскировано
+  только «<Project>». Похоже на реальный тендер. Не копируем.
+- Активность: первый коммит 2026-07-17 («Initial check»), последний
+  2026-10-27, 27 коммитов, один автор, dependabot.
+
+## Открытые вопросы
+
+1. **Нужны тексты** `discovery-gap-analyzer`, `spec-writer`, `tr-review`,
+   `track-convergence`. Варианты: пользователь разрешает `add_repo`
+   `todoltd/claude-methodology-marketplace` или кладёт тексты в
+   `proposals/`. Без них сравнение в items построено на описаниях (№28:
+   «не нашёл» не значит «нет»).
+2. Делать ли `proposals/odoo19-discovery/gap/` (вставка конвенций) и A/B
+   на фикстурах дискавери?
+3. Ставить ли задачу `trace-lint` в roadmap (решает главная сессия)?
