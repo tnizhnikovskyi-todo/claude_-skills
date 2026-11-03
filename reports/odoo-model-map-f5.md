@@ -41,7 +41,38 @@ claude plugin validate plugins/boost                                            
 
 ## 3. Результат A/B
 
-RESULTS_PLACEHOLDER
+Чтобы уложиться в $5, прогнаны только изменённые и новые кейсы (glob
+`{a,b}` в `--case` не поддерживается, поэтому два вызова):
+
+```bash
+claude plugin eval plugins/boost --case 'odoo-model-map/who-extends' --runs 3 --max-cost-usd 2.5 \
+  --no-publish --scaffold --trust-plugin -j 4 --threshold 0 --judge-model sonnet
+claude plugin eval plugins/boost --case 'odoo-model-map/t*' ...   # trace-entry + typo-negative
+```
+
+Ни один прогон не упёрся в потолок (`partial: false`), грейдеры не
+пропускались. Оценка считается как доля пройденных грейдеров,
+`tool_used: Skill` в неё не входит.
+
+| Кейс | С плагином | Без | Δ | Скилл сработал | Что решило |
+|---|---|---|---|---|---|
+| `who-extends` | 0.94 | 0.61 | +0.33 | 3/3 | **`list-inherit-new-model`: 3/3 против 0/3**: без скилла модель все 3 раза называет `MileageArchive` (`_inherit = ['td.vehicle']`) расширением, то есть ошибка F5 воспроизводится и на голой модели. `delegated-view` 3/3 против 1/3, «где не искал» 3/3 против 1/3. Со скиллом один FAIL `inherits-delegation` (голоса судьи 2:1) |
+| `trace-entry` (новый) | 1.00 | 0.67 | +0.33 | 3/3 | Цепочку с `super()` и триггеры обе ветки находят 3/3. Разница только в блоке «Не доказано»: 3/3 против 0/3 |
+| `typo-negative` (негатив) | 1.00 | 1.00 | 0 | 0/3 (верно) | Расширенный `description` (трасса) не дал ложных срабатываний |
+
+Средняя Δ по трём кейсам +0.22.
+
+Стоимость:
+
+| Что | $ |
+|---|---|
+| `who-extends` ×3, обе ветки + судья | 1.95 (агенты: 1.25 с плагином / 0.70 без) |
+| `trace-entry` + `typo-negative` ×3 | 1.54 |
+| Пустой запуск с неверным `--case` | 0 |
+| **Всего** | **≈ 3.5** |
+
+`field-impact` и `access-map` не перезапускались (см. «Открытые
+вопросы»).
 
 ## Что не получилось / ограничения
 
