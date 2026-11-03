@@ -181,6 +181,8 @@ class EvalFixture(unittest.TestCase):
             ('view-mode-tree', 'td_rental/views/rental_views.xml', 55),
             ('read-group', 'td_rental/models/rental_kpi.py', 10),
             ('private-env', 'td_rental/models/rental_order.py', 54),
+            ('api-model-create', 'td_rental/models/rental_order.py', 59),
+            ('search-group-attrs', 'td_rental/views/rental_views.xml', 66),
         ]))
 
 

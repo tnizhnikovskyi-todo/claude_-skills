@@ -55,6 +55,21 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <record id="td_rental_order_view_search" model="ir.ui.view">
+        <field name="name">td.rental.order.search</field>
+        <field name="model">td.rental.order</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="code"/>
+                <field name="customer_id"/>
+                <filter name="ongoing" string="Ongoing" domain="[('state', '=', 'ongoing')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_customer" string="Customer" context="{'group_by': 'customer_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <menuitem id="td_rental_menu_root" name="Rental" groups="group_rental_user"/>
     <menuitem id="td_rental_order_menu" parent="td_rental_menu_root" action="td_rental_order_action"/>
 </odoo>
