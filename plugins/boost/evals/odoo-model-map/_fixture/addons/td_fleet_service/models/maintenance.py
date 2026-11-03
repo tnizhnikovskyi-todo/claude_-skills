@@ -15,6 +15,11 @@ class FleetMaintenance(models.Model):
             last = max(vehicle.service_ids.mapped("odometer_at") or [0.0])
             vehicle.next_service_km = last + SERVICE_INTERVAL_KM
 
+    def action_reset_odometer(self):
+        res = super().action_reset_odometer()
+        self.service_ids.write({'note': 'Reset'})
+        return res
+
 
 class ServiceLog(models.Model):
     _name = "td.vehicle.service"

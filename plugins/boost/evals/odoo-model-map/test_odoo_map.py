@@ -28,9 +28,45 @@ class OdooMapTest(unittest.TestCase):
     def test_string_inheritance_found(self):
         ext = {(c['module'], c['class']) for c in self.out['classes']
                if c['model'] == 'td.vehicle' and c['role'] == 'расширяет'}
-        # _inherit = "td.vehicle" (двойные кавычки) и _inherit = ['td.vehicle'] (список)
+        # _inherit = "td.vehicle" и _inherit = 'td.vehicle' строкой; список НЕ расширение (19)
         self.assertEqual(ext, {('td_fleet_service', 'FleetMaintenance'),
                                ('td_fleet_report', 'MileageKpi')})
+
+    def test_list_inherit_without_name_is_new_model_in_19(self):
+        # odoo/orm/models.py@19.0:240-249: _name из _inherit только для строки,
+        # иначе из имени класса (MileageArchive -> mileage.archive)
+        arch = [c for c in self.out['classes'] if c['class'] == 'MileageArchive'][0]
+        self.assertEqual(arch['model'], 'mileage.archive')
+        self.assertEqual(arch['role'], 'определяет')
+        self.assertEqual(arch['series'], 19)
+        self.assertIn('в 18.0 было бы расширение', arch['note'])
+        self.assertIn('td.vehicle', arch['mixins'])
+        text = odoo_map.render(self.out, 'td.vehicle')
+        self.assertIn('| mileage.archive | новая модель по прототипу (НЕ расширение)', text)
+        self.assertNotIn('| td.vehicle | расширяет | td_fleet_report | MileageArchive', text)
+        # новой модели нужны свои права
+        self.assertIn('`mileage.archive`', odoo_map.render(self.out).split('**Без строк доступа:**')[1])
+
+    def test_list_inherit_in_18_is_extension(self):
+        # odoo/models.py@18.0:245-250: список из одного элемента без _name -> расширение
+        out18 = odoo_map.scan([ADDONS], odoo=18)
+        arch = [c for c in out18['classes'] if c['class'] == 'MileageArchive'][0]
+        self.assertEqual((arch['model'], arch['role']), ('td.vehicle', 'расширяет'))
+        self.assertIn('в 19.0 стало бы новой моделью `mileage.archive`', arch['note'])
+
+    def test_resolve_name_rules(self):
+        r = odoo_map.resolve_name
+        self.assertEqual(r({'_inherit': 'x.y'}, 'Foo', 19)[:2], ('x.y', 'расширяет'))
+        self.assertEqual(r({'_inherit': ['x.y'], '_name': 'x.y'}, 'Foo', 19)[:2],
+                         ('x.y', 'расширяет'))
+        self.assertEqual(r({'_inherit': ['x.y']}, 'FooBar', 19)[:2], ('foo.bar', 'определяет'))
+        self.assertEqual(r({'_inherit': ['a', 'b']}, 'FooBar', 18)[:2], ('FooBar', 'определяет'))
+        name, role, note = r({'_inherit': ['x.y']}, 'Foo', None)   # серия не указана
+        self.assertEqual((name, role), ('foo', 'определяет'))
+        self.assertIn('серия Odoo в version манифеста не указана', note)
+        self.assertEqual(odoo_map.series_of('19.0.1.0.0'), 19)
+        self.assertIsNone(odoo_map.series_of('1.0'))
+        self.assertEqual(odoo_map.class_to_model('Res_PartnerX'), 'res_partner.x')
 
     def test_inherits_delegation(self):
         card = [c for c in self.out['classes'] if c['model'] == 'td.service.card'][0]
@@ -61,7 +97,9 @@ class OdooMapTest(unittest.TestCase):
         acl = {(a['model'], a['group']) for a in self.out['acl']}
         self.assertIn(('td.service.card', 'td_fleet.group_fleet_manager'), acl)
         text = odoo_map.render(self.out)
-        self.assertIn('**Без строк доступа:** `td.odometer.export`', text)
+        missing = text.split('**Без строк доступа:**')[1].split('\n')[0]
+        self.assertIn('`td.odometer.export`', missing)
+        self.assertNotIn('`td.vehicle`', missing)
 
     def test_rules(self):
         rules = {r['id']: (r['model'], r['groups']) for r in self.out['rules']}
@@ -95,6 +133,25 @@ class OdooMapTest(unittest.TestCase):
             self.assertIn(where, text)
         self.assertNotIn("_name = 'td.odometer.export'", text)
         self.assertNotIn('odometer_at = ', text)
+
+    def test_trace_entry_point(self):
+        text = odoo_map.trace(self.out, 'td.vehicle', 'action_reset_odometer')
+        self.assertIn('`td_fleet.td_vehicle_view_form`', text)          # кнопка
+        first = text.index('FleetMaintenance')
+        self.assertLess(first, text.index('`Vehicle`'))                  # MRO: последний модуль первым
+        self.assertIn('maintenance.py:18 · super() → дальше', text)
+        self.assertIn('vehicle.py:35 · базовая реализация', text)
+        for hit in ('_check_odometer', '_compute_next_service_km', '_compute_km_per_service',
+                    '_compute_km_since_service', 'related поля vehicle_odometer'):
+            self.assertIn(hit, text)                                     # триггеры write odometer
+        self.assertIn('Пишет в `td.vehicle.service` поля `note`', text)  # self.service_ids.write
+        self.assertIn('Не доказано', text)
+
+    def test_trace_resolves_targets(self):
+        text = odoo_map.trace(self.out, 'td.vehicle.service', 'action_tag_as_repair')
+        self.assertIn('Пишет в `td.vehicle` поля `state`, `tag_ids`', text)
+        self.assertIn('Пишет в `td.vehicle.tag` поля `name`', text)
+        self.assertIn('td_vehicle_service_view_list', text)
 
     def test_model_filter_renders(self):
         text = odoo_map.render(self.out, 'td.vehicle', 'odometer')

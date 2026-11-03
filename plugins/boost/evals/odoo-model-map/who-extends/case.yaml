@@ -2,8 +2,10 @@ schema_version: "1"
 name: odoo-model-map/who-extends
 description: >
   «Кто расширяет модель и где все её вью». Grep по class/имени класса
-  находит только базовый класс: расширения — строкой в двойных кавычках и
-  списком, делегирование через _inherits, вью-наследник второго уровня.
+  находит только базовый класс: расширения строкой (двойные и одинарные
+  кавычки), ловушка Odoo 19 — `_inherit = ['td.vehicle']` списком без
+  `_name` (новая модель, а не расширение), делегирование через _inherits,
+  вью-наследник второго уровня.
 tags: [odoo-model-map, positive, odoo]
 context:
   scaffold_script: setup.sh
@@ -28,8 +30,19 @@ graders:
       PASS, если ответ называет ОБА расширения модели td.vehicle помимо
       базового определения в td_fleet (класс Vehicle): (1) td_fleet_service,
       класс FleetMaintenance (_inherit = "td.vehicle"), и (2)
-      td_fleet_report, класс MileageKpi (_inherit = ['td.vehicle']). FAIL,
+      td_fleet_report, класс MileageKpi (_inherit = 'td.vehicle'). FAIL,
       если хотя бы одно из этих двух расширений не упомянуто.
+  - type: llm
+    name: list-inherit-new-model
+    criteria: >
+      Класс MileageArchive в td_fleet_report/models/kpi.py объявлен как
+      _inherit = ['td.vehicle'] (СПИСОК) без _name. В Odoo 19 _name берётся
+      из _inherit только для строки, поэтому это НОВАЯ модель с именем из
+      класса (mileage.archive) с копией полей td.vehicle, а не расширение.
+      PASS, если ответ называет MileageArchive и говорит, что в Odoo 19 это
+      отдельная/новая модель (не расширение td.vehicle). FAIL, если
+      MileageArchive назван расширением td.vehicle (в т.ч. в списке
+      расширений без оговорки) или не упомянут вовсе.
   - type: llm
     name: inherits-delegation
     criteria: >

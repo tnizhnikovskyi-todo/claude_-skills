@@ -7,6 +7,12 @@
     python3 -I odoo_map.py ADDONS_PATH [...]                  # вся карта
     python3 -I odoo_map.py ADDONS_PATH --model td.vehicle     # всё о модели
     python3 -I odoo_map.py ADDONS_PATH --model td.vehicle --field odometer
+    python3 -I odoo_map.py ADDONS_PATH --model td.vehicle --trace action_reset_odometer
+
+Имя модели класса без `_name` зависит от серии Odoo (из `version` в
+__manifest__.py, либо `--odoo`): в 19 `_inherit` списком без `_name` даёт
+НОВУЮ модель с именем из класса, в 18 список из одного элемента был
+расширением.
 
 Видит только переданные пути. Ядро Odoo и другие репозитории не
 сканирует: всё, что определено вне них, помечено «вне скана».
@@ -71,7 +77,67 @@ def call_name(node):
     return ''
 
 
-def scan_python(path, module, root, out):
+def series_of(version):
+    """'19.0.1.0.0' -> 19, '18.0.2.1' -> 18, '1.0' / '' -> None (серия не указана)."""
+    parts = str(version or '').split('.')
+    if len(parts) >= 4 and parts[0].isdigit() and parts[1].isdigit():
+        return int(parts[0])
+    return None
+
+
+def class_to_model(cls_name):
+    """Имя модели из имени класса по правилу Odoo 19: MileageArchive -> mileage.archive."""
+    return re.sub(r'(?<=[^_])([A-Z])', r'.\1', cls_name).lower()
+
+
+def resolve_name(attrs, cls_name, series):
+    """(_name, роль, пометка) для класса модели; (None, None, '') если это не модель."""
+    name, raw = attrs.get('_name'), attrs.get('_inherit')
+    inherit = as_list(raw)
+    if isinstance(name, str) and name:
+        return name, 'расширяет' if name in inherit else 'определяет', ''
+    if isinstance(raw, str) and raw:
+        return raw, 'расширяет', ''          # строкой: расширение в любой серии
+    if not inherit:
+        return None, None, ''
+    parents = ', '.join(inherit)
+    if series is not None and series <= 18:
+        if len(inherit) == 1:
+            return inherit[0], 'расширяет', (
+                f'_inherit списком без _name: в {series}.0 расширение; '
+                f'в 19.0 стало бы новой моделью `{class_to_model(cls_name)}`')
+        return cls_name, 'определяет', f'_inherit списком без _name: модель `{cls_name}` из имени класса'
+    new = class_to_model(cls_name)
+    note = (f'_inherit списком без _name: в 19.0 НОВАЯ модель `{new}` (имя из класса, '
+            f'предупреждение в логе), наследует {parents}, а не расширяет')
+    if len(inherit) == 1:
+        note += f'; в 18.0 было бы расширение `{inherit[0]}`'
+    if series is None:
+        note += '; серия Odoo в version манифеста не указана — применено правило 19'
+    return new, 'определяет', note
+
+
+def method_info(fn):
+    """super() того же метода, вызовы методов, ключи write/create/update({...})."""
+    sup, calls, writes = False, set(), {}
+    for n in ast.walk(fn):
+        if not (isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)):
+            continue
+        attr, obj = n.func.attr, n.func.value
+        if isinstance(obj, ast.Call) and call_name(obj) == 'super':
+            sup = sup or attr == fn.name
+            continue
+        calls.add(attr)
+        if attr in ('write', 'create', 'update') and n.args and isinstance(n.args[0], ast.Dict):
+            keys = {k for k in (literal(x) for x in n.args[0].keys) if isinstance(k, str)}
+            # self.write → 'self'; self.vehicle_id.write → 'vehicle_id'; иное → выражение
+            tgt = ast.unparse(obj)
+            tgt = 'self' if tgt == 'self' else tgt[5:] if tgt.startswith('self.') else tgt
+            writes.setdefault(tgt, set()).update(keys)
+    return {'line': fn.lineno, 'super': sup, 'calls': calls, 'writes': writes}
+
+
+def scan_python(path, module, root, out, series=None):
     try:
         with open(path, encoding='utf-8') as f:
             tree = ast.parse(f.read(), filename=path)
@@ -89,7 +155,7 @@ def scan_python(path, module, root, out):
                                    'where': f'{where}:{node.lineno}'})
         if not isinstance(node, ast.ClassDef):
             continue
-        attrs, fields, decos = {}, [], []
+        attrs, fields, decos, methods = {}, [], [], {}
         for stmt in node.body:
             if isinstance(stmt, ast.Assign) and len(stmt.targets) == 1 \
                     and isinstance(stmt.targets[0], ast.Name):
@@ -108,6 +174,7 @@ def scan_python(path, module, root, out):
                                    'comodel': comodel, 'related': kw.get('related'),
                                    'compute': kw.get('compute')})
             elif isinstance(stmt, ast.FunctionDef):
+                methods[stmt.name] = method_info(stmt)
                 for d in stmt.decorator_list:
                     if isinstance(d, ast.Call) and call_name(d) in (
                             'depends', 'constrains', 'onchange'):
@@ -116,24 +183,18 @@ def scan_python(path, module, root, out):
                                       'method': stmt.name, 'line': stmt.lineno})
         if not attrs:
             continue
-        name = attrs.get('_name')
         inherit = as_list(attrs.get('_inherit'))
         inherits = attrs.get('_inherits') or {}
-        if not isinstance(name, str):
-            name = inherit[0] if len(inherit) == 1 else None
+        name, role, note = resolve_name(attrs, node.name, series)
         if not name:
             continue
-        if '_name' not in attrs or name in inherit:
-            role = 'расширяет'
-        else:
-            role = 'определяет'
         bases = [call_name(b) for b in node.bases]
         out['classes'].append({
             'model': name, 'role': role, 'module': module, 'class': node.name,
             'where': f'{where}:{node.lineno}', 'mixins': [i for i in inherit if i != name],
             'inherits': inherits if isinstance(inherits, dict) else {},
             'transient': 'TransientModel' in bases, 'fields': fields, 'decos': decos,
-            'file': where})
+            'methods': methods, 'note': note, 'series': series, 'file': where})
 
 
 def line_of(text, xml_id):
@@ -167,6 +228,11 @@ def scan_xml(path, module, root, out):
         loc = f'{where}:{line_of(text, xml_id)}'
         if model == 'ir.ui.view':
             arch = flds.get('arch')
+            vmodel = (flds['model'].text or '').strip() if 'model' in flds else ''
+            for b in (arch.iter('button') if arch is not None else ()):
+                if b.get('type') == 'object' and b.get('name'):
+                    out['buttons'].append({'method': b.get('name'), 'view': f'{module}.{xml_id}',
+                                           'model': vmodel, 'where': loc})
             root_tag = arch[0].tag if arch is not None and len(arch) else '?'
             inh = flds.get('inherit_id')
             out['views'].append({
@@ -218,16 +284,18 @@ def scan_acl(path, module, root, out):
                                'perms': perms, 'where': f'{where}:{i}'})
 
 
-def scan(paths):
+def scan(paths, odoo=None):
     root = os.path.commonpath([os.path.abspath(p) for p in paths])
     if os.path.isfile(root):
         root = os.path.dirname(root)
     out = {k: [] for k in ('classes', 'env', 'views', 'rules', 'actions', 'records',
-                           'acl', 'skipped')}
+                           'acl', 'buttons', 'skipped')}
     out['modules'] = {}
     for module, mpath in sorted(find_modules(paths).items()):
         man = read_manifest(mpath)
-        out['modules'][module] = {'depends': man.get('depends', []),
+        series = odoo or series_of(man.get('version'))
+        out['modules'][module] = {'version': man.get('version', ''), 'series': series,
+                                  'depends': man.get('depends', []),
                                   'data': man.get('data', []), 'demo': man.get('demo', []),
                                   'path': rel(mpath, root)}
         for dirpath, dirnames, filenames in os.walk(mpath):
@@ -235,7 +303,7 @@ def scan(paths):
             for fn in sorted(filenames):
                 full = os.path.join(dirpath, fn)
                 if fn.endswith('.py') and fn != '__manifest__.py':
-                    scan_python(full, module, root, out)
+                    scan_python(full, module, root, out, series)
                 elif fn.endswith('.xml'):
                     scan_xml(full, module, root, out)
                 elif fn == 'ir.model.access.csv':
@@ -246,6 +314,12 @@ def scan(paths):
     for a in out['actions']:
         if a['model'].startswith('@'):
             a['model'] = model_from_ref(a['model'][1:], known)
+    vmap = {v['id']: v for v in out['views']}
+    for b in out['buttons']:
+        v, seen = vmap.get(b['view']), set()
+        while not b['model'] and v and v['id'] not in seen:   # модель у наследника вью — от родителя
+            seen.add(v['id'])
+            b['model'], v = v['model'], vmap.get(v['inherit'])
     out['root'] = root
     return out
 
@@ -262,23 +336,25 @@ def touches(cls, model):
     return cls['model'] == model or model in cls['inherits'] or model in cls['mixins']
 
 
-def render(out, model=None, field=None):
+def render(out, model=None, field=None, trace_method=None):
     p = []
     defined = {c['model'] for c in out['classes'] if c['role'] == 'определяет'}
     classes = [c for c in out['classes'] if not model or touches(c, model)]
     p.append(f"# Карта Odoo: {model or 'все модели'}\n\nКорень скана: `{out['root']}`\n")
 
     p.append('## Модули (__manifest__.py)\n')
-    p.append(table(['модуль', 'depends', 'data', 'demo'], [
-        (m, ', '.join(v['depends']) or '—', len(v['data']), len(v['demo']))
+    p.append(table(['модуль', 'version', 'серия', 'depends', 'data', 'demo'], [
+        (m, v['version'] or '—', v['series'] or '? (правило 19)',
+         ', '.join(v['depends']) or '—', len(v['data']), len(v['demo']))
         for m, v in out['modules'].items()]))
 
     p.append('\n## Модели и наследование\n')
     rows = []
     for c in classes:
         role = c['role'] if c['model'] == model or not model else (
-            'делегирует (_inherits)' if model in c['inherits'] else 'миксин/прототип')
-        extra = []
+            'делегирует (_inherits)' if model in c['inherits'] else
+            'новая модель по прототипу (НЕ расширение)' if c['note'] else 'миксин/прототип')
+        extra = [c['note']] if c['note'] else []
         if c['mixins']:
             extra.append('_inherit: ' + ', '.join(c['mixins']))
         if c['inherits']:
@@ -293,6 +369,10 @@ def render(out, model=None, field=None):
     if outside:
         p.append('\nОпределены вне скана (ядро/другие репо): ' +
                  ', '.join(f'`{m}`' for m in outside) + '\n')
+    notes = [c for c in classes if c['note']]
+    if notes:
+        p.append('\n**Внимание, имя модели зависит от серии Odoo:**\n' + ''.join(
+            f"- `{c['class']}` ({c['where']}): {c['note']}\n" for c in notes))
 
     p.append('\n## Поля-связи (comodel / related / compute)\n')
     rows = []
@@ -366,6 +446,8 @@ def render(out, model=None, field=None):
 
     if model and field:
         p.append(field_hits(out, field))
+    if model and trace_method:
+        p.append(trace(out, model, trace_method))
 
     p.append('\n## Не охвачено\n')
     p.append('- Только пути скана. Ядро Odoo, enterprise, другие репо не сканировались.\n'
@@ -466,13 +548,96 @@ def field_hits(out, field):
             + table(['где', 'строка'], rows))
 
 
+def load_order(modules):
+    """Модули скана в порядке загрузки по depends (между независимыми — по имени)."""
+    order, done = [], set()
+
+    def visit(m, stack=()):
+        if m in done or m not in modules or m in stack:
+            return
+        for d in sorted(modules[m]['depends']):
+            visit(d, stack + (m,))
+        done.add(m)
+        order.append(m)
+    for m in sorted(modules):
+        visit(m)
+    return order
+
+
+def trace(out, model, method):
+    """Трасса от точки входа: переопределения по MRO, вызовы, записи и их триггеры."""
+    order = load_order(out['modules'])
+    chain = sorted((c for c in out['classes'] if c['model'] == model and method in c['methods']),
+                   key=lambda c: order.index(c['module']), reverse=True)
+    p = [f'\n## Трасса `{model}.{method}()`\n']
+    entry = [(b['view'], b['where']) for b in out['buttons']
+             if b['method'] == method and b['model'] == model]
+    p.append('Точки входа (кнопки type="object"): ' +
+             (', '.join(f'`{v}` ({w})' for v, w in entry) or '_в XML скана нет_') + '\n\n')
+    p.append('Порядок вызова (MRO: модуль, загруженный последним, первым):\n\n')
+    broken = False
+    for i, c in enumerate(chain, 1):
+        m = c['methods'][method]
+        mark = ('super() → дальше' if m['super'] else 'базовая реализация'
+                if c['role'] == 'определяет' else 'без super(): ниже не идёт')
+        p.append(f"{i}. {c['module']} · `{c['class']}` · {c['file']}:{m['line']} · "
+                 f"{'(не вызывается) ' if broken else ''}{mark}\n")
+        broken = broken or not m['super']
+    base = any(c['role'] == 'определяет' for c in chain)
+    if not chain:
+        p.append('_переопределений в скане нет_\n')
+    if not broken and not base:
+        p.append('- далее: реализация вне скана (ядро/ORM/миксин)\n')
+    known = {}
+    for c in out['classes']:
+        for name, m in c['methods'].items():
+            known.setdefault(name, []).append(f"{c['model']} {c['file']}:{m['line']}")
+    calls = sorted({x for c in chain for x in c['methods'][method]['calls']
+                    if x in known and x != method})
+    p.append('\nВызывает методы из скана: ' + ('; '.join(
+        f"`{x}` ({', '.join(known[x])})" for x in calls) or '_нет_') + '\n')
+    cmap, targets = comodels(out), {}
+    for c in chain:
+        for tgt, keys in c['methods'][method]['writes'].items():
+            env = re.fullmatch(r"env\[['\"]([\w.]+)['\"]\]", tgt)
+            tmodel = model if tgt == 'self' else env.group(1) if env else \
+                cmap.get(model, {}).get(tgt, f'? ({tgt})')
+            targets.setdefault(tmodel, set()).update(keys)
+    for tmodel, keys in sorted(targets.items()):
+        p.append(write_triggers(out, tmodel, sorted(keys)))
+    p.append('\nНе доказано: порядок модулей без связи через depends; переопределения в '
+             'ядре и вне скана; вызовы через переменные, getattr, серверные действия, '
+             'cron и JS; присваивания rec.field = … (не write) и их триггеры.\n')
+    return ''.join(p)
+
+
+def write_triggers(out, model, writes):
+    """Что сработает при записи полей writes модели model: depends/constrains/onchange, related."""
+    rows, cmap = [], comodels(out)
+    for c in out['classes']:
+        for d in c['decos']:
+            for a in d['args']:
+                hit = (c['model'] == model and a.split('.')[0] in writes) or (
+                    a.split('.')[-1] in writes and model in walk_path(cmap, c['model'], a))
+                if hit:
+                    rows.append((c['model'], d['kind'], d['method'], a, f"{c['file']}:{d['line']}"))
+    rows += [(r[0], 'related', r[1], r[2], r[3]) for r in through_paths(out, model)
+             if r[1].startswith('related') and r[2].split('.')[-1] in writes]
+    return (f"\nПишет в `{model}` поля {', '.join(f'`{w}`' for w in writes)} → неявные триггеры:\n\n"
+            + table(['модель', 'что', 'метод/поле', 'путь', 'где'], rows))
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     ap.add_argument('paths', nargs='+', help='каталоги аддонов или модулей')
     ap.add_argument('--model', help='показать только то, что касается модели')
     ap.add_argument('--field', help='с --model: все упоминания поля по имени')
+    ap.add_argument('--trace', metavar='METHOD',
+                    help='с --model: трасса метода (переопределения, вызовы, триггеры)')
+    ap.add_argument('--odoo', type=int, metavar='SERIES',
+                    help='серия Odoo (18, 19…) вместо version из __manifest__.py')
     args = ap.parse_args(argv)
-    sys.stdout.write(render(scan(args.paths), args.model, args.field))
+    sys.stdout.write(render(scan(args.paths, args.odoo), args.model, args.field, args.trace))
     return 0
 
 
