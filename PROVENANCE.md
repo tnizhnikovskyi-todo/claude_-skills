@@ -26,7 +26,23 @@
 | `source-check`: проверка на стенде; цитата вместо подтверждения в WebFetch | finding-unknowns @ `ca5696a`, `skills/assumption-test/SKILL.md`; [salespeak-ai/buyer-eval-skill](https://github.com/salespeak-ai/buyer-eval-skill) @ `ebb0e06`, `references/evidence-model.md` | MIT; MIT | перевод/адаптация; пересказ | `plugins/boost/skills/source-check/references/attribution.md` |
 | `repo-audit`: `references/odoo-dead-code.md`, «утверждение — доказательство» | [focuz-ai/odoo-spec-kit](https://github.com/focuz-ai/odoo-spec-kit) @ `23df08b` (← jeffrigby/somepulp-agents @ `e56195b`); [garrytan/gstack](https://github.com/garrytan/gstack) @ `7caca33`, `investigate/sections/preamble.md`, `review/SKILL.md` | MIT; MIT; MIT | пересказ | `plugins/boost/skills/repo-audit/references/attribution.md` |
 | `debug-root-cause` | gstack @ `7caca33`, `investigate/SKILL.md`; [cursor/plugins](https://github.com/cursor/plugins) @ `99b609a7`, `pstack/skills/blast-radius/SKILL.md` (© Lauren Tan) | MIT; MIT | перевод/адаптация | `plugins/boost/skills/debug-root-cause/references/attribution.md` |
+| `skill-feedback`: формат правила (триггер-ситуация, тест точки решения, тавтологии), сигналы поправки, путь успеха | [ReflexioAI/reflexio](https://github.com/ReflexioAI/reflexio) @ `49659eb` (движок claude-smart), `reflexio/server/prompt/prompt_bank/playbook_extraction_context/v4.6.1.prompt.md` | Apache-2.0 | пересказ, изменено | `plugins/boost/skills/skill-feedback/references/attribution.md` |
+| `skill-feedback`: `confidence` + доказательства, общее правило при повторе в 2+ проектах | [affaan-m/ECC](https://github.com/affaan-m/ECC) @ `b38be6a`, `skills/continuous-learning-v2/SKILL.md` | MIT | идея | там же |
+| `weekly-review.md`: отложенные кейсы, no-regression по кейсу, ≤ 4 правки, правка ≠ грейдер | [microsoft/SkillOpt](https://github.com/microsoft/SkillOpt) @ `bc0a392` | MIT | пересказ / идея | там же |
+| `weekly-review.md`: парное A/B версий, ничья = не сливать, лимит роста `SKILL.md`, режим `eval`/`manual`/`none` | [alchaincyf/darwin-skill](https://github.com/alchaincyf/darwin-skill) @ `8a8b662`, `SKILL.md` | MIT | пересказ | там же |
+| `weekly-review.md` / `evals/README.md`: A/B по `git diff`, стоп по плато, антипаттерны, leave-one-out, правило принятия | [huggingface/upskill](https://github.com/huggingface/upskill) @ `eec8ab4` | Apache-2.0 | идея / пересказ | там же; `plugins/boost/evals/README.md` |
+| `cloud-memory`: «когда записывать», путь успеха для `bugfix`/`discovery` | reflexio @ `49659eb`, `playbook_should_generate/v3.0.0.prompt.md` | Apache-2.0 | пересказ, изменено | `plugins/boost/skills/cloud-memory/references/attribution.md` |
+| `cloud-memory`: `memory/PLAN.md`, 3 неудачи → к пользователю, 5 вопросов handoff | [OthmanAdi/planning-with-files](https://github.com/OthmanAdi/planning-with-files) @ `0fa6c79` | MIT | пересказ | там же |
+| `evals/README.md` «Методика A/B»: 4 вопроса, активация и соседи, «сигнал → что чинить», контроль, шум, шапка окружения | [edonadei/caliper](https://github.com/edonadei/caliper) @ `89ab3b0` | MIT | пересказ | `plugins/boost/evals/README.md` |
+| там же: пререгистрация, приманки для судьи; кейс «конкурирующий промпт» | [garrytan/gstack](https://github.com/garrytan/gstack) @ `7caca33`, `eval-plan/SKILL.md`; ECC @ `b38be6a`, `skills/skill-comply/` | MIT; MIT | идея | там же |
 | `independent-check` (**отклонён**, ветка-архив) | agent-skills (`doubt-driven-development`), [Jakeschincariol/arena-skill](https://github.com/Jakeschincariol/arena-skill), [usestrix/strix](https://github.com/usestrix/strix) | MIT; MIT; Apache-2.0 | идея | ветка `build/independent-check`, `references/attribution.md` |
+
+## Процесс и критерии
+
+| Что у нас | Источник | Лицензия | Как взято |
+|---|---|---|---|
+| `criteria.md` «Чек-лист безопасности скилла/плагина»; `catalog/_TEMPLATE.md` разделы «Условия использования / Отклонённые подозрения / Что не проверено» | [Consensys/repo-security-review](https://github.com/Consensys/repo-security-review) @ `d5128b0`; [berabuddies/Semia](https://github.com/berabuddies/Semia) @ `379bc25` | нет лицензии; Apache-2.0 | идея своими словами |
+| там же: признаки supply-chain риска | Trail of Bits `supply-chain-risk-auditor` через [waybarrios/opencode-power-pack](https://github.com/waybarrios/opencode-power-pack) @ `c3328ad` | CC BY-SA 4.0 | только идея |
 
 ## Скрипты (`scripts/`)
 
