@@ -1,0 +1,49 @@
+# Рабочий журнал: planning-with-files
+
+## 2026-11-03 — первичный разбор
+
+**Что смотрели.** Клон в scratchpad, коммит `0fa6c79`, v3.28.0, 790 файлов.
+Ничего не запускали.
+
+- `.claude-plugin/plugin.json`, `marketplace.json` — плагин целиком из корня.
+- `skills/planning-with-files/SKILL.md` прочитан полностью (534 строки).
+- `hooks/hooks.json`, начало `hooks/claude-hook.sh` (диспетчер; быстрый путь
+  через `inject-plan.py`, иначе цепочка sh).
+- `templates/task_plan.md`, `progress.md`, `findings.md`.
+- `reference.md` (6 «принципов Manus»), `docs/evals.md` (Test 1 и Test 5),
+  `docs/workflow.md` про судьбу файлов после задачи.
+- Сеть: grep по `curl|wget|urllib|requests|socket|fetch(|Invoke-WebRequest`
+  в `scripts/ hooks/ skills/` — пусто. Телеметрии нет.
+- `session-catchup.py` читает `~/.claude/projects/*.jsonl` только с явным
+  `--metadata`/`--replay`.
+- Скрипты не трогают `.gitignore` пользователя; «gitignored by default»
+  в доке — рекомендация/конвенция их репо. Файлы задуманы как временные.
+- Активность: 587 коммитов с 2026-01-03, 134 в сентябре, 64 в октябре,
+  71 за последний месяц.
+- ~20 папок под другие агенты (`.cursor`, `.codex`, `.gemini`, `.kiro`,
+  `.hermes`, …) — копии, синхронизируются `scripts/sync-ide-folders.py`;
+  `skills/i18n/*` — переводы. Не разбирали подробно.
+
+**Не прочитано целиком:** `inject-plan.sh/.py` (1.4/1.8 тыс. строк),
+`set-active-plan.*`, `resolve-plan-dir.*`, `attest-plan.*`. Читали
+выборочно по grep; для вердикта «адаптировать без кода» не нужно. Если
+понадобится ставить как есть — дочитать.
+
+**Сравнение с `build-orchestrator`.** `~/.claude/plugins/synced/*/` в этом
+контейнере пуст; `gh search code` по `todoltd` — 0 результатов (нет
+доступа). Поэтому сравнение только с `cloud-memory`; про
+`build-orchestrator` — условная рекомендация (п.5 в README).
+
+**Оценка контекста.** 41.8 КБ SKILL.md ≈ 10–11 тыс. токенов при вызове
+(латиница ≈ 4 символа/токен). Хуки по замеру автора ≈330 ток./ход и
+≈90 ток./вызов инструмента; с v3.24 повтор неизменного вида подавляется.
+
+## Открытые вопросы
+
+1. Найти текст `odoo19-mvp-build:build-orchestrator` (главная сессия или
+   пользователь) и решить п.5.
+2. Нужна ли A/B «обрыв посередине» для `memory/PLAN.md` до переноса в
+   `cloud-memory`, или сразу в roadmap как задача реализации.
+3. Брать ли идею `gated` (Stop-хук не отпускает, пока фаза `in_progress`)?
+   Моё мнение: нет, в облаке без присмотра это риск лишних трат; уже есть
+   встроенные `/goal` и `/loop`.
