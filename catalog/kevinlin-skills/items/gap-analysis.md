@@ -1,7 +1,7 @@
 # gap-analysis
 
 - **Тип:** скилл · **Источник:** https://github.com/kevinlin/skills/tree/main/gap-analysis
-- **Версия:** `metadata.version 1.1.0` в SKILL.md (в `versions.json` указано 1.0.0, рассинхрон) · коммит `0d3e083`
+- **Версия:** `metadata.version 1.1.0` в SKILL.md (в `versions.json` указано 1.0.0, рассинхрон) · коммит `0d3e083b9a714db97eb733327ef5066efaf1451b` · MIT
 - **Вердикт:** **адаптировать**: конвенции, а не HTML-шаблоны
 
 ## Что делает
