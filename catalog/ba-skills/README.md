@@ -2,7 +2,8 @@
 
 - **Тип:** набор из 11 скиллов (формат Agent Skills, без плагина и хуков)
 - **Источник:** https://github.com/uycung/ba-skills (MIT, ★0)
-- **Версия / коммит:** `214f852` (2026-10-26), тег `v1.1.0`
+- **Версия / коммит:** `214f852785450173895dd221e59542a775b68065` (2026-10-26), после тега `v1.1.0`
+- **Лицензия:** MIT, `Copyright (c) 2026 Uy Cung` — копирование и переработка разрешены при сохранении копирайта и текста лицензии
 - **Дата разбора:** 2026-11-03
 - **Вердикт:** **адаптировать** (взять правила и чек-листы в наши скиллы
   дискавери; как есть не ставить)
@@ -44,6 +45,30 @@ ISO/IEC 25010:2023, ISTQB, ISO/IEC/IEEE 29148: от стейкхолдер-ан�
 
 Сквозное: [evals и соглашения](items/evals-and-conventions.md) — «ловушки»
 в eval-кейсах стоит перенять для наших `evals/`.
+
+## Что взять
+
+`SHA` = `214f852785450173895dd221e59542a775b68065`. Лицензия MIT
+разрешает и дословное, и переработанное заимствование; при дословном —
+сохранить строку копирайта и текст лицензии в `references/ATTRIBUTION.md`
+скилла. Все идеи ниже берём **пересказом своими словами** (по-украински,
+под Odoo), поэтому атрибуцию даём ссылкой на источник.
+
+| # | Идея | Исходный файл (`путь@SHA`) | Куда у нас | Как | Лицензия |
+|---|---|---|---|---|---|
+| 1 | Чек-лист стандартных ролей + «не применимо + причина» (Odoo-версия ролей) | `skills/requirements-stakeholders/references/analysis.md@214f852` §1 | `sales-handover-analyzer` §2 «Ключові стейкхолдери»; тема «Стейкхолдери» в `kickoff-question-builder` | Пересказ, роли переписаны под Odoo | MIT — да |
+| 2 | Признаки неполного списка стейкхолдеров | `skills/requirements-stakeholders/references/analysis.md@214f852` §5 | `session-transcript-analyzer` (новые T-N/Q-N «нет владельца процесса») | Пересказ | MIT — да |
+| 3 | Отношение/влияние людей — `[Inferred]`, неизвестное «?» + как узнать; отказ «придумать людей» | `skills/requirements-stakeholders/SKILL.md@214f852` Hard rules 1–3 | `sales-handover-analyzer` §2 | Пересказ | MIT — да |
+| 4 | Одна A на строку RACI | `skills/requirements-stakeholders/references/maps-raci-persona.md@214f852` §RACI | Матрица ролей в плане дискавери (`odoo19-discovery-initiation`), если появится | Только идея | MIT — да |
+| 5 | Без наводящих вопросов: гипотеза — для уточнения после ответа, не в формулировке | `skills/requirements-elicitation/SKILL.md@214f852` Principles 3 | `proposals/odoo19-discovery/proposed/references/question-method.md` (задача 3.4) | Пересказ, одна строка | MIT — да |
+| 6 | Уточняющие «зонды»: последний реальный пример / что если / кто ещё участвует | `skills/requirements-elicitation/templates/elicitation-plan.md@214f852` Interview guide | Там же, `question-method.md` | Пересказ | MIT — да |
+| 7 | Черновик письма «прошу подтвердить» после встречи | `skills/requirements-elicitation/SKILL.md@214f852` Mode C п. 3 | `session-transcript-analyzer` или `meeting-protocol-builder` | Только идея | MIT — да |
+| 8 | Бизнес-кейс: не выдумывать числа, вариант «ничего не делать», потребность отдельно от решения | `skills/business-case-strategy/SKILL.md@214f852` Hard rules 1, 4, 5 | Новый скилл (если решим), иначе `odoo19-sales-offer` | Пересказ | MIT — да |
+| 9 | Расчёт ROI/NPV/IRR/окупаемости скриптом | `skills/business-case-strategy/scripts/fin.py@214f852` | Тот же новый скилл, `scripts/` | Дословно с атрибуцией (копирайт + MIT в файле) — только после решения по п. 8 | MIT — да |
+| 10 | Eval-кейсы «ловушка» и «засеянный дефект + контрольный хороший пункт» | `evals/README.md@214f852` | `plugins/boost/evals/`, проверки `tr-review` | Только идея | MIT — да |
+| 11 | Линт: общий блок соглашений идентичен во всех скиллах | `scripts/validate.py@214f852` | Проверка общих блоков в наших `odoo19-*` | Только идея | MIT — да |
+| 12 | Число, которого не дали, не пишем даже как допущение — `[N]` + вопрос | `skills/story-writer/SKILL.md@214f852` Hard rules 1 | `tr-usecases-acceptance` | Пересказ | MIT — да |
+| 13 | Тип находки Дефект/Подозрение; не превращать пройденный пункт в находку; вердикт с границей проверки | `skills/requirements-review/SKILL.md@214f852` Hard rules 3, 5, 7 | `tr-review` | Пересказ | MIT — да |
 
 ## Как устроен
 
