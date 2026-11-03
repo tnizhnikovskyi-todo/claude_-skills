@@ -78,3 +78,12 @@
 | generate-test-book | [Androbito/generate-test-book](https://github.com/Androbito/generate-test-book) | `analysis/generate-test-book` | [session_01L4X5dxo4sNdFyXxjKik3va](https://claude.ai/code/session_01L4X5dxo4sNdFyXxjKik3va) | слито | адаптировать идеи (`uat-test-book`) |
 | repo-security-review | [Consensys/repo-security-review](https://github.com/Consensys/repo-security-review) | `analysis/repo-security-review` | [session_01L4X5dyNRpdg6tCciq8eVHn](https://claude.ai/code/session_01L4X5dyNRpdg6tCciq8eVHn) | слито | отклонить; идеи для проверки скиллов |
 | gstack | [garrytan/gstack](https://github.com/garrytan/gstack) | `analysis/gstack` | [session_01L4X5dxfi7jijFY5rGBKpip](https://claude.ai/code/session_01L4X5dxfi7jijFY5rGBKpip) | в работе | |
+
+## Реализация третьего прохода
+
+| slug | Задача | Ветка | Сессия | Статус |
+|---|---|---|---|---|
+| odoo19-facts-fix | T1 (F2–F4) | `claude/odoo19-facts-fix` в маркетплейсе | [session_01L4X5dzPx8aMQudE8KAChEx](https://claude.ai/code/session_01L4X5dzPx8aMQudE8KAChEx) | в работе |
+| odoo19-lint | T2 | `build/odoo19-lint` | [session_01L4X5dyWpMXotVz4BwTqWyE](https://claude.ai/code/session_01L4X5dyWpMXotVz4BwTqWyE) | в работе |
+| odoo-connector-safety | T3 (F1) | `claude/odoo-connector-safety` в маркетплейсе | [session_01L4X5dwynXX8w5Vk8Mu4QK2](https://claude.ai/code/session_01L4X5dwynXX8w5Vk8Mu4QK2) | в работе |
+| odoo-model-map-f5 | T4 (F5) | `build/odoo-model-map-f5` | [session_01L4X5dxi7y9ihHDLZzemase](https://claude.ai/code/session_01L4X5dxi7y9ihHDLZzemase) | в работе |
