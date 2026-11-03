@@ -77,3 +77,4 @@
 | claude-sow-creation | [SB-Celebal/claude-sow-creation](https://github.com/SB-Celebal/claude-sow-creation) | `analysis/claude-sow-creation` | [session_01L4X5dxMqpfSA7BAwAVokoD](https://claude.ai/code/session_01L4X5dxMqpfSA7BAwAVokoD) | в работе | |
 | generate-test-book | [Androbito/generate-test-book](https://github.com/Androbito/generate-test-book) | `analysis/generate-test-book` | [session_01L4X5dxo4sNdFyXxjKik3va](https://claude.ai/code/session_01L4X5dxo4sNdFyXxjKik3va) | в работе | |
 | repo-security-review | [Consensys/repo-security-review](https://github.com/Consensys/repo-security-review) | `analysis/repo-security-review` | [session_01L4X5dyNRpdg6tCciq8eVHn](https://claude.ai/code/session_01L4X5dyNRpdg6tCciq8eVHn) | в работе | |
+| gstack | [garrytan/gstack](https://github.com/garrytan/gstack) | `analysis/gstack` | [session_01L4X5dxfi7jijFY5rGBKpip](https://claude.ai/code/session_01L4X5dxfi7jijFY5rGBKpip) | в работе | |
