@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="td_ticket_search" model="ir.ui.view">
+        <field name="name">td.ticket.search</field>
+        <field name="model">td.ticket</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <group expand="0" string="Group By">
+                    <filter name="by_name" string="Name" context="{'group_by': 'name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="td_ticket_form" model="ir.ui.view">
+        <field name="name">td.ticket.form</field>
+        <field name="model">td.ticket</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet><field name="name"/></sheet>
+                <div class="oe_chatter">
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_order_form_tax" model="ir.ui.view">
+        <field name="name">sale.order.form.tax</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list/field[@name='tax_id']" position="after">
+                <field name="name"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="group_ticket" model="res.groups">
+        <field name="name">Ticket</field>
+        <field name="implied_by_ids" eval="[(4, ref('base.default_user'))]"/>
+    </record>
+</odoo>
