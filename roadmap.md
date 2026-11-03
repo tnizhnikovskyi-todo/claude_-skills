@@ -223,7 +223,7 @@
 | T5/U5… | в работе: T5/U5, T12, T13 (`build-orchestrator`) | [mvp-build-pass4](https://claude.ai/code/session_01L4X5dzzKrTbWWy1jgXLDPm) | `claude/mvp-build-pass4` в маркетплейсе (от T1) | `MVP_BUILD_PASS4_REPORT.md` |
 | T6… | в работе: T6, T7, U8 (дискавери) | [discovery-pass4](https://claude.ai/code/session_01L4X5dwunfS1yoyCvLRQ2B3) | `claude/discovery-pass4` в маркетплейсе | `DISCOVERY_PASS4_REPORT.md` |
 | T9… | в работе: T9, U8 (ТР), T8 (`tr-effort-instruction`) | [tr-pass4](https://claude.ai/code/session_01L4X5dwkPrjvzommx6kdtyU) | `claude/tr-pass4` в маркетплейсе | `TR_PASS4_REPORT.md` |
-| T11… | в работе: T11, U7 | [uat-test-book](https://claude.ai/code/session_01L4X5dyiW4w5HTW2Qi9cKwg) | `claude/uat-test-book` в маркетплейсе | `UAT_TEST_BOOK_REPORT.md` |
+| T11… | готово (`odoo19-implementation` 0.3.0, новый `uat-test-book`, fail-closed приёмка; A/B 2 набора: без скилла 29–33 внутренних ID в тексте для клиента, админ в тест-ролях, нет Test plan; со скиллом всё закрыто). При слиянии: правка `track-convergence` поднимает `odoo19-mvp-build` до 0.9.2, а T1 уже 0.9.3 — переставить версию после T1: T11, U7 | [uat-test-book](https://claude.ai/code/session_01L4X5dyiW4w5HTW2Qi9cKwg) | `claude/uat-test-book` в маркетплейсе | `UAT_TEST_BOOK_REPORT.md` |
 | U6… | в работе: U6 (апостроф `ʼ`) | [humizer-uk-pass4](https://claude.ai/code/session_01L4X5e1uPxnWnBvhELUGDuz) | `claude/humizer-uk-pass4` в sale_todo_claude | `HUMIZER_PASS4_REPORT.md` |
 | T10… | в работе: T10, U9, T8 (`preliminary-estimate`) | [sales-pass4](https://claude.ai/code/session_01L4X5dyMPpMfQehWMCwG9RD) | `claude/sales-pass4` в sale_todo_claude | `SALES_PASS4_REPORT.md` |
 | U11, T15 | ждут: JSON-2 — после T3; ROI-скилл — решение пользователя | | | |

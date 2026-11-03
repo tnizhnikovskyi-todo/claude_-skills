@@ -128,6 +128,6 @@
 | mvp-build-pass4 | T5/U5, T12, T13 (`build-orchestrator`) | `claude/mvp-build-pass4` в маркетплейсе (от T1) | [session_01L4X5dzzKrTbWWy1jgXLDPm](https://claude.ai/code/session_01L4X5dzzKrTbWWy1jgXLDPm) | в работе |
 | discovery-pass4 | T6, T7, U8 (дискавери) | `claude/discovery-pass4` в маркетплейсе | [session_01L4X5dwunfS1yoyCvLRQ2B3](https://claude.ai/code/session_01L4X5dwunfS1yoyCvLRQ2B3) | в работе |
 | tr-pass4 | T9, U8 (ТР), T8 (`tr-effort-instruction`) | `claude/tr-pass4` в маркетплейсе | [session_01L4X5dwkPrjvzommx6kdtyU](https://claude.ai/code/session_01L4X5dwkPrjvzommx6kdtyU) | в работе |
-| uat-test-book | T11, U7 | `claude/uat-test-book` в маркетплейсе | [session_01L4X5dyiW4w5HTW2Qi9cKwg](https://claude.ai/code/session_01L4X5dyiW4w5HTW2Qi9cKwg) | в работе |
+| uat-test-book | T11, U7 | `claude/uat-test-book` в маркетплейсе | [session_01L4X5dyiW4w5HTW2Qi9cKwg](https://claude.ai/code/session_01L4X5dyiW4w5HTW2Qi9cKwg) | готово, PR не открыт; конфликт версии `odoo19-mvp-build` (0.9.2) с T1 (0.9.3) |
 | humizer-uk-pass4 | U6 (апостроф `ʼ`) | `claude/humizer-uk-pass4` в sale_todo_claude | [session_01L4X5e1uPxnWnBvhELUGDuz](https://claude.ai/code/session_01L4X5e1uPxnWnBvhELUGDuz) | в работе |
 | sales-pass4 | T10, U9, T8 (`preliminary-estimate`) | `claude/sales-pass4` в sale_todo_claude | [session_01L4X5dyMPpMfQehWMCwG9RD](https://claude.ai/code/session_01L4X5dyMPpMfQehWMCwG9RD) | в работе |
