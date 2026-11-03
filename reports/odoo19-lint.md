@@ -180,3 +180,138 @@ claude plugin validate plugins/boost                                            
 - Хук или только скилл: решить после использования в реальной работе.
 - Enterprise-аддоны (могут добавлять поля в `res.partner`) не проверены —
   исходников нет.
+
+## Второй круг (2026-11-03, по запросу главной сессии)
+
+В ветку смёрджен хаб `claude/admiring-cannon-25jueb` (`900249f`). На момент
+работы в хабе не было ни нашей ветки, ни трёх новых разборов. Разборы
+прочитаны из `analysis/panus-odoo-dev-skill`, `analysis/odoo-migrate-to-20`
+и `analysis/odoo-spec-kit`.
+
+### Новые правила (все 17 подтверждены; сверено с 19.0 `e0b25b7` и 18.0 `f0ef96d`)
+
+| Правило | Уровень | Что | Источник `odoo/odoo@19.0:` (и было в 18.0) |
+|---|---|---|---|
+| `api-model-create` | ERROR | `@api.model` + `create(self, vals)` получает список | `odoo/orm/decorators.py:322-323, 364-369` |
+| `old-constraints` | ERROR | `_constraints` игнорируется | `odoo/orm/model_classes.py:159-161` |
+| `fields-date-alias` | ERROR | `fields.date/datetime` | `odoo/fields/__init__.py:5-22` (18.0 `odoo/fields.py:8`) |
+| `models-newid` | ERROR | `models.NewId` | `odoo/models/__init__.py:7-30`, `odoo/api/__init__.py:4` (18.0 `odoo/models.py:56`) |
+| `odoo-registry` | ERROR | `odoo.registry()` | `odoo/init.py:33-43` (18.0 `odoo/__init__.py:30-41`, deprecated) |
+| `savepoint-case` | ERROR | `SavepointCase` | `odoo/tests/common.py:990,1186` (нет и в 18.0) |
+| `search-group-attrs` | ERROR | `<group expand/string>` в `<search>` | `odoo/addons/base/rng/common.rng:295-313` (в 18.0 были), `ir_ui_view.py:509-515` |
+| `digits-uom` | ERROR (молча) | `digits='Product Unit of Measure'` | `addons/uom/data/uom_data.xml:5-8`, `decimal_precision.py:23-27` (18.0 `product_data.xml:36`) |
+| `default-user` | ERROR | `base.default_user` | `base_groups.xml:114`, `res_users.py:209` (18.0 `res_users_data.xml:31`) |
+| `login-classmethod` | ERROR | `_login(cls, db, …)` | `res_users.py:760` (18.0 `:924-925`) |
+| `default-get-kwarg` | ERROR | `default_get(fields_list=…)` | `odoo/orm/models.py:1271` (18.0 `odoo/models.py:1639`) |
+| `line-tax-ids` | ERROR | `sale.order.line.tax_id`, `purchase.order.line.taxes_id` | `sale_order_line.py:162`, `purchase_order_line.py:34` (18.0 `:159`, `:33`) |
+| `removed-module` | ERROR | `depends` на 46 аддонов 18.0, которых нет в 19.0 (`web_editor`, `hr_contract`, `membership`, `website_jitsi`…) | `odoo/modules/module_graph.py:257-269`; список по `git ls-tree addons/` |
+| `oe-chatter` | ERROR (молча) | `<div class="oe_chatter">` | `addons/mail/static/src/chatter/web/form_compiler.js:46-48` |
+| `osv-expression` | WARN | `odoo.osv.expression` | `odoo/osv/__init__.py:4` |
+| `js-use-service` | ERROR | `useService("rpc"/"user")` | `addons/web/static/src/core/utils/hooks.js:142-147`, `network/rpc.js:93`, `user.js:254` |
+| `manifest-version` | ERROR (молча) | версия из 4–5 частей не с `19.0.` → `installable=False` | `odoo/modules/module.py:465-467, 550-566` |
+
+Расхождения с подсказками:
+
+- `default_get(fields_list)` как переопределение не ломается, потому что
+  позиционный вызов работает. Правило ловит только вызов с именем
+  `fields_list=`.
+- `SavepointCase` убрали раньше 18.0, но в 19.0 это всё равно ловушка.
+- `oe_chatter` и в 18.0 уже не компилировался. Правило оставлено, потому
+  что поломка молчаливая.
+- `<group expand>` в первом круге я не включил, потому что смотрел только
+  в `search_view.rng`. Во втором круге подтвердил по `common.rng`.
+
+Всего правил стало 40 (ERROR 31, WARN 9).
+
+### Официальные кодмоды
+
+Для правил, у которых в 19.0 есть автозамена, скрипт печатает строку
+«автозамена: `odoo-bin upgrade_code --script <имя> --dry-run`». Сам
+механизм описан в `odoo/cli/upgrade_code.py:168-174`.
+
+| Правило | Кодмод |
+|---|---|
+| `view-tree`, `view-mode-tree` | `17.5-01-tree-to-list` |
+| `sql-constraints` | `18.1-00-sql-constraint` |
+| `route-type-json` | `18.1-02-route-jsonrpc` |
+| `private-env` | `18.5-00-deprecated-properties` |
+
+Код кодмодов не брал, только ссылки. В `SKILL.md` записано, что запускать
+кодмод можно только с согласия пользователя.
+
+### Справочники (урок darwin-skill)
+
+- Файлы `*.md` скрипт не читал и раньше. Это касается `rules.md`,
+  `SKILL.md` и `odoo-version-notes.md` из маркетплейса.
+- Но строки в любом `.py` он проверял. На каталоге `plugins/boost/skills`
+  нашлось **8 ложных находок в самом `odoo19_lint.py`**: его
+  сообщения-примеры.
+- Исправление: по умолчанию проверяются только файлы внутри модуля Odoo,
+  то есть с `__manifest__.py` выше по дереву. Остальное пропускается со
+  счётчиком «вне модулей», флаг `--all-files` снимает ограничение.
+- Тесты `ReferenceFiles` проверяют три вещи: 0 находок на
+  `plugins/boost/skills`, ни один `.md` не читается, и с `--all-files`
+  собственный скрипт снова виден (то есть исключение действительно нужно).
+- Хук из предложения этим ограничением тоже защищён.
+
+### Проверка
+
+- **unittest:** 14 тестов, все проходят.
+  - Позитив на каждое из 40 правил лежит в `tests/bad/`, новые файлы:
+    `models/round2.py`, `views/round2.xml`, `static/src/js/widget.js`,
+    `tests/test_ticket.py`, плюс правки манифеста.
+  - На тех же файлах в `tests/good/` 0 находок. Среди них верные
+    конструкции 19, которые легко принять за ошибку: `<group string expand>`
+    в `<form>`, `product.template.taxes_id`, `base.default_user_group`,
+    `useService("orm")`, комментарий с `useService("rpc")`.
+- **Ложные срабатывания на Odoo 19.0:** 9884 файла, вместе с JS
+  `web`/`mail` и `odoo/tests` (по `--all-files`): 0 ERROR, 1 WARN, тот же
+  `read_group` в `l10n_dk`.
+- **Полнота на Odoo 18.0** (929 файлов sparse-клона): новые правила
+  срабатывают на настоящем старом коде. Например, `_login` classmethod
+  (`res_users.py:925`), `base.default_user` (`:367`), `taxes_id` и
+  `Product Unit of Measure` в `purchase_order_line.py`, 29
+  `removed-module` в манифестах.
+- **Пилот:** по-прежнему ровно K9.
+
+### A/B второго круга: `review-module`
+
+В фикстуру добавлены две ловушки второго круга: `@api.model create` и
+`<group expand string>` в поиске. Добавлен грейдер `round2-traps`; старые
+грейдеры не менялись. Прогон: судья sonnet, `--runs 3`, лимит $4.
+Потрачено **$1.82**, `partial: false`.
+
+| Грейдер | С плагином | Без |
+|---|---|---|
+| `hard-traps` | 3/3 | 0/3 |
+| `other-traps` | 3/3 | 1/3 |
+| `round2-traps` | **3/3** | **0/3** |
+| `no-false-positives` | 2/3 | 2/3 |
+| **Счёт** | **0.93** | 0.20 |
+| **Δ** | **+0.73** | |
+
+Сработало в первом круге +0.75. Единственное падение в плече «с
+плагином» (`no-false-positives`, голоса судьи 2:1) спорное: в ответе все
+конструкции-приманки перечислены в разделе «Что проверено и в порядке».
+Вероятно, ошибся судья, но это не подтверждено. Лишним пунктом могла
+быть названная «логическая проблема с sequence».
+
+Без скилла модель ни разу не назвала ни одну ловушку второго круга.
+Скрипт в eval по-прежнему не исполнялся (нет Bash): прирост дала таблица
+в `SKILL.md`.
+
+### Правки общих файлов (дополнение к списку выше)
+
+1. `plugins/boost/README.md`, строка `odoo19-lint`: «40 правил»;
+   A/B второго круга — +0.73 на `review-module`.
+2. `PROVENANCE.md`, строка `odoo19-lint`: добавить источники идей
+   - `panusbodee-owen/odoo-dev-skill @ 76e8b87` (нет лицензии, идея);
+   - `tanim913/odoo-migrate-to-20 @ a5507bf` (MIT, идея и список);
+   - `focuz-ai/odoo-spec-kit @ 23df08b` (MIT, идея);
+   - ссылки на `odoo/upgrade_code` (LGPL-3, только ссылка).
+3. `roadmap.md` T2: второй круг готов.
+4. Для T1 (`source-check`) и `odoo-version-notes.md`: единый список фактов
+   19 с двумя ветками источников — `references/rules.md`, раздел «Второй
+   круг».
+
+Итого на прогоны за оба круга: **$6.56**.
