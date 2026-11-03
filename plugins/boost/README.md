@@ -9,6 +9,12 @@
 /plugin install boost --marketplace tnizhnikovskyi-todo/claude_-skills
 ```
 
+## Как попадает к сотрудникам
+
+Публикуется в маркетплейсе организации `todoltd/claude-methodology-marketplace`
+как внешний плагин (`external-plugins.txt`). Правки делаются здесь, затем
+переносятся туда PR-ом без папки `evals/`, с поднятой `version`.
+
 ## Состав
 
 Обновляет главная сессия после слияния веток `build/*`.
