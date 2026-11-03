@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rental_user,td.rental.order user,model_td_rental_order,group_rental_user,1,1,1,0
+access_rental_manager,td.rental.order manager,model_td_rental_order,group_rental_manager,1,1,1,1

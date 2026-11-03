@@ -144,5 +144,27 @@ class Pilot(unittest.TestCase):
         self.assertEqual(got, [('partner-mobile-title', 'workshop_order.py', 17)])
 
 
+class EvalFixture(unittest.TestCase):
+    """Ключ кейса review-module: ровно эти находки в _fixture/addons/td_rental."""
+
+    def test_review_module_key(self):
+        root = os.path.join(HERE, '_fixture', 'addons')
+        got = sorted((x['rule'], os.path.relpath(x['file'], root).replace(os.sep, '/'), x['line'])
+                     for x in lint_mod.lint([root]).findings)
+        self.assertEqual(got, sorted([
+            ('cron-numbercall', 'td_rental/data/ir_cron.xml', 10),
+            ('inherit-list-no-name', 'td_rental/models/rental_kpi.py', 4),
+            ('sql-constraints', 'td_rental/models/rental_order.py', 10),
+            ('partner-mobile-title', 'td_rental/models/rental_order.py', 18),
+            ('name-get', 'td_rental/models/rental_order.py', 41),
+            ('groups-fields', 'td_rental/security/security.xml', 10),
+            ('groups-fields', 'td_rental/security/security.xml', 16),
+            ('groups-fields', 'td_rental/security/security.xml', 18),
+            ('view-mode-tree', 'td_rental/views/rental_views.xml', 55),
+            ('read-group', 'td_rental/models/rental_kpi.py', 10),
+            ('private-env', 'td_rental/models/rental_order.py', 54),
+        ]))
+
+
 if __name__ == '__main__':
     unittest.main()
