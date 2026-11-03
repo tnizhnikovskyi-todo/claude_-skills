@@ -94,12 +94,28 @@ Sparse-checkout `odoo/odoo@19.0` (`e0b25b7`). Всё из `version.md` 19.0 и
 
 ## Сравнение с нашими
 
-Тексты `odoo19-mvp-build:code-dev`, `pr-review`, `testing` в контейнере
-недоступны: `~/.claude/plugins/synced/*/` пуст. Использовал то, что есть в
-репо: `proposals/odoo19-mvp-build/security-review/current/SKILL.md` (оригинал
-снят 2026-11-02) и `pr-review/BASELINE-STANDIN.md` (реконструкция, не
-оригинал). Сравнение с `code-dev`/`testing` — по назначению, не по тексту.
-Открытый вопрос: снять актуальные тексты из окружения, где плагин синхронизирован.
+Сначала `~/.claude/plugins/synced/*/` оказался пуст. По подсказке главной сессии
+подключил приватный `todoltd/claude-methodology-marketplace` на чтение (`add_repo`,
+клон `/home/user/claude-methodology-marketplace`, `7acde054afadf0ebaecc508ea3c41c6d93d65605`,
+2026-11-03) и прочитал оригиналы `odoo19-mvp-build/skills/{code-dev,pr-review,testing,security-review}`.
+Текст оттуда в наш публичный репо не копирую, только выводы.
+
+- `security-review` в маркетплейсе совпадает с нашим `proposals/.../proposed/SKILL.md`
+  (`diff -q` пустой): Strix-версия уже применена.
+- `pr-review`: вставка дисциплины ревью уже применена (раздел «Review discipline»,
+  «Quality floor», «Prove-It»).
+- `testing`: `@tagged('post_install', '-at_install')` есть и совпадает с dooservice;
+  hoot и «в 19.0 по умолчанию `at_install`» явно не сказаны.
+- **`code-dev/references/odoo-version-notes.md`, раздел Odoo 19: ошибки**, проверено
+  по `odoo/odoo@e0b25b7`:
+  - Python/PostgreSQL: у нас 3.12+/16+, в `odoo/release.py:39,41` 3.10 и 13;
+  - упомянут тип поля для AI-подсказок: в `odoo/fields`, `odoo/orm` такого нет;
+  - «`discuss` отделён от `mail`»: аддона `discuss` в 19.0 нет (`git ls-tree addons/`);
+  - реальные ловушки 19.0 (`models.Constraint`, `group_ids`, `jsonrpc`, `Domain`) не названы.
+- `pr-review`, «Version-specific checks → Odoo 19+»: проверка «`mail` вместо
+  `discuss`» ложная (следствие той же ошибки).
+- Похоже, этот раздел написан по памяти модели: это ровно та слабость, которую
+  закрывает dooservice.
 
 ## Открытые вопросы
 
@@ -124,3 +140,12 @@ privilege), 8 субагентов текущей модели, по 1 прог�
 - Токены субагентов: без ~61 тыс., с ~77 тыс. (среднее по 4).
 - Решение: прирост для сильной модели есть, но в чистоте и уверенности, а не в
   знании имён. Для «взять» как есть мало: нужен прогон с `odoo19-mvp-build` вместе.
+
+## Сообщения главной сессии (2026-11-03)
+
+1. Новый п. 5 правил: в README карточки URL, SHA, лицензия, дата; в «Что взять»
+   у каждой идеи: исходный `путь@SHA`, что, куда, как, позволяет ли лицензия.
+   Сделано: таблица «Что взять» в README.
+2. Где брать тексты наших плагинов: `proposals/`, `sale_todo_claude` (продажи,
+   не нужны для этого разбора), приватный маркетплейс через `add_repo`.
+   Подключился на чтение, см. выше. Из приватного репо ничего не скопировано.

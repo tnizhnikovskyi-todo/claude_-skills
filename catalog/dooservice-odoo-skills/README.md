@@ -1,8 +1,9 @@
 # dooservice/odoo-skills: скиллы Odoo 16–20
 
 - **Тип:** набор скиллов (Agent Skills) + marketplace Claude Code (плагины `odoo-16` … `odoo-20`)
-- **Источник:** https://github.com/dooservice/odoo-skills (LGPL-3.0-only, ★2)
-- **Версия / коммит:** `f154564` (2026-10-31), скиллы v2.0.0
+- **Источник:** https://github.com/dooservice/odoo-skills (★2)
+- **Версия / коммит:** `f154564bea7f61f77210792e49cdb720d7aeb8fa` (2026-10-31), скиллы v2.0.0
+- **Лицензия:** LGPL-3.0-only (производное от `odoo/odoo@b9823b8a6ed7f33c4450ac6dbe2dabed3ca6a6e7:skills/`, Odoo S.A., LGPL-3)
 - **Дата разбора:** 2026-11-03
 - **Вердикт:** **адаптировать** (идеи и проверенные факты 19.0 перенести к себе). Плагин
   `odoo-19` можно дать разработчикам как необязательный справочник после
@@ -108,41 +109,53 @@ UoM `relative_factor`, Owl 2.8.4, теги тестов `at_install` и т.д.
 
 ## Сравнение с нашими
 
+Оригиналы `odoo19-mvp-build` прочитаны в `todoltd/claude-methodology-marketplace@7acde054afadf0ebaecc508ea3c41c6d93d65605`
+(приватный, подключён на чтение; текст сюда не копируется, только выводы).
+
 | Наш | Что у них сверх | Что у них хуже / нет | Пересечение |
 |---|---|---|---|
-| `boost:source-check` | Готовая офлайн-таблица отличий 19.0, уже сверенная по исходникам | Нет URL-цитат, нет `UNVERIFIED`: факты даны как есть | Обе против «по памяти». Их таблицу — в `references/` source-check как проверенный слой |
-| `boost:odoo-model-map` | Справочник *стандартных* моделей/полей/xmlid 19.0 без checkout-а | Не видит наш код `td.*` и связи проекта | Дополняют друг друга: model-map для проекта, reference для стандарта |
-| `odoo19-mvp-build:pr-review` | Процесс: пин коммита, сопоставление файла с разделами правил, второй проход «поведение» (округления, TZ, мульти-записи, повторный запуск) | Нет SPEC/AC — им не нужно | Наше «Odoo conventions» = их `odoo-guidelines` |
-| `security-review` (наш, + Strix-предложение) | Пункты: XSS через `Markup`/`markup()`, field `groups`, публичные методы = RPC, `getattr/setattr`, `file_open`, возврат сложных объектов, тайминг-атаки, domain injection | Нет методологии закрытия (`confirmed`/`ruled_out`), severity, гейта вердикта | Access/`sudo`/SQL/routes совпадают |
-| `odoo19-mvp-build:code-dev`, `testing` | Правила `tests.md` (теги, `post_install` для бизнес-тестов, hoot) | — | Тексты наших в контейнере недоступны; сравнение по назначению |
+| `boost:source-check` | Готовая офлайн-таблица отличий 19.0, сверенная по исходникам | Нет URL-цитат и `UNVERIFIED`: факты даны как есть | Обе против «по памяти» |
+| `boost:odoo-model-map` | Справочник *стандартных* моделей/полей/xmlid 19.0 без checkout | Не видит наш `td.*` и связи проекта | Дополняют друг друга |
+| `odoo19-mvp-build:code-dev` (+ `references/odoo-version-notes.md`) | Точная таблица 19.0: `models.Constraint` (`_sql_constraints` игнорируется), `Domain`, `group_ids`, `privilege_id`, `jsonrpc`/`json2`, `self.env._()`, `<list>`, `aggregator` | Нет AC/SPEC, TODO-маркеров, правил ToDo | Шаблоны computes/constraints/create. **Наш раздел «Odoo 19» в version-notes содержит ошибки** (см. ниже) |
+| `odoo19-mvp-build:pr-review` | Шаг «файл → раздел правил», «код, которого diff не показывает» (grep переопределений и переименований), merits pass, строка «прочитанные правила» | Нет SPEC/AC, нет вердикта BLOCK | Дисциплина ревью (наш INSERT уже применён) близка к их шагам 5–7. **Наши «Odoo 19+» проверки частично неверны** |
+| `odoo19-mvp-build:testing` | Явно: в 19.0 тег по умолчанию `at_install`; JS-тесты hoot (`*.test.js`) | Нет «тест на каждый AC» | `@tagged('post_install', '-at_install')` у нас уже есть: совпадает |
+| `odoo19-mvp-build:security-review` (Strix-версия уже в маркетплейсе) | Markup-XSS, field `groups`, публичные методы = RPC, domain injection, `file_open`, возврат сложных объектов, `getattr/setattr`, pickle, тайминг | Нет методологии закрытия и severity | ACL/`sudo`/SQL/routes |
 
-## Что и куда перенести
+### Ошибки в наших текстах (проверено по `odoo/odoo@e0b25b7032aacb5bf711a119c40a466888e2fc16`, ветка 19.0)
 
-1. **`boost:source-check` → `references/odoo19-facts.md`**: своя таблица «что есть
-   в 19.0» с файлом и строкой из исходников (собрана в `notes.md`). Таблица наша,
-   своими словами; идея dooservice/Odoo. Пометка в скилле: факт из таблицы
-   цитируется с путём к исходнику, остальное через официальный источник.
-2. **Правило «одна версия, без подстраховок»** в `code-dev` / `lean-change`:
-   писать только под версию проекта (`odoo.release.series`), без `if 'x' in env`.
-   Это главный эффект по нашему A/B.
-3. **`security-review`**: дописать 7–8 Odoo-пунктов из `odoo-security` (список
-   выше) в чек-лист Step B, своими словами, с атрибуцией идеи (Odoo S.A., LGPL-3).
-4. **`pr-review`**: шаг «сопоставь каждый изменённый файл с разделом правил» и
-   второй проход «поведение» (см. [items/odoo-review-security.md](items/odoo-review-security.md)).
-5. **Для `odoo-connector` / `odoo19-implementation`**: правила `connect.md`: читать
-   до записи, dry-run с `rollback`, «да» до массовых правок, архивировать, а не
-   удалять, SQL только на чтение, заметка об изменении с откатом.
-6. **Метод evals для наших Odoo-скиллов**: regex-грейдер «нет имени другой версии»
-   (`not_contains`) + «есть имя этой». Дёшево, без LLM-судьи. Учесть ложные
-   срабатывания на комментариях.
-7. **Опционально**: `odoo-19@odoo-skills` разработчикам как справочник
-   (`odoo-reference`, рецепты), но только после прогона вместе с `odoo19-mvp-build`
-   на конфликт триггеров. Ставить из marketplace с пином коммита, не через `install.sh`.
+Найдены при сверке с dooservice; это **самая полезная находка разбора**.
+
+| Наш файл | Утверждение (кратко) | Факт в 19.0 |
+|---|---|---|
+| `code-dev/references/odoo-version-notes.md`, раздел Odoo 19 | Python 3.12+, PostgreSQL 16+ | `odoo/release.py:39,41`: `MIN_PY_VERSION = (3, 10)`, `MIN_PG_VERSION = 13` |
+| там же | новый тип поля для AI-подсказок | такого поля в `odoo/fields`, `odoo/orm` нет |
+| там же | модуль `discuss` отделён от `mail`, проверять depends | аддона `discuss` в 19.0 Community нет, есть `addons/mail` |
+| `pr-review/SKILL.md`, «Version-specific checks → Odoo 19+» | флаг «`mail` вместо `discuss`» | то же: ложная проверка даст ложные REQUEST CHANGES |
+| `code-dev/references/odoo-version-notes.md` | раздел 19 не называет реальные ловушки | нет `models.Constraint`, `_sql_constraints` игнорируется (`odoo/orm/model_classes.py:162`), `group_ids` (`res_users.py:257`), `type='jsonrpc'` (`odoo/http.py:814`), `Domain`, `<list>` |
+
+Правку делает владелец маркетплейса; предлагаемая замена — своя таблица фактов (п. 1 ниже).
+
+## Что взять
+
+Все исходные пути ниже в `dooservice/odoo-skills@f154564bea7f61f77210792e49cdb720d7aeb8fa`,
+если не указано иное. LGPL-3 позволяет использовать идеи и факты свободно; дословная
+копия файла в `boost` (MIT) сделала бы этот файл LGPL с обязательствами по
+распространению, поэтому везде «пересказ» или «только идея».
+
+| # | Исходный файл | Что берём | Куда у нас | Как | Лицензия |
+|---|---|---|---|---|---|
+| 1 | `odoo/19.0/odoo-guidelines/guidelines/version.md` | Перечень версионных ловушек 19.0 | `plugins/boost/skills/source-check/references/odoo19-facts.md` и замена раздела 19 в `odoo19-mvp-build:code-dev/references/odoo-version-notes.md` | Своя таблица: факт + `файл:строка` в `odoo/odoo@e0b25b7` (набросок в `notes.md`); факты проверены нами | да: факты и идея, текст свой |
+| 2 | `odoo/common/odoo-functional/SKILL.md` («Rules that save databases»: one version, no fallbacks) | Правило «одна версия, без подстраховок под другие» | `odoo19-mvp-build:code-dev` (раздел Spec discipline), `boost:lean-change` | Пересказ своими словами, 1–2 строки | да: только идея |
+| 3 | `odoo/19.0/odoo-security/SKILL.md` (разделы Field-level access, Default to private methods, Domain injection, Prevent XSS, `file_open`, `eval`, complex objects, `getattr`, pickle, timing) | 8–10 пунктов чек-листа, которых у нас нет | `odoo19-mvp-build:security-review`, Step B | Пересказ; атрибуция идеи «Odoo S.A., `odoo/odoo@b9823b8:skills/odoo-security`» в `references/ATTRIBUTION.md` | да: пересказ + атрибуция |
+| 4 | `odoo/19.0/odoo-review/SKILL.md` (Process 2–5, «Code the diff never shows») | Шаг «файл → раздел правил», три grep-а потребителей, merits pass, строка «прочитанные правила» | `odoo19-mvp-build:pr-review` (Review discipline / Dimension 3) | Пересказ своими словами | да: пересказ |
+| 5 | `odoo/common/odoo-functional/connect.md`, `SKILL.md` (The method) | Dry-run с `env.cr.rollback()`, не делать dry-run необратимых внешних действий, «да» до записи, архив вместо удаления, заметка с откатом | `odoo19-implementation`, инструкции к `odoo-connector` | Пересказ | да: только идея |
+| 6 | `odoo/19.0/*/SKILL.md` (frontmatter `description`) | Приём: в описании 6–10 самых изменчивых имён версии | описания наших `odoo19-*` скиллов | Только идея | да |
+| 7 | `evals/odoo-19/*/graders/*.md` | Regex-грейдеры `not_contains` (имя чужой версии) + `contains` (имя этой) | `plugins/boost/evals/` для Odoo-скиллов | Только идея (учесть ложные срабатывания на комментариях) | да |
+| 8 | весь плагин `odoo-19` (`.claude-plugin/marketplace.json`) | Справочник `odoo-reference` + рецепты как есть | опционально разработчикам, отдельным плагином с пином коммита | Установка, без копирования | да: используем, не распространяем |
 
 ## Риски и заметки
 
-- **LGPL-3**: копия их файлов внутри `boost` (MIT) сделает эти файлы LGPL. Берём
-  идеи и факты, текст пишем сами; если нужен их текст, то это их плагин отдельно.
+- **LGPL-3**: см. «Что взять»: только пересказ и идеи; их текст лишь через их плагин.
 - Широкие описания («Read before writing any Python, XML or CSV for Odoo 19.0»)
   будут конкурировать с нашими скиллами `odoo19-*`.
 - Проект молодой, автор один: при установке пин на коммит.
