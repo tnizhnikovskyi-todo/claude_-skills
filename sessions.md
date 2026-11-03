@@ -79,6 +79,34 @@
 | repo-security-review | [Consensys/repo-security-review](https://github.com/Consensys/repo-security-review) | `analysis/repo-security-review` | [session_01L4X5dyNRpdg6tCciq8eVHn](https://claude.ai/code/session_01L4X5dyNRpdg6tCciq8eVHn) | слито | отклонить; идеи для проверки скиллов |
 | gstack | [garrytan/gstack](https://github.com/garrytan/gstack) | `analysis/gstack` | [session_01L4X5dxfi7jijFY5rGBKpip](https://claude.ai/code/session_01L4X5dxfi7jijFY5rGBKpip) | в работе | |
 
+## Четвёртый проход: поиск 2026-11-03
+
+Источник: `candidates-2026-11-03-search.md` (группы A — Odoo, B — качество скиллов, C — БА/пресейл/UA).
+
+| slug | Репозиторий | Ветка | Сессия | Статус | Вердикт |
+|---|---|---|---|---|---|
+| mcp-server-odoo | [ivnvxd/mcp-server-odoo](https://github.com/ivnvxd/mcp-server-odoo) | `analysis/mcp-server-odoo` | [session_01L4X5dyW5TDgJpocuhqaYQL](https://claude.ai/code/session_01L4X5dyW5TDgJpocuhqaYQL) | в работе | |
+| odoo-mcp-19 | [AlanOgic/odoo-mcp-19](https://github.com/AlanOgic/odoo-mcp-19) | `analysis/odoo-mcp-19` | [session_01L4X5dyyBMtAhM7gNN81p4k](https://claude.ai/code/session_01L4X5dyyBMtAhM7gNN81p4k) | в работе | |
+| odoo-functional-agent | [xmglord/odoo-functional-agent](https://github.com/xmglord/odoo-functional-agent) | `analysis/odoo-functional-agent` | [session_01L4X5e1uHWJjLfd2nWp5eG9](https://claude.ai/code/session_01L4X5e1uHWJjLfd2nWp5eG9) | в работе | |
+| odoo-migrate-to-20 | [tanim913/odoo-migrate-to-20](https://github.com/tanim913/odoo-migrate-to-20) | `analysis/odoo-migrate-to-20` | [session_01L4X5dzNnw8BBvw8tW8AqG1](https://claude.ai/code/session_01L4X5dzNnw8BBvw8tW8AqG1) | в работе | |
+| odoo-lsp-claude | [softagram/odoo-lsp-claude-code](https://github.com/softagram/odoo-lsp-claude-code) | `analysis/odoo-lsp-claude` | [session_01L4X5dzsCy4tmyDXcksDDo2](https://claude.ai/code/session_01L4X5dzsCy4tmyDXcksDDo2) | в работе | |
+| panus-odoo-dev-skill | [panusbodee-owen/odoo-dev-skill](https://github.com/panusbodee-owen/odoo-dev-skill) | `analysis/panus-odoo-dev-skill` | [session_01L4X5e1f4FPyZ8Wz5r4DCxU](https://claude.ai/code/session_01L4X5e1f4FPyZ8Wz5r4DCxU) | в работе | |
+| odoo-spec-kit | [focuz-ai/odoo-spec-kit](https://github.com/focuz-ai/odoo-spec-kit) | `analysis/odoo-spec-kit` | [session_01L4X5e1hKgXrjGwAKHVWz9q](https://claude.ai/code/session_01L4X5e1hKgXrjGwAKHVWz9q) | в работе | |
+| caliper | [edonadei/caliper](https://github.com/edonadei/caliper) | `analysis/caliper` | [session_01L4X5dzhCTj32JpxNuJwFkM](https://claude.ai/code/session_01L4X5dzhCTj32JpxNuJwFkM) | в работе | |
+| upskill | [huggingface/upskill](https://github.com/huggingface/upskill) | `analysis/upskill` | [session_01L4X5dwRSb3qLPnSYtaNbrZ](https://claude.ai/code/session_01L4X5dwRSb3qLPnSYtaNbrZ) | в работе | |
+| darwin-skill | [alchaincyf/darwin-skill](https://github.com/alchaincyf/darwin-skill) | `analysis/darwin-skill` | [session_01L4X5dyozxvmqiLxRjxMGji](https://claude.ai/code/session_01L4X5dyozxvmqiLxRjxMGji) | в работе | |
+| skills-janitor | [khendzel/skills-janitor](https://github.com/khendzel/skills-janitor) | `analysis/skills-janitor` | [session_01L4X5dzyZDgjxFFxhbS6HkC](https://claude.ai/code/session_01L4X5dzyZDgjxFFxhbS6HkC) | в работе | |
+| semia | [berabuddies/Semia](https://github.com/berabuddies/Semia) | `analysis/semia` | [session_01L4X5dyb9nxxhnVHo1nJqQM](https://claude.ai/code/session_01L4X5dyb9nxxhnVHo1nJqQM) | в работе | |
+| cloudflare-security-audit | [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill) | `analysis/cloudflare-security-audit` | [session_01L4X5dzsEwyQdBZrfryAYYi](https://claude.ai/code/session_01L4X5dzsEwyQdBZrfryAYYi) | в работе | |
+| claude-smart | [ReflexioAI/claude-smart](https://github.com/ReflexioAI/claude-smart) | `analysis/claude-smart` | [session_01L4X5dyPPcnDJiQnWeH4gCN](https://claude.ai/code/session_01L4X5dyPPcnDJiQnWeH4gCN) | в работе | |
+| ecc | [affaan-m/ECC](https://github.com/affaan-m/ECC) | `analysis/ecc` | [session_01L4X5dxz98NexT6nfKBShaw](https://claude.ai/code/session_01L4X5dxz98NexT6nfKBShaw) | в работе | |
+| finding-unknowns | [Neeeophytee/finding-unknowns-skills](https://github.com/Neeeophytee/finding-unknowns-skills) | `analysis/finding-unknowns` | [session_01L4X5e1XeGgkU7avcDSvxen](https://claude.ai/code/session_01L4X5e1XeGgkU7avcDSvxen) | в работе | |
+| awesome-qa-skills | [naodeng/awesome-qa-skills](https://github.com/naodeng/awesome-qa-skills) | `analysis/awesome-qa-skills` | [session_01L4X5dzCvrTVUDnsJX2gNyz](https://claude.ai/code/session_01L4X5dzCvrTVUDnsJX2gNyz) | в работе | |
+| claude-sdlc-skills | [TsCarpe/claude-sdlc-skills](https://github.com/TsCarpe/claude-sdlc-skills) | `analysis/claude-sdlc-skills` | [session_01L4X5e1TwGCNLnynwN4FFVw](https://claude.ai/code/session_01L4X5e1TwGCNLnynwN4FFVw) | в работе | |
+| buyer-eval | [salespeak-ai/buyer-eval-skill](https://github.com/salespeak-ai/buyer-eval-skill) | `analysis/buyer-eval` | [session_01L4X5dzrd1A1Q6uoCV5Sicn](https://claude.ai/code/session_01L4X5dzrd1A1Q6uoCV5Sicn) | в работе | |
+| humanizer-uk | [panchlab/humanizer-uk](https://github.com/panchlab/humanizer-uk) | `analysis/humanizer-uk` | [session_01L4X5dziNuTajN8kRGTBhLM](https://claude.ai/code/session_01L4X5dziNuTajN8kRGTBhLM) | в работе | |
+| anti-ai-slop-writing | [git-voitenko/anti-ai-slop-writing](https://github.com/git-voitenko/anti-ai-slop-writing) | `analysis/anti-ai-slop-writing` | [session_01L4X5e21Ew9ojcHYDjU82Gn](https://claude.ai/code/session_01L4X5e21Ew9ojcHYDjU82Gn) | в работе | |
+
 ## Реализация третьего прохода
 
 | slug | Задача | Ветка | Сессия | Статус |
