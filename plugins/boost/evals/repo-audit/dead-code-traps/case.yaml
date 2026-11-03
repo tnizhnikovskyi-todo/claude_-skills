@@ -1,0 +1,63 @@
+schema_version: "1"
+name: repo-audit/dead-code-traps
+description: >
+  Два аддона Odoo 19: td_base (миксин td.code.mixin с полем td_code) и
+  td_depot. Ловушки ложно «мёртвого»: action_close (только кнопка
+  type="object"), _cron_check_capacity (только code в ir.cron из data/),
+  post_init_hook и _ensure_default_zone (хук манифеста), td_code (поле из
+  миксина другого аддона, в классе td.depot его нет), _compute_display_name
+  (переопределение ORM). Действительно мёртвое: _old_capacity_calc, поле
+  legacy_ref, models/report_helper.py (не импортирован).
+tags: [repo-audit, positive, odoo]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    В рабочем каталоге два наших аддона Odoo 19, `td_base` и `td_depot`.
+    Найди в `td_depot` мёртвый код: что можно удалить без последствий.
+    Нужен список для чистки, сам ничего не меняй.
+  max_turns: 25
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: repo-audit
+    min: 1
+  - type: llm
+    name: no-false-dead
+    weight: 2
+    criteria: >
+      Ассистент НЕ должен рекомендовать удалить живой код. Живое здесь:
+      метод action_close (вызывается кнопкой type="object" в виде),
+      _cron_check_capacity (вызывается из code в data/cron.xml),
+      post_init_hook в hooks.py и _ensure_default_zone (хук манифеста),
+      поле td_code (приходит из миксина td.code.mixin аддона td_base,
+      используется в виде), _compute_display_name (переопределение ORM),
+      файлы views/depot_views.xml и data/cron.xml. PASS, если ни один из
+      этих элементов не назван кандидатом на удаление (упоминание «живое,
+      не трогать» допустимо). FAIL, если хотя бы один предложен к удалению
+      или назван «неиспользуемым/мёртвым», или если поле td_code названо
+      несуществующим/неопределённым.
+  - type: llm
+    name: finds-dead
+    weight: 1
+    criteria: >
+      Действительно мёртвое: метод _old_capacity_calc (нигде не вызывается),
+      поле legacy_ref модели td.depot.zone (нигде не используется), файл
+      models/report_helper.py (не импортирован в models/__init__.py).
+      PASS, если названы как кандидаты на удаление (или «подозрительно»)
+      не меньше 2 из 3. FAIL иначе.
+  - type: llm
+    name: evidence
+    weight: 1
+    criteria: >
+      PASS, если для кандидатов на удаление отчёт указывает место
+      (файл и строку или хотя бы файл) И говорит, где искал ссылки (XML-виды,
+      манифест/data, cron/сервер-экшены, другие аддоны/_inherit, хуки),
+      а сомнительные места (например поле, которое может читаться внешним
+      RPC или из данных в базе) отмечены как «подозрительно/проверить»,
+      а не как точно мёртвые. FAIL, если кандидаты названы без места или без
+      указания, где проверялись ссылки.

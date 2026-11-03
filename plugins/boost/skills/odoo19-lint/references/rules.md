@@ -169,6 +169,139 @@ Grep: `groups_id|name="(users|category_id)"|\.users\b`
 `@http.route(..., type='json')` — устаревший алиас. Нужно: `type='jsonrpc'`.
 Источник: `odoo/odoo@19.0:odoo/http.py:812-818`.
 
+## Второй круг (сверено с 19.0 `e0b25b7` и 18.0 `f0ef96d`)
+
+Источник — `odoo/odoo@19.0:` если не указано иное; «в 18.0» — где было
+раньше (`odoo/odoo@18.0:`).
+
+### `api-model-create` — ERROR
+`@api.model` + `def create(self, vals)`: в 19.0 декоратор молча делает из
+такого `create` `model_create_multi`, и метод получает **список** словарей
+(`vals.get(...)` → AttributeError, `vals['x'] = …` → TypeError).
+Нужно: `@api.model_create_multi` + `def create(self, vals_list)` и цикл.
+Источник: `odoo/orm/decorators.py:322-323`, `:364-369`.
+
+### `old-constraints` — ERROR
+`_constraints = [...]` игнорируется (warning), проверки нет.
+Нужно: `@api.constrains('поле')` + `ValidationError`.
+Источник: `odoo/orm/model_classes.py:159-161`.
+
+### `fields-date-alias` — ERROR
+`fields.date.today()`, `fields.datetime.now()`: в 18.0 `odoo/fields.py`
+импортировал модуль `datetime` (`18.0:odoo/fields.py:8`), в 19.0 `fields` —
+пакет без этих имён → AttributeError.
+Нужно: `fields.Date.today()`, `fields.Datetime.now()` или `from datetime import date`.
+Источник: `odoo/fields/__init__.py:5-22`.
+
+### `models-newid` — ERROR
+`models.NewId`, `from odoo.models import NewId`: не экспортируется в 19.0.
+Нужно: `from odoo.api import NewId`.
+Источник: `odoo/models/__init__.py:7-30`, `odoo/api/__init__.py:4`; в 18.0 `odoo/models.py:56`.
+
+### `odoo-registry` — ERROR
+`odoo.registry(db)`: в 18.0 был deprecated (`18.0:odoo/__init__.py:30-41`),
+в 19.0 его нет.
+Нужно: `from odoo.modules.registry import Registry; Registry(db)` или `self.env.registry`.
+Источник: `odoo/init.py:33-43` (ярлыки пространства `odoo`).
+
+### `savepoint-case` — ERROR
+`SavepointCase` нет (ни в 18.0, ни в 19.0): ImportError, тесты не грузятся.
+Нужно: `TransactionCase`.
+Источник: `odoo/tests/common.py:990,1186`.
+
+### `search-group-attrs` — ERROR
+`<group expand="0" string="Group By">` внутри `<search>`: в 19.0 RNG
+убрал у `group` атрибуты `expand` и `string` (в 18.0 были), вью не
+проходит проверку. В `<form>` `<group string=…>` по-прежнему верен.
+Нужно: `<group>` без атрибутов.
+Источник: `odoo/addons/base/rng/common.rng:295-313`;
+`odoo/addons/base/models/ir_ui_view.py:509-515`.
+Grep (`*.xml`, внутри `<search>`): `<group[^>]*\b(expand|string)=`
+
+### `digits-uom` — ERROR (молча)
+`digits='Product Unit of Measure'`: точность в 19.0 называется
+`Product Unit`; по несуществующему имени `precision_get` возвращает 2,
+настройка точности молча не применяется.
+Нужно: `digits='Product Unit'`.
+Источник: `addons/uom/data/uom_data.xml:5-8`;
+`odoo/addons/base/models/decimal_precision.py:23-27`; в 18.0
+`addons/product/data/product_data.xml:36`.
+
+### `default-user` — ERROR
+xml-id `base.default_user` (шаблон пользователя) в 19.0 нет: `ref`/`env.ref` падает.
+Нужно: группа `base.default_user_group`.
+Источник: `odoo/addons/base/security/base_groups.xml:114`,
+`odoo/addons/base/models/res_users.py:209`; в 18.0 `odoo/addons/base/data/res_users_data.xml:31`.
+
+### `login-classmethod` — ERROR
+Переопределение `res.users._login` как `@classmethod def _login(cls, db, credential, user_agent_env)`:
+в 19.0 это метод записи `def _login(self, credential, user_agent_env)` — вход падает TypeError.
+Источник: `odoo/addons/base/models/res_users.py:760`; в 18.0 `:924-925`.
+
+### `default-get-kwarg` — ERROR
+`default_get(fields_list=...)` по имени: параметр в 19.0 — `fields`.
+Позиционный вызов и переопределение `def default_get(self, fields_list)` работают.
+Источник: `odoo/orm/models.py:1271`; в 18.0 `odoo/models.py:1639`.
+
+### `line-tax-ids` — ERROR
+`sale.order.line.tax_id` и `purchase.order.line.taxes_id` → `tax_ids`
+(у `product.template` `taxes_id` остался).
+Источник: `addons/sale/models/sale_order_line.py:162`,
+`addons/purchase/models/purchase_order_line.py:34`; в 18.0 `:159` и `:33`.
+
+### `removed-module` — ERROR
+`depends` на аддон, которого нет в community 19.0: модуль пропускается.
+46 каталогов `addons/` 18.0 (`f0ef96d`) отсутствуют в 19.0 (`e0b25b7`),
+среди них `web_editor` (→ `html_editor`), `hr_contract` (→ `hr`),
+`membership`, `website_jitsi`, `website_event_meet`, `product_images`, `hw_*`.
+Список целиком — `REMOVED_MODULES` в скрипте. Enterprise не проверялся.
+Источник: `odoo/modules/module_graph.py:257-269`.
+
+### `oe-chatter` — ERROR (молча)
+`<div class="oe_chatter">` на форме: в 19.0 компилируется только
+`<chatter/>`, старый блок молча не показывает чаттер.
+Источник: `addons/mail/static/src/chatter/web/form_compiler.js:46-48`
+(`oe_chatter` в `mail`/`web` 19.0 не встречается).
+
+### `osv-expression` — WARN
+`from odoo.osv import expression`: модуль устарел.
+Нужно: `from odoo.fields import Domain`.
+Источник: `odoo/osv/__init__.py:4`.
+
+### `js-use-service` — ERROR
+`useService("rpc")`, `useService("user")`: сервисов нет, компонент падает
+«Service rpc is not available».
+Нужно: `import { rpc } from "@web/core/network/rpc"`, `import { user } from "@web/core/user"`.
+Источник: `addons/web/static/src/core/utils/hooks.js:142-147`,
+`network/rpc.js:93`, `user.js:254`.
+
+### `manifest-version` — ERROR (молча)
+`'version'` из 4–5 частей не с `19.0.` (например `18.0.1.0.0`): загрузчик
+ставит `installable=False` с warning, модуль не виден.
+Нужно: `19.0.x.y.z` (или короткая `x.y.z`, префикс добавится).
+Источник: `odoo/modules/module.py:465-467`, `:550-566`.
+
+## Официальные кодмоды 19.0 (автозамена)
+
+`odoo-bin upgrade_code --script <имя> [--dry-run]` (`odoo/cli/upgrade_code.py:168-174`)
+запускает один скрипт из `odoo/upgrade_code/`. Скрипт печатает их в строке
+«автозамена»; запускать — только с согласия пользователя (переписывает файлы).
+
+| Правило | Кодмод (`odoo/upgrade_code/…`) |
+|---|---|
+| `view-tree`, `view-mode-tree` | `17.5-01-tree-to-list.py` |
+| `sql-constraints` | `18.1-00-sql-constraint.py` |
+| `route-type-json` | `18.1-02-route-jsonrpc.py` |
+| `private-env` | `18.5-00-deprecated-properties.py` |
+
+## Справочники не проверяются
+
+Скрипт читает только `.py`/`.xml`/`.csv` (и `.js` в `static/`) внутри
+каталога модуля с `__manifest__.py`. Этот файл, `SKILL.md`, заметки вроде
+`odoo-version-notes.md` и любые `*.md` не читаются вовсе; Python-скрипты
+вне модулей пропускаются (`--all-files` — проверить всё). При ручной
+проверке тоже не считай находкой перечисление запрещённого в справочнике.
+
 ## Чего правила не видят
 
 Поля из аддонов вне проверяемых путей и enterprise, JS/OWL, код,

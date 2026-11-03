@@ -16,7 +16,7 @@
 | `kickoff-survey-protocol` (06-03) | 228 | `odoo19-discovery-initiation:meeting-protocol-builder` | 397 | Ранняя версия того же скилла (заголовок внутри — «Meeting Protocol Builder»): калибровка на 41 протоколе против 1013, нет бланка `.docx` в `assets/`, нет границы «НЕ для внутреннего аналізу», нет критик-раунда и правила «термін — доповнюй, не заміняй» |
 | `meeting-protocol-builder` (06-12) | 388 | то же | 397 | То же ядро, но без шара плагина (вход из ланцюга дискавері, КБ, критики) и без негативной границы в `description` |
 | `sales-handover-analyzer` (05-28) | 177 | `odoo19-discovery-initiation:sales-handover-analyzer` | 337 | Общих строк 26 из 177: старый формат, не знает девʼяти блоків досьє `handover-dossier-builder` |
-| `session-transcript-analyzer` (06-12) | 267 | `odoo19-discovery-sessions:session-transcript-analyzer` | 285 | Главный writer журнала дискавери: две версии пишут один журнал по-разному |
+| `session-transcript-analyzer` (06-12) | 267 | `odoo19-discovery-sessions:session-transcript-analyzer` | 285 | Главный writer журнала дискавери: две версии пишут один журнал по-разному. Префильтр: копия ещё и пересекается с `brief-transcript-analyzer` продаж (у неё нет границы «НЕ для брифу») |
 | `security-review` (07-01) | 192 | `odoo19-mvp-build:security-review` | 275 | Без методики Strix; содержит ошибку F3 (`type='json'`) |
 | `tr-odoo-tech-design`, `tr-review`, `tr-usecases-acceptance`, `tr-registry-update` (06-01) | 69–120 | `odoo19-tr-authoring:*` | 72–154 | Старые версии цепочки ТР |
 | `odoo-spec-writer` (06-11) | 123 | `odoo19-mvp-build:spec-writer` | 123 | Старое имя того же скилла |

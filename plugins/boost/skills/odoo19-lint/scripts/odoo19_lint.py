@@ -26,7 +26,8 @@ import sys
 from xml.parsers import expat
 
 SRC = 'odoo/odoo@19.0:'
-SKIP_DIRS = {'.git', '__pycache__', 'node_modules', '.venv', 'venv', 'static'}
+SKIP_DIRS = {'.git', '__pycache__', 'node_modules', '.venv', 'venv'}
+JS_SERVICE_RE = re.compile(r'''useService\(\s*['"](rpc|user)['"]\s*\)''')
 IGNORE_MARK = 'odoo19-lint: ignore'
 
 # id: (уровень, что не так, как исправить, источник)
@@ -129,7 +130,105 @@ RULES = {
         'ERROR', 'хук в манифесте задан путём с точкой: загрузчик ищет getattr(модуль, имя) — AttributeError',
         "'pre_init_hook': 'my_module.hooks.pre_init' → 'pre_init' (функция импортирована в __init__.py)",
         SRC + 'odoo/modules/loading.py:182-185'),
+    # ---- второй круг (сверено с 19.0 e0b25b7 и 18.0 f0ef96d)
+    'api-model-create': (
+        'ERROR', '@api.model на create: в 19.0 метод молча становится model_create_multi и получает СПИСОК словарей',
+        '@api.model_create_multi\ndef create(self, vals_list): for vals in vals_list: ...; return super().create(vals_list)',
+        SRC + 'odoo/orm/decorators.py:322-323 (create → model_create_multi), :364-369 (обёртка передаёт список)'),
+    'old-constraints': (
+        'ERROR', '_constraints в 19.0 игнорируется (только warning): проверки не будет',
+        '@api.constrains(\'поле\') на методе, ValidationError внутри',
+        SRC + 'odoo/orm/model_classes.py:159-161'),
+    'fields-date-alias': (
+        'ERROR', 'fields.date / fields.datetime (модуль datetime через fields) в 19.0 нет: AttributeError',
+        'fields.Date.today() / fields.Datetime.now(), или from datetime import date, datetime',
+        SRC + 'odoo/fields/__init__.py:5-22 (экспорт без date/datetime); в 18.0 odoo/fields.py:8 импортировал их'),
+    'models-newid': (
+        'ERROR', 'models.NewId в 19.0 не экспортируется: AttributeError',
+        'from odoo.api import NewId (или odoo.orm.identifiers)',
+        SRC + 'odoo/models/__init__.py:7-30 (экспорт без NewId), odoo/api/__init__.py:4; в 18.0 odoo/models.py:56'),
+    'odoo-registry': (
+        'ERROR', 'odoo.registry() в 19.0 нет (в 18.0 был deprecated): AttributeError',
+        'from odoo.modules.registry import Registry; Registry(dbname) — или self.env.registry',
+        SRC + 'odoo/init.py:33-43 (ярлыки пространства odoo без registry); в 18.0 odoo/__init__.py:30-41'),
+    'savepoint-case': (
+        'ERROR', 'SavepointCase нет: ImportError, тесты модуля не загрузятся',
+        'TransactionCase (откат после каждого теста) или SingleTransactionCase',
+        SRC + 'odoo/tests/common.py:990,1186 (TransactionCase, SingleTransactionCase; SavepointCase нет и в 18.0)'),
+    'search-group-attrs': (
+        'ERROR', '<group expand=/string=> в поисковом вью: в 19.0 RNG их не допускает — вью не загрузится',
+        '<group> без атрибутов (фильтры группировки внутри как есть)',
+        SRC + 'odoo/addons/base/rng/common.rng:295-313 (в 18.0 там были expand и string); '
+              'odoo/addons/base/models/ir_ui_view.py:509-515 (Invalid view definition)'),
+    'digits-uom': (
+        'ERROR', "точность 'Product Unit of Measure' в 19.0 называется 'Product Unit': по старому имени молча 2 знака",
+        "digits='Product Unit'",
+        SRC + 'addons/uom/data/uom_data.xml:5-8; odoo/addons/base/models/decimal_precision.py:23-27 (нет записи → 2); '
+              'в 18.0 addons/product/data/product_data.xml:36'),
+    'default-user': (
+        'ERROR', 'xml-id base.default_user в 19.0 нет: ref/env.ref упадёт',
+        "шаблон прав по умолчанию — группа base.default_user_group (её implied_ids)",
+        SRC + 'odoo/addons/base/security/base_groups.xml:114; odoo/addons/base/models/res_users.py:209; '
+              'в 18.0 odoo/addons/base/data/res_users_data.xml:31'),
+    'login-classmethod': (
+        'ERROR', 'res.users._login в 19.0 — метод записи (self, credential, user_agent_env), не classmethod с db: вход упадёт TypeError',
+        'def _login(self, credential, user_agent_env): ... super()._login(credential, user_agent_env)',
+        SRC + 'odoo/addons/base/models/res_users.py:760; в 18.0 :924-925 (@classmethod, cls, db, …)'),
+    'default-get-kwarg': (
+        'ERROR', 'default_get(fields_list=...) — параметр в 19.0 называется fields: TypeError',
+        'передавать позиционно: default_get(fields) / super().default_get(fields)',
+        SRC + 'odoo/orm/models.py:1271; в 18.0 odoo/models.py:1639 (fields_list)'),
+    'line-tax-ids': (
+        'ERROR', 'налоги строки: sale.order.line.tax_id и purchase.order.line.taxes_id в 19.0 переименованы в tax_ids',
+        'tax_id / taxes_id → tax_ids',
+        SRC + 'addons/sale/models/sale_order_line.py:162; addons/purchase/models/purchase_order_line.py:34; '
+              'в 18.0 :159 и :33'),
+    'removed-module': (
+        'ERROR', 'зависимость на аддон, которого нет в community 19.0: модуль не установится',
+        'web_editor → html_editor; hr_contract → hr (контракты стали версиями hr.version); остальное — по задаче',
+        SRC + 'odoo/modules/module_graph.py:257-269 (зависимость не найдена → модуль пропущен); '
+              'список: git ls-tree addons/ — 46 каталогов 18.0@f0ef96d нет в 19.0@e0b25b7'),
+    'oe-chatter': (
+        'ERROR', '<div class="oe_chatter"> в 19.0 не компилируется: чаттер на форме молча пропадает',
+        '<chatter/> в конце <form>',
+        SRC + 'addons/mail/static/src/chatter/web/form_compiler.js:46-48 (selector "chatter"); oe_chatter в mail/web 19.0 не встречается'),
+    'osv-expression': (
+        'WARN', 'odoo.osv (expression) устарел в 19.0 (DeprecationWarning при импорте)',
+        'from odoo.fields import Domain; Domain.AND([...]), Domain(...) & Domain(...)',
+        SRC + 'odoo/osv/__init__.py:4'),
+    'js-use-service': (
+        'ERROR', 'useService("rpc") / useService("user"): таких сервисов в 19.0 нет — компонент падает «Service … is not available»',
+        'import { rpc } from "@web/core/network/rpc"; import { user } from "@web/core/user"',
+        SRC + 'addons/web/static/src/core/utils/hooks.js:142-147; addons/web/static/src/core/network/rpc.js:93; '
+              'addons/web/static/src/core/user.js:254'),
+    'manifest-version': (
+        'ERROR', "версия манифеста из 4–5 частей не с '19.0.': загрузчик молча ставит installable=False",
+        "'version': '19.0.1.0.0' (или короткая '1.0.0' — префикс 19.0 добавится)",
+        SRC + 'odoo/modules/module.py:465-467, 550-566'),
 }
+
+# Официальные кодмоды 19.0 (только ссылка): правило -> имя скрипта odoo/upgrade_code/<имя>.py
+CODEMODS = {
+    'view-tree': '17.5-01-tree-to-list',
+    'view-mode-tree': '17.5-01-tree-to-list',
+    'sql-constraints': '18.1-00-sql-constraint',
+    'route-type-json': '18.1-02-route-jsonrpc',
+    'private-env': '18.5-00-deprecated-properties',
+}
+CODEMOD_SRC = SRC + 'odoo/cli/upgrade_code.py:168-174 (--script ИМЯ), odoo/upgrade_code/'
+
+# Аддоны 18.0 (f0ef96d), которых нет в 19.0 (e0b25b7): git ls-tree -d addons/
+REMOVED_MODULES = set('''
+account_edi_ubl_cii_tax_extension account_peppol_selfbilling auth_totp_mail_enforce hr_contract
+hr_holidays_contract hr_work_entry_contract hw_drivers hw_escpos hw_posbox_homepage l10n_ec_website_sale
+l10n_es_modelo130 l10n_id_efaktur l10n_in_edi_ewaybill l10n_in_ewaybill_port l10n_in_gstin_status
+l10n_in_purchase l10n_in_withholding l10n_in_withholding_payment l10n_it_edi_ndd l10n_it_edi_ndd_account_dn
+l10n_it_edi_website_sale l10n_it_edi_withholding l10n_jo_edi_extended l10n_mx_hr l10n_my_edi_extended
+l10n_pe_website_sale l10n_pl_taxable_supply_date l10n_ro_efactura_synchronize l10n_uy_website_sale membership
+payment_razorpay_oauth pos_epson_printer pos_paytm pos_self_order_epson_printer pos_six pos_viva_wallet
+product_images sale_async_emails test_hr_contract_calendar web_editor website_event_jitsi website_event_meet
+website_event_meet_quiz website_jitsi website_membership website_payment_authorize
+'''.split())
 
 # Поля, которых нет у модели в 19.0: (модель, поле) -> правило.
 BAD_FIELDS = {
@@ -155,6 +254,8 @@ BAD_FIELDS = {
     ('uom.uom', 'factor_inv'): 'uom-fields',
     ('sale.order.line', 'product_uom'): 'line-product-uom',
     ('purchase.order.line', 'product_uom'): 'line-product-uom',
+    ('sale.order.line', 'tax_id'): 'line-tax-ids',
+    ('purchase.order.line', 'taxes_id'): 'line-tax-ids',
 }
 LINE_MODELS = {'sale.order.line', 'purchase.order.line'}
 ORDER_MODELS = {'sale.order', 'purchase.order'} | LINE_MODELS
@@ -166,6 +267,7 @@ class Linter:
         self.findings = []
         self.files = 0
         self.skipped = []
+        self.outside = []  # файлы вне модулей Odoo (нет __manifest__.py выше): не проверяются
         # поля, которые сам сканируемый код добавляет моделям: подавляет ложные срабатывания
         self.defined = set()
         # имена полей Many2one('res.partner') в сканируемом коде (driver_id, customer_id…)
@@ -317,11 +419,23 @@ def check_python(path, text, linter):
             if isinstance(stmt, ast.Assign) and any(isinstance(t, ast.Name) and t.id == '_sql_constraints'
                                                     for t in stmt.targets):
                 linter.add(path, stmt.lineno, 'sql-constraints', '', lines)
+            if isinstance(stmt, ast.Assign) and any(isinstance(t, ast.Name) and t.id == '_constraints'
+                                                    for t in stmt.targets):
+                linter.add(path, stmt.lineno, 'old-constraints', '', lines)
+            if isinstance(stmt, ast.FunctionDef) and stmt.name == '_login' and \
+                    ('res.users' in inherit or name == 'res.users'):
+                argn = [a.arg for a in stmt.args.args]
+                if any(dotted(d) == 'classmethod' for d in stmt.decorator_list) or 'db' in argn[:2]:
+                    linter.add(path, stmt.lineno, 'login-classmethod', f'_login({", ".join(argn)})', lines)
             if isinstance(stmt, ast.FunctionDef) and stmt.name == 'name_get':
                 linter.add(path, stmt.lineno, 'name-get', 'переопределение name_get никогда не вызовется', lines)
 
     for cls in line_classes:
         for node in ast.walk(cls):
+            if isinstance(node, ast.Attribute) and node.attr in ('tax_id', 'taxes_id') and is_line_ref(node.value) \
+                    and linter.field_missing('sale.order.line' if node.attr == 'tax_id' else 'purchase.order.line',
+                                             node.attr):
+                linter.add(path, node.lineno, 'line-tax-ids', dotted(node), lines)
             if isinstance(node, ast.Attribute) and node.attr == 'product_uom' and \
                     ('sale.order.line', 'product_uom') not in linter.defined and is_line_ref(node.value):
                 linter.add(path, node.lineno, 'line-product-uom', dotted(node), lines)
@@ -335,6 +449,8 @@ def check_python(path, text, linter):
                         s = const_str(a)
                         if s and s.split('.')[-1] == 'product_uom' and not s.startswith('move'):
                             linter.add(path, a.lineno, 'line-product-uom', repr(s), lines)
+                        if s and s.split('.')[-1] in ('tax_id', 'taxes_id'):
+                            linter.add(path, a.lineno, 'line-tax-ids', repr(s), lines)
 
     for node in ast.walk(tree):
         # декораторы
@@ -344,6 +460,9 @@ def check_python(path, text, linter):
                 dn = dotted(target)
                 if dn in ('api.returns', 'returns'):
                     linter.add(path, dec.lineno, 'api-returns', '', lines)
+                if dn == 'api.model' and node.name == 'create':
+                    argn = [a.arg for a in node.args.args]
+                    linter.add(path, dec.lineno, 'api-model-create', f'create({", ".join(argn)})', lines)
                 if isinstance(dec, ast.Call) and dn.split('.')[-1] == 'route':
                     for kw in dec.keywords:
                         if kw.arg == 'type' and const_str(kw.value) == 'json':
@@ -363,6 +482,10 @@ def check_python(path, text, linter):
                     linter.add(path, node.lineno, 'name-get', dotted(func) + '()', lines)
                 elif attr == 'user_has_groups':
                     linter.add(path, node.lineno, 'user-has-groups', dotted(func), lines)
+                elif attr == 'registry' and dotted(func) == 'odoo.registry':
+                    linter.add(path, node.lineno, 'odoo-registry', 'odoo.registry()', lines)
+                elif attr == 'default_get' and any(kw.arg == 'fields_list' for kw in node.keywords):
+                    linter.add(path, node.lineno, 'default-get-kwarg', '', lines)
                 elif attr in ('create', 'write', 'search', 'search_read', 'read', 'mapped', 'filtered_domain'):
                     model = env_model(func.value)
                     if model:
@@ -371,10 +494,19 @@ def check_python(path, text, linter):
                 for kw in node.keywords:
                     if kw.arg == 'group_operator':
                         linter.add(path, node.lineno, 'group-operator', '', lines)
+                    if kw.arg == 'digits' and const_str(kw.value) == 'Product Unit of Measure':
+                        linter.add(path, node.lineno, 'digits-uom', '', lines)
+            if isinstance(func, ast.Attribute) and func.attr == 'precision_get' and node.args \
+                    and const_str(node.args[0]) == 'Product Unit of Measure':
+                linter.add(path, node.lineno, 'digits-uom', 'precision_get', lines)
 
         elif isinstance(node, ast.Attribute) and id(node) not in called:
             if node.attr in ('_context', '_cr', '_uid') and isinstance(node.value, ast.Name):
                 linter.add(path, node.lineno, 'private-env', f'{node.value.id}.{node.attr}', lines)
+            if isinstance(node.value, ast.Name) and node.value.id == 'fields' and node.attr in ('date', 'datetime'):
+                linter.add(path, node.lineno, 'fields-date-alias', f'fields.{node.attr}', lines)
+            if isinstance(node.value, ast.Name) and node.value.id == 'models' and node.attr == 'NewId':
+                linter.add(path, node.lineno, 'models-newid', '', lines)
             base = dotted(node.value)
             last = base.split('.')[-1] if base else ''
             if node.attr in ('mobile', 'title') and linter.is_partner(last):
@@ -393,6 +525,21 @@ def check_python(path, text, linter):
                 linter.add(path, node.lineno, 'uom-fields', f'{base}.{node.attr}', lines)
             elif node.attr == 'detailed_type' and ('product.template', 'detailed_type') not in linter.defined:
                 linter.add(path, node.lineno, 'product-type', f'{base}.detailed_type', lines)
+            elif node.attr == 'SavepointCase':
+                linter.add(path, node.lineno, 'savepoint-case', f'{base}.SavepointCase', lines)
+
+        elif isinstance(node, (ast.ImportFrom, ast.Import)):
+            mod = getattr(node, 'module', None) or ''
+            names = [a.name for a in node.names]
+            if any(n == 'SavepointCase' for n in names):
+                linter.add(path, node.lineno, 'savepoint-case', '', lines)
+            if mod == 'odoo.osv' or mod.startswith('odoo.osv.') or any(n.startswith('odoo.osv') for n in names) \
+                    or (mod == 'odoo' and 'osv' in names):
+                linter.add(path, node.lineno, 'osv-expression', mod or names[0], lines)
+            if mod == 'odoo.models' and 'NewId' in names:
+                linter.add(path, node.lineno, 'models-newid', 'from odoo.models import NewId', lines)
+            if mod == 'odoo.fields' and ('date' in names or 'datetime' in names):
+                linter.add(path, node.lineno, 'fields-date-alias', 'import из odoo.fields', lines)
 
         elif isinstance(node, ast.Dict):
             for k, v in zip(node.keys, node.values):
@@ -417,6 +564,8 @@ def check_python(path, text, linter):
             s = node.value
             for m in linter.partner_hits(s):
                 linter.add(path, node.lineno, 'partner-mobile-title', repr(m.group(0)), lines)
+            if re.search(r'\bbase\.default_user\b(?!_)', s):
+                linter.add(path, node.lineno, 'default-user', repr(s[:60]), lines)
             if 'tree_view_ref' in s and not s.strip() == 'tree_view_ref':
                 linter.add(path, node.lineno, 'tree-view-ref', '', lines)
             if re.search(r'//tree\b|<tree[\s>/]', s):
@@ -516,6 +665,8 @@ def check_xml(path, data, linter):
         for key, val in node.attrib.items():
             if key == 'context' and 'tree_view_ref' in val:
                 linter.add(path, node.line, 'tree-view-ref', '', lines)
+            if key in ('ref', 'eval', 'inherit_id', 'groups') and re.search(r'\bbase\.default_user\b(?!_)', val):
+                linter.add(path, node.line, 'default-user', f'{key}="{val[:40]}"', lines)
 
 
 def check_record(path, rec, linter, lines):
@@ -545,9 +696,16 @@ def check_record(path, rec, linter, lines):
 
 
 def check_arch(path, arch, view_model, linter, lines):
+    top = next((c for c in arch.children), None)
+    is_search = top is not None and top.tag == 'search'
     for node in arch.iter():
         if node is arch:
             continue
+        if is_search and node.tag == 'group' and ('expand' in node.attrib or 'string' in node.attrib):
+            attrs = ', '.join(k for k in ('expand', 'string') if k in node.attrib)
+            linter.add(path, node.line, 'search-group-attrs', f'<group {attrs}=…> в <search>', lines)
+        if 'oe_chatter' in node.attrib.get('class', '').split():
+            linter.add(path, node.line, 'oe-chatter', f'<{node.tag} class="oe_chatter">', lines)
         if node.tag == 'tree':
             linter.add(path, node.line, 'view-tree', '<tree>', lines)
         for key in ('attrs', 'states'):
@@ -558,6 +716,8 @@ def check_arch(path, arch, view_model, linter, lines):
         expr = node.attrib.get('expr', '')
         if re.search(r'(^|/)tree\b', expr):
             linter.add(path, node.line, 'view-tree', f'xpath {expr!r}', lines)
+        if expr and view_model in ORDER_MODELS and re.search(r"@name=['\"](tax_id|taxes_id)['\"]", expr):
+            linter.add(path, node.line, 'line-tax-ids', f'xpath {expr!r}', lines)
         if expr and view_model in ORDER_MODELS and re.search(r"@name=['\"]product_uom['\"]", expr):
             linter.add(path, node.line, 'line-product-uom', f'xpath {expr!r}', lines)
         if expr and view_model == 'res.partner' and re.search(r"field\[@name=['\"](mobile|title)['\"]", expr):
@@ -567,6 +727,9 @@ def check_arch(path, arch, view_model, linter, lines):
             if view_model == 'res.partner' and fname in ('mobile', 'title') and \
                     linter.field_missing('res.partner', fname) and not inside_subview(node, arch):
                 linter.add(path, node.line, 'partner-mobile-title', f'<field name="{fname}"> во вью res.partner', lines)
+            if fname in ('tax_id', 'taxes_id') and view_model in ORDER_MODELS and \
+                    linter.field_missing('sale.order.line' if fname == 'tax_id' else 'purchase.order.line', fname):
+                linter.add(path, node.line, 'line-tax-ids', f'<field name="{fname}"> во вью {view_model}', lines)
             if fname == 'product_uom' and view_model in ORDER_MODELS and \
                     ('sale.order.line', 'product_uom') not in linter.defined:
                 linter.add(path, node.line, 'line-product-uom', f'<field name="product_uom"> во вью {view_model}', lines)
@@ -603,6 +766,16 @@ def check_csv(path, text, linter):
             linter.add(path, 1, rule, f'{model}.csv: колонка {col!r}', lines)
 
 
+def check_js(path, text, linter):
+    lines = text.splitlines()
+    for i, line in enumerate(lines, 1):
+        stripped = line.lstrip()
+        if stripped.startswith(('//', '*', '/*')):
+            continue
+        for m in JS_SERVICE_RE.finditer(line):
+            linter.add(path, i, 'js-use-service', m.group(0), lines)
+
+
 def check_manifest(path, text, linter):
     lines = text.splitlines()
     try:
@@ -612,6 +785,18 @@ def check_manifest(path, text, linter):
         return
     if not isinstance(data, dict):
         return
+    def line_of(token):
+        return next((i + 1 for i, l in enumerate(lines) if token in l), 1)
+
+    for dep in data.get('depends') or []:
+        if isinstance(dep, str) and dep in REMOVED_MODULES:
+            linter.add(path, line_of(f"'{dep}'") if f"'{dep}'" in text else line_of(f'"{dep}"'),
+                       'removed-module', dep, lines)
+    version = data.get('version')
+    if isinstance(version, str):
+        parts = version.split('.')
+        if len(parts) in (4, 5) and not version.startswith('19.0.'):
+            linter.add(path, line_of('version'), 'manifest-version', repr(version), lines)
     for key in ('pre_init_hook', 'post_init_hook', 'uninstall_hook', 'post_load'):
         val = data.get(key)
         if isinstance(val, str) and '.' in val:
@@ -627,15 +812,51 @@ def iter_files(paths):
             yield p
             continue
         for dirpath, dirnames, filenames in os.walk(p):
-            dirnames[:] = sorted(d for d in dirnames if d not in SKIP_DIRS)
+            parts = os.path.relpath(dirpath, p).split(os.sep)
+            in_static = 'static' in parts
+            # static/lib — сторонние библиотеки, не код модуля
+            dirnames[:] = sorted(d for d in dirnames if d not in SKIP_DIRS and not (in_static and d == 'lib'))
             for fn in sorted(filenames):
-                if fn.endswith(('.py', '.xml', '.csv')):
+                if (not in_static and fn.endswith(('.py', '.xml', '.csv'))) or (in_static and fn.endswith('.js')):
                     yield os.path.join(dirpath, fn)
 
 
-def lint(paths):
+def module_root(path, cache={}):
+    """Ближайший каталог с __manifest__.py над файлом, иначе None."""
+    d = os.path.dirname(os.path.abspath(path))
+    seen = []
+    while True:
+        if d in cache:
+            root = cache[d]
+            break
+        seen.append(d)
+        if os.path.isfile(os.path.join(d, '__manifest__.py')):
+            root = d
+            break
+        parent = os.path.dirname(d)
+        if parent == d:
+            root = None
+            break
+        d = parent
+    for x in seen:
+        cache[x] = root
+    return root
+
+
+def lint(paths, all_files=False):
+    """Проверяет только файлы модулей Odoo (есть __manifest__.py выше по дереву).
+
+    Скрипты, справочники и документация вне модулей не проверяются: в них
+    запрещённое перечисляется как пример (урок darwin-skill), а не используется.
+    all_files=True снимает ограничение.
+    """
     linter = Linter()
-    files = list(iter_files(paths))
+    files = []
+    for f in iter_files(paths):
+        if all_files or module_root(f):
+            files.append(f)
+        else:
+            linter.outside.append(f)
     texts = {}
     for f in files:
         try:
@@ -658,6 +879,8 @@ def lint(paths):
             check_python(f, data.decode('utf-8', 'replace'), linter)
         elif f.endswith('.xml'):
             check_xml(f, data, linter)
+        elif f.endswith('.js'):
+            check_js(f, data.decode('utf-8', 'replace'), linter)
         elif f.endswith('.csv'):
             check_csv(f, data.decode('utf-8', 'replace'), linter)
     # дубли (одна строка, одно правило) убираем
@@ -676,6 +899,9 @@ def print_text(linter, out=None):
     errors = sum(1 for x in linter.findings if x['severity'] == 'ERROR')
     warns = len(linter.findings) - errors
     print(f'odoo19-lint: {errors} ERROR, {warns} WARN; файлов просмотрено: {linter.files}', file=out)
+    if linter.outside:
+        print(f'Вне модулей Odoo (нет __manifest__.py), не проверялись: {len(linter.outside)} '
+              f'(например {linter.outside[0]}); --all-files, чтобы проверить', file=out)
     for x in linter.findings:
         sev, what, fix, src = RULES[x['rule']]
         detail = f' — {x["detail"]}' if x['detail'] else ''
@@ -683,6 +909,9 @@ def print_text(linter, out=None):
         print(f'  что: {what}', file=out)
         print(f'  исправить: {fix}', file=out)
         print(f'  источник: {src}', file=out)
+        if x['rule'] in CODEMODS:
+            print(f'  автозамена: odoo-bin upgrade_code --script {CODEMODS[x["rule"]]} --dry-run '
+                  f'(официальный кодмод {SRC}odoo/upgrade_code/{CODEMODS[x["rule"]]}.py)', file=out)
     if linter.skipped:
         print('\nНе разобрано: ' + '; '.join(linter.skipped), file=out)
     print('\nНе проверяет: поля и модели вне переданных путей (ядро, enterprise, другие аддоны), '
@@ -694,18 +923,22 @@ def main(argv=None):
     ap.add_argument('paths', nargs='*', help='файлы или каталоги модуля/аддонов')
     ap.add_argument('--json', action='store_true', help='вывод JSON')
     ap.add_argument('--rules', action='store_true', help='список правил с источниками')
+    ap.add_argument('--all-files', action='store_true',
+                    help='проверять и файлы вне модулей Odoo (по умолчанию только внутри каталога с __manifest__.py)')
     args = ap.parse_args(argv)
     if args.rules:
         for rid, (sev, what, fix, src) in RULES.items():
-            print(f'{rid} [{sev}]\n  что: {what}\n  исправить: {fix}\n  источник: {src}\n')
+            cm = f'\n  автозамена: odoo-bin upgrade_code --script {CODEMODS[rid]}' if rid in CODEMODS else ''
+            print(f'{rid} [{sev}]\n  что: {what}\n  исправить: {fix}\n  источник: {src}{cm}\n')
         return 0
     if not args.paths:
         ap.error('нужен путь к модулю или каталогу аддонов')
-    linter = lint(args.paths)
+    linter = lint(args.paths, all_files=args.all_files)
     if args.json:
         print(json.dumps({'findings': [dict(x, what=RULES[x['rule']][1], fix=RULES[x['rule']][2],
-                                            source=RULES[x['rule']][3]) for x in linter.findings],
-                          'files': linter.files, 'skipped': linter.skipped}, ensure_ascii=False, indent=1))
+                                            source=RULES[x['rule']][3], codemod=CODEMODS.get(x['rule'])) for x in linter.findings],
+                          'files': linter.files, 'skipped': linter.skipped,
+                          'outside_modules': len(linter.outside)}, ensure_ascii=False, indent=1))
     else:
         print_text(linter)
     return 1 if any(x['severity'] == 'ERROR' for x in linter.findings) else 0
