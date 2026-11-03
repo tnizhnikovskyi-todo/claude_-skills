@@ -112,7 +112,7 @@
 | slug | Задача | Ветка | Сессия | Статус |
 |---|---|---|---|---|
 | odoo19-facts-fix | T1 (F2–F4) | `claude/odoo19-facts-fix` в маркетплейсе | [session_01L4X5dzPx8aMQudE8KAChEx](https://claude.ai/code/session_01L4X5dzPx8aMQudE8KAChEx) | готово, PR #11 (не слит) |
-| odoo19-lint | T2 | `build/odoo19-lint` | [session_01L4X5dyWpMXotVz4BwTqWyE](https://claude.ai/code/session_01L4X5dyWpMXotVz4BwTqWyE) | первый круг слит; второй круг (≈15 правил) |
+| odoo19-lint | T2 | `build/odoo19-lint` | [session_01L4X5dyWpMXotVz4BwTqWyE](https://claude.ai/code/session_01L4X5dyWpMXotVz4BwTqWyE) | слито в хаб (40 правил, Δ +0.73 во втором круге) |
 | odoo-connector-safety | T3 (F1) | `claude/odoo-connector-safety` в маркетплейсе | [session_01L4X5dwynXX8w5Vk8Mu4QK2](https://claude.ai/code/session_01L4X5dwynXX8w5Vk8Mu4QK2) | готово, PR #12 (не слит) |
 | odoo-model-map-f5 | T4 (F5) | `build/odoo-model-map-f5` | [session_01L4X5dxi7y9ihHDLZzemase](https://claude.ai/code/session_01L4X5dxi7y9ihHDLZzemase) | слито в хаб (Δ +0.22; F5 воспроизводится и у голой модели) |
 
