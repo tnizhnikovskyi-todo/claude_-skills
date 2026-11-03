@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_list" model="ir.ui.view">
+        <field name="name">td.vehicle.list</field>
+        <field name="model">td.vehicle</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_form" model="ir.ui.view">
+        <field name="name">td.vehicle.form</field>
+        <field name="model">td.vehicle</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="archive" type="object" string="Archive" states="draft"/>
+                </header>
+                <field name="plate" attrs="{'invisible': [('name', '=', False)]}"/>
+            </form>
+        </field>
+    </record>
+    <record id="view_partner_form_td" model="ir.ui.view">
+        <field name="name">res.partner.form.td</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phone']" position="after">
+                <field name="mobile"/>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/tree" position="inside">
+                <field name="td_code"/>
+            </xpath>
+            <xpath expr="//field[@name='td_code']" position="attributes">
+                <attribute name="attrs">{'readonly': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_order_form_td" model="ir.ui.view">
+        <field name="name">sale.order.form.td</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom']" position="after">
+                <field name="pack_qty"/>
+            </xpath>
+            <field name="partner_id" position="after">
+                <field name="partner_id.mobile"/>
+            </field>
+        </field>
+    </record>
+    <record id="action_vehicle" model="ir.actions.act_window">
+        <field name="name">Vehicles</field>
+        <field name="res_model">td.vehicle</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'tree_view_ref': 'td_lint.view_list'}</field>
+        <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <menuitem id="menu_vehicle" action="action_vehicle" groups="base.group_user"/>
+</odoo>

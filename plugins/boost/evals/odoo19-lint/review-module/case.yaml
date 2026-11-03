@@ -1,0 +1,60 @@
+schema_version: "1"
+name: odoo19-lint/review-module
+description: >
+  Ревью модуля Odoo 19 перед мержем. В модуле 7 ловушек установки/поведения
+  (res.partner.mobile, _inherit списком без _name, res.groups category_id/users,
+  ir.cron numbercall, _sql_constraints, name_get, view_mode tree) среди
+  правильного кода 19 (<list>, invisible=, <chatter/>, models.Constraint,
+  type='jsonrpc'). Ключ: test_odoo19_lint.py::Fixture.
+tags: [odoo19-lint, positive, odoo]
+context:
+  scaffold_script: setup.sh
+execution:
+  prompt: |
+    В `addons/td_rental` модуль под Odoo 19, коллега просит посмотреть его
+    перед мержем: установится ли он на чистую базу 19 и нет ли там того, что
+    в 19 работает не так, как задумано. Кода не меняй, дай список проблем с
+    файлом, строкой и исправлением.
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill]
+runs: 3
+graders:
+  - type: tool_used
+    name: skill-fired
+    tool: Skill
+    input_match: odoo19-lint
+    min: 1
+  - type: llm
+    name: hard-traps
+    weight: 2
+    criteria: >
+      Проверь ответ ревью модуля Odoo 19. PASS, только если в нём названы
+      как проблемы ВСЕ четыре: (1) поле customer_mobile с
+      related='customer_id.mobile' — у res.partner в 19 нет поля mobile;
+      (2) класс RentalKpi в rental_kpi.py: _inherit = ['td.rental.order']
+      списком без _name создаёт в 19 новую модель (rental.kpi), а не
+      расширяет td.rental.order; (3) в security.xml у res.groups поля
+      category_id и/или users, которых в 19 нет (нужны privilege_id/
+      res.groups.privilege и user_ids); (4) в ir_cron.xml поле numbercall,
+      которого у ir.cron в 19 нет. FAIL, если хотя бы одна из четырёх не
+      названа проблемой или названа, но с неверным выводом (например,
+      «список в _inherit — нормальное расширение»).
+  - type: llm
+    name: other-traps
+    criteria: >
+      PASS, если ответ называет проблемами ВСЕ три: (1) _sql_constraints в
+      rental_order.py в 19 не работает/игнорируется, нужен models.Constraint;
+      (2) метод name_get в 19 не вызывается, нужен _compute_display_name;
+      (3) view_mode 'tree,form' в действии — в 19 нужен 'list,form'.
+      FAIL, если хотя бы одна не названа.
+  - type: llm
+    name: no-false-positives
+    criteria: >
+      В модуле правильно для Odoo 19 написаны: тег <list>, атрибуты
+      invisible=/readonly= с выражениями, <chatter/>, models.Constraint
+      (_date_check), @http.route(type='jsonrpc'), _inherit = 'res.partner'
+      строкой, атрибут groups= у menuitem, ir.rule с company_ids. PASS, если
+      ответ НЕ называет ошибкой ни одну из этих конструкций (упоминание как
+      верных — ок). FAIL, если хотя бы одна из них подана как ошибка или
+      требует исправления.

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cron_recompute" model="ir.cron">
+        <field name="name">Recompute</field>
+        <field name="model_id" ref="model_td_vehicle"/>
+        <field name="state">code</field>
+        <field name="code">model._cron()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+    </record>
+    <record id="uom_pack6" model="uom.uom">
+        <field name="name">Pack of 6</field>
+        <field name="relative_factor">6</field>
+        <field name="relative_uom_id" ref="uom.product_uom_unit"/>
+    </record>
+    <record id="product_filters" model="product.template">
+        <field name="name">Filters</field>
+        <field name="type">consu</field>
+        <field name="is_storable" eval="True"/>
+    </record>
+</odoo>
