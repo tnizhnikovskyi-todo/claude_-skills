@@ -40,3 +40,52 @@
   `github.com/zunoworks/gateguard`; `santa-method` — автор Ronald Skelton
   (RapportScore.ai). Для них лицензия = MIT корня, но атрибуцию автору
   сохраняем.
+
+### Перечень и стоимость (подсчёт по исходникам)
+- 314 `SKILL.md` (82 тыс. строк), описания 102 тыс. символов; агенты 71
+  (16 тыс. символов описаний), команды 98 (14 тыс.). Подсчёт скриптом по
+  frontmatter, символы/4 ≈ токены.
+- `rules/common` 19.4 КБ, `rules/python` 4.8 КБ — ставятся установщиком в
+  `~/.claude/rules` (плагином не ставятся).
+- `hooks/hooks.json`: 28 регистраций (PreToolUse 10, UserPromptSubmit 1,
+  PreCompact 1, SessionStart 2, PostToolUse 2 диспетчера,
+  PostToolUseFailure 2, Stop 8, SessionEnd 1). Профили `minimal/standard/
+  strict` через `ECC_HOOK_PROFILE`, `hooks_enabled` по умолчанию `true`.
+- `session-start.js`: контекст старта ≤ 8000 символов, ≤ 6 инстинктов.
+
+### Сеть и телеметрия
+- `grep` по `scripts/hooks` и `scripts/lib`: внешних URL в вызовах нет;
+  `http.request` только к локальному Plan Canvas. Ссылки на спонсоров
+  (`compute-sponsor.js` → compute.itomarkets.com, Nasiko) — текст в CLI.
+- Метрики стоимости → `~/.claude/metrics/costs.jsonl` (локально).
+- Наблюдатель инстинктов: `claude --model haiku --print` раз в 5 мин,
+  по умолчанию выключен.
+- Не нашли в хуках `git pull`/`npm install`/`curl` (автообновления нет).
+
+### Сверка с нашими скиллами
+- `tr-usecases-acceptance` (синхронизированная копия в
+  `~/.claude/skills/synced/...`): Given/When/Then, нет «не повинно» и
+  метода проверки → вставка 1 обоснована.
+- `session-transcript-analyzer`: реестры D/X/C/T/Q/A, глоссария нет →
+  вставка 2 обоснована.
+- gstack (`origin/analysis/gstack`, summary): похожий вывод — отклонить
+  установку, брать методы; у gstack 5.5 тыс. токенов на вызов, у ECC
+  33 тыс. в каждой сессии.
+
+### Отбор (8 карточек из ~480 файлов-инструкций)
+Смотрели также и не взяли: `verification-loop` (npm/tsc-ориентирован,
+дублирует `code-review`), `skill-stocktake` (≈ `automation-audit`),
+`strategic-compact`/`context-budget` (встроенные `/context`, автокомпакт),
+`delivery-gate` (блок по свободному месту на диске и «свежести» журналов —
+не про нас), `recursive-decision-ledger` (трейдинг), `brownfield-retrospective`
+(веб-SDLC, тяжёлый), `master-agreement-generator` (DRAFT-договоры из
+шаблона — у нас КП в `odoo19-sales-offer`), `lead-intelligence` (X API,
+Exa), агенты `silent-failure-hunter` (≈ наш «Пол качества»), `spec-miner`
+(OpenSpec, у нас ТР → SPEC).
+
+### Открытые вопросы
+- Поднимается ли `chrome-devtools-mcp` из корневого `.mcp.json` при
+  установке плагина (в `plugin.json` `mcpServers: {}`) — не проверяли.
+- Лицензия первоисточника gateguard (`zunoworks/gateguard`) — не смотрели;
+  берём только идею, поэтому не блокирует.
+- A/B для вставок 1–5 — в сессиях реализации.
