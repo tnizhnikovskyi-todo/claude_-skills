@@ -44,3 +44,28 @@
   `sales-handover-analyzer`, `meeting-protocol-builder`, `security-review`.
 - Скиллов `odoo19-mvp-build` (code-dev, testing, pr-review) и большинства
   `odoo19-discovery-*` здесь нет; частично — в `proposals/` нашего репо.
+
+## 2026-11-03 — разбор методов и сравнение
+
+- Прочитаны: `nacl-ba-full` (фазы, ворота yes/redo/stop, `status: assumption`),
+  `nacl-ba-validate` (L1–L8, XL1–XL5, severity, классификатор),
+  `nacl-ba-handoff` (матрица трассировки), `nacl-sa-uc` (stories/detail/
+  slices/errors/resilience, Phase 4.5 Runtime Contract),
+  `nacl-tl-review` (ворота заглушек, nav-actions, Step 6 baseline),
+  `nacl-tl-core/references/gate-fire-catalog.md` (G1–G11),
+  `project-gap-closure.md` (strict-mode, запрещённые «успехи»),
+  `nacl-postmortem`, CHANGELOG 2.28.0.
+- Сравнено с `tr-review`, `tr-usecases-acceptance`, `tr-odoo-tech-design`,
+  `odoo-spec-writer`, `session-transcript-analyzer` (из `~/.claude/skills/synced`),
+  а также `proposals/odoo19-discovery`, `proposals/odoo19-mvp-build`.
+- Активность: коммиты 2026-04: 37, 05: 69, 06: 87, 07: 179, 08: 4, 09: 12.
+  Один автор. Часть методологии ушла в приватный репо (`meta/`).
+- Решение: отклонить как есть, 5 методов в `items/`.
+
+## Открытые вопросы
+
+- A/B адаптированных вставок на фикстурах ТР: нужно решение пользователя.
+- Владелец `odoo19-tr-authoring` / `odoo19-mvp-build`: вставки, как и
+  прошлые, пойдут через `proposals/` (это зона главной сессии/реализации).
+- Odoo-API для блокировок и postcommit в Runtime Contract не сверены:
+  перед вставкой прогнать через `source-check` (Odoo 19).
