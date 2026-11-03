@@ -2,7 +2,8 @@
 
 - **Тип:** плагин (один скилл + Node-скрипт для xlsx)
 - **Источник:** https://github.com/namit-jpg/presales-agent-skill (★0, MIT)
-- **Версия / коммит:** 2.0.0, `14cb687` (2026-10-22)
+- **Версия / коммит:** 2.0.0, `14cb687089d6a87d5b7fc7f49bc449cedc87b623` (2026-10-22)
+- **Лицензия:** MIT, © 2026 namit-jpg
 - **Дата разбора:** 2026-11-03
 - **Вердикт:** **адаптировать** (взять тексты-правила, не ставить плагин)
 
@@ -89,7 +90,29 @@ A/B не проводился: нужен запуск на нашем бриф�
 - Не переносить: SKU-каталог, модули облаков, Solution-паттерны Salesforce,
   модель часов «AI-assisted», фиксированную шкалу спринтов.
 
-Конкретные вставки: [`items/brd-boundary-method.md`](items/brd-boundary-method.md).
+## Что взять
+
+Пути от корня репозитория источника, `@14cb687` = `14cb687089d6a87d5b7fc7f49bc449cedc87b623`.
+MIT разрешает всё ниже, включая дословное копирование, при сохранении
+копирайта и текста лицензии. Мы везде выбираем пересказ, поэтому достаточно
+строки атрибуции в `references/ATTRIBUTION.md` скилла-получателя.
+
+| Идея | Исходный файл | Куда у нас | Как | Лицензия |
+|---|---|---|---|---|
+| «Три места» вместо «предполагаем»: делаем / нужно от клиента со сроком / не входит | `plugins/wd-presales-skill2/skills/presales-agent/references/requirement_writing.md@14cb687` | `odoo19-discovery-closeout:discovery-scope-mapper`, правила строки скоупа | пересказ своими словами (укр.) | MIT — да |
+| Анти-паттерны текста: «тощо», открытые списки, техтермины в описании, пункт без срока | `plugins/wd-presales-skill2/skills/presales-agent/references/requirement_writing.md@14cb687` (Anti-patterns) | `discovery-scope-mapper`, тот же блок | пересказ | MIT — да |
+| Бизнес-язык в описании, термины платформы только в «Підхід» | `plugins/wd-presales-skill2/skills/presales-agent/references/scope_building.md@14cb687` (Solution Approach) | `discovery-scope-mapper` | только идея | MIT — да |
+| Одна строка = одна принимаемая возможность; интеграция и группа миграции — свои строки | `plugins/wd-presales-skill2/skills/presales-agent/references/scope_building.md@14cb687` (decomposition) | `discovery-scope-mapper` | пересказ | MIT — да |
+| Чек-лист ревью скоупа с severity и стопом на CRITICAL (15–20 из 40, без Salesforce) | `plugins/wd-presales-skill2/skills/presales-agent/references/review_checklist.md@14cb687`, `plugins/wd-presales-skill2/skills/presales-agent/references/scope_review.md@14cb687` | самопроверка `discovery-scope-mapper` или `discovery-gap-analyzer` | пересказ, отбор и перевод пунктов | MIT — да |
+| Таблица типовых «нужно от клиента / не входит» по областям | `plugins/wd-presales-skill2/skills/presales-agent/references/scope_boundary_patterns.md@14cb687` | `discovery-scope-mapper/references/` (новая таблица под области Odoo) | только идея (структура), содержание своё | MIT — да |
+| Миграция — отдельная сумма вне ёмкости разработки; строки выше диапазона дробить | `plugins/wd-presales-skill2/skills/presales-agent/references/sprint_planning.md@14cb687`, `plugins/wd-presales-skill2/skills/presales-agent/references/effort_estimation.md@14cb687` | `odoo19-sales-prep:preliminary-estimate` | только идея | MIT — да |
+| Описание процесса шагами + глоссарий аббревиатур клиента | `plugins/wd-presales-skill2/skills/presales-agent/references/requirement_writing.md@14cb687` (Business Process Guide) | `odoo19-sales-demo:presale-pack-builder` | только идея | MIT — да |
+
+Не берём: модель часов «AI-assisted» (`effort_estimation.md`), SKU и паттерны
+Salesforce (`products_catalog.md`, `scope_patterns.md`,
+`solution_approach_patterns.md`), код генератора и установщики.
+
+Детали вставок: [`items/brd-boundary-method.md`](items/brd-boundary-method.md).
 
 ## Риски и заметки
 

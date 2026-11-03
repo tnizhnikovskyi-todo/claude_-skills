@@ -1,6 +1,6 @@
 # Что и куда перенести из presales-agent
 
-Источник: `namit-jpg/presales-agent-skill@14cb687`, MIT. Тексты переписать
+Источник: `namit-jpg/presales-agent-skill@14cb687089d6a87d5b7fc7f49bc449cedc87b623`, MIT (© 2026 namit-jpg). Таблица «файл → куда → как» — в `../README.md`, раздел «Что взять». Тексты переписать
 своими словами; при близком пересказе — атрибуция в `references/ATTRIBUTION.md`
 скилла-получателя.
 
