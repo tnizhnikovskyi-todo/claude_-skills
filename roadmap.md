@@ -193,3 +193,7 @@
 | перенос в локальную папку | готово 2026-11-03: коммит `e0977ed` в монорепо (ветка `feat/bi-dashboards`) — ровно 21 файл; посторонние файлы снова незакоммичены; PR #7 закрыт; локальный клон маркетплейса на `8e97644`, `--gated --dry-run`: все плагины «без змін» | главная сессия | | |
 | доставка сотрудникам | готово 2026-11-03: PR #8 влит (`9e19e33`); организация подхватила: в синхронизированных плагинах `boost` 0.4.0 (8 скиллов), `odoo19-mvp-build` 0.9.1, `odoo19-discovery-sessions` 0.6.0, `odoo19-discovery-initiation` 0.11.0; скиллы доступны в новой сессии | главная сессия | | |
 | предупреждения синка claude.ai | готово 2026-11-03: `boost` 0.4.1 (#9); продажи 0.4.1 без `$schema`/`defaultEnabled` + накопленные правки (#10, `7acde05`); пользователь включил право Actions открывать PR | главная сессия | | |
+| T1 | в работе: факты Odoo 19 + F2–F4 → PR в маркетплейс | [T1](https://claude.ai/code/session_01L4X5dzPx8aMQudE8KAChEx) | `claude/odoo19-facts-fix` (маркетплейс) | `T1_REPORT.md` |
+| T2 | в работе: `boost:odoo19-lint` | [T2](https://claude.ai/code/session_01L4X5dyWpMXotVz4BwTqWyE) | `build/odoo19-lint` | `reports/odoo19-lint.md` |
+| T3 | в работе: защита записи `odoo-connector` (F1) → PR в маркетплейс | [T3](https://claude.ai/code/session_01L4X5dwynXX8w5Vk8Mu4QK2) | `claude/odoo-connector-safety` (маркетплейс) | `T3_REPORT.md` |
+| T4 | в работе: F5 в `odoo-model-map` | [T4](https://claude.ai/code/session_01L4X5dxi7y9ihHDLZzemase) | `build/odoo-model-map-f5` | `reports/odoo-model-map-f5.md` |
