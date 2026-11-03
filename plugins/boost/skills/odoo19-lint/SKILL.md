@@ -6,7 +6,8 @@ description: >
   (<tree>, attrs=/states=, view_mode tree, _sql_constraints, res.partner.mobile/
   title, res.groups.users/category_id, groups_id, _inherit списком без _name,
   ir.cron numbercall, name_get, read_group, self._context, type='json',
-  uom category_id, product type 'product', sale.order.line.product_uom).
+  uom category_id, product type 'product', sale.order.line.product_uom/tax_id,
+  @api.model create, oe_chatter, <group expand> в поиске, удалённые аддоны).
   Вызывай ПОСЛЕ того, как написал или изменил файлы модуля Odoo 19 (модели,
   вью, группы, крон, данные, контроллер) и ДО ответа «готово»/ревью/коммита;
   или по просьбе «проверь модуль на ловушки 19», «odoo19-lint», «установится
@@ -44,6 +45,16 @@ python3 -I <папка скилла>/scripts/odoo19_lint.py <модуль или
 изменённого файла и сверка с таблицей ниже; полные правила с примерами и
 источниками — `references/rules.md`. Grep-рецепты там же.
 
+Проверяй только файлы модуля (каталог с `__manifest__.py`): справочники,
+`*.md`, скрипты и `references/` перечисляют запрещённое как пример —
+это не находки. Скрипт сам пропускает всё вне модулей (`--all-files`
+снимает ограничение).
+
+Часть правил можно исправить официальным кодмодом Odoo 19:
+`odoo-bin upgrade_code --script tree-to-list|sql-constraint|route-jsonrpc|deprecated-properties --dry-run`
+(скрипт печатает строку «автозамена»). Прогон кодмода — только с
+согласия пользователя: он переписывает файлы.
+
 ## 3. Ловушки (кратко)
 
 | Где | Нельзя в 19 | Нужно |
@@ -64,7 +75,16 @@ python3 -I <папка скилла>/scripts/odoo19_lint.py <модуль или
 | uom.uom | `category_id`, `uom_type`, `factor_inv` | `relative_factor` + `relative_uom_id` |
 | товар | `detailed_type`, `type='product'` | `type='consu'` + `is_storable=True` |
 | sale/purchase.order.line | `product_uom` | `product_uom_id` (у `stock.move` — `product_uom`) |
-| манифест | `'pre_init_hook': 'mod.hooks.f'` | `'pre_init_hook': 'f'` |
+| манифест | `'pre_init_hook': 'mod.hooks.f'`; `'version': '18.0.1.0.0'` (молча `installable=False`); `depends` на `web_editor`, `hr_contract`, `membership`, `website_jitsi`… | `'f'`; `'19.0.x.y.z'`; `html_editor`, `hr` |
+| ORM | `@api.model` + `def create(self, vals)` (в 19 получит СПИСОК) | `@api.model_create_multi`, `vals_list` |
+| ORM | `_constraints = [...]` (игнорируется) | `@api.constrains` |
+| импорт | `fields.date/datetime`, `models.NewId`, `odoo.registry()`, `SavepointCase`, `odoo.osv.expression` (warn) | `fields.Date`, `odoo.api.NewId`, `Registry(db)`/`env.registry`, `TransactionCase`, `Domain` |
+| поиск | `<group expand="0" string="…">` в `<search>` | `<group>` без атрибутов |
+| форма | `<div class="oe_chatter">` (чаттер молча пропадает) | `<chatter/>` |
+| точность | `digits='Product Unit of Measure'` (молча 2 знака) | `digits='Product Unit'` |
+| права | `base.default_user`; `_login(cls, db, …)` classmethod | `base.default_user_group`; `def _login(self, credential, user_agent_env)` |
+| строки заказа | `sale.order.line.tax_id`, `purchase.order.line.taxes_id` | `tax_ids` |
+| JS | `useService("rpc")`, `useService("user")` | `import { rpc }` / `import { user }` из `@web/core/...` |
 
 ## 4. Как читать и что делать
 
