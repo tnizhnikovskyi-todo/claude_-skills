@@ -2,7 +2,8 @@
 
 - **Тип:** плагин Claude Code (59 скиллов, 7 агентов, хук `SessionStart`, монитор) + Neo4j-граф проекта через Docker и `neo4j-mcp`
 - **Источник:** https://github.com/ITSalt/NaCl (★28, MIT)
-- **Версия / коммит:** плагин 2.28.0, `20fe4c6` (2026-09-28)
+- **Версия / коммит:** плагин 2.28.0, `20fe4c6a56482e85d3ea9a9ebaadb37206047e41` (2026-09-28)
+- **Лицензия:** MIT (Copyright (c) 2026 ITSalt)
 - **Дата разбора:** 2026-11-03
 - **Вердикт:** **отклонить как есть, адаптировать 5 методов** (тексты по MIT с атрибуцией)
 
@@ -60,15 +61,20 @@
 | Ретроспектива | `nacl-postmortem`: каждый баг после «done» → какой скилл его пропустил | `skill-feedback` + `observations/` | Хорошо дополняет наш цикл улучшения |
 | Знание Odoo | нет | есть | — |
 
-## Что перенести (items/)
+## Что взять (items/)
 
-| Метод | Источник | Куда у нас | Карточка |
-|---|---|---|---|
-| Runtime Contract: 8 полей для UC с состоянием, cron, очередью, внешним API | `nacl-sa-uc` Phase 4.5 | `tr-odoo-tech-design` (секция) + пункт в `tr-review` | [runtime-contract](items/runtime-contract.md) |
-| Достижимость UI: каждая новая модель/визард/действие достижимы из меню/кнопки и имеют права | gate G7, `nacl-sa-ui` + `nacl-tl-review` | `tr-review`, `pr-review` | [ui-reachability](items/ui-reachability.md) |
-| Baseline для «новых падений» + только объявленная команда + без тестов нет APPROVE | `nacl-tl-review` Step 6 | `odoo19-mvp-build:testing`/`pr-review` | [test-baseline](items/test-baseline.md) |
-| Трассировка дискавери → ТР с «клапаном» (исключение только с причиной) | `nacl-ba-validate` XL1/XL3, `nacl-ba-handoff`, `coverage_exempt` | `tr-review` (новый блок) или `odoo-spec-writer` | [traceability](items/traceability.md) |
-| Постмортем «какой скилл пропустил баг» | `nacl-postmortem` | `boost:skill-feedback` / еженедельное ревью | [postmortem](items/postmortem.md) |
+SHA везде `20fe4c6`. Лицензия MIT разрешает и дословный перенос, и пересказ:
+при дословном переносе в `references/` скилла кладём `ATTRIBUTION.md`
+с текстом лицензии MIT и копирайтом ITSalt. Планируем пересказ своими
+словами под Odoo, дословных фрагментов нет.
+
+| Идея | Исходный файл | Что берём | Куда у нас | Как | Лицензия |
+|---|---|---|---|---|---|
+| Runtime Contract ([карточка](items/runtime-contract.md)) | `nacl-sa-uc/SKILL.md@20fe4c6` (Phase 4.5); `nacl-tl-core/references/gate-fire-catalog.md@20fe4c6` (G8) | Дерево «когда обязателен» и 8 полей контракта | `tr-odoo-tech-design` (Крок 2) + пункт в `tr-review` | Пересказ своими словами с переводом на Odoo, ссылка на источник | MIT — да |
+| Достижимость UI ([карточка](items/ui-reachability.md)) | `nacl-sa-ui/SKILL.md@20fe4c6` (Nav Actions, UI Reachability); `nacl-tl-review/SKILL.md@20fe4c6` (Nav-actions consumer check); `gate-fire-catalog.md@20fe4c6` (G7) | Правило «действие пользователя без входа из UI — блокер» | `tr-review`, `pr-review` (чек-пункт) | Только идея; формулировки Odoo свои | MIT — да |
+| Baseline тестов ([карточка](items/test-baseline.md)) | `nacl-tl-review/SKILL.md@20fe4c6` (Step 6, 6a-baseline); `nacl-tl-core/references/project-gap-closure.md@20fe4c6` (Forbidden terminal success states) | Процедура merge-base + worktree, «нет объявленной команды → нет APPROVE» | `odoo19-mvp-build:testing` / `pr-review` | Пересказ своими словами | MIT — да |
+| Трассировка «дискавери → ТР» ([карточка](items/traceability.md)) | `nacl-ba-validate/SKILL.md@20fe4c6` (XL1–XL5, Severity Levels); `nacl-ba-handoff/SKILL.md@20fe4c6`; `CHANGELOG.md@20fe4c6` (2.28.0, `coverage_exempt`) | Кросс-слойное покрытие, исключение только с причиной, правило «CRITICAL → FAIL» | `tr-review` (блок «Покриття журналу») | Только идея; таблица своя под журнал D/X/Q | MIT — да |
+| Постмортем ([карточка](items/postmortem.md)) | `nacl-postmortem/SKILL.md@20fe4c6`; `.claude/workflows/nacl-postmortem-panel.js@20fe4c6` (только читали) | Классы `SPEC_WRONG / SPEC_MISSING / SPEC_RIGHT_DEV_DRIFTED`, фиксированная таблица «класс → скилл», `unmapped` | `boost:skill-feedback` (режим «ретро после MVP») | Пересказ; названия классов можно оставить дословно с атрибуцией | MIT — да |
 
 Не переносим: граф Neo4j, оркестраторы, агентов-профили, Docmost/YouGile,
 Excalidraw-доски, строгий режим целиком (`UNVERIFIED` у нас уже есть в
