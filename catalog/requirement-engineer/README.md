@@ -2,7 +2,7 @@
 
 - **Тип:** скилл (один `SKILL.md` + 9 справок + 15 шаблонов + 4 примера, только markdown)
 - **Источник:** https://github.com/MadurangaDev/requirement-engineer
-- **Версия / коммит:** `b728406` (2026-07-04); тег `beta` → `8cc6f85`
+- **Версия / коммит:** `b72840625da4debb175b9ede39090f976a7e5ffe` (2026-07-04); тег `beta` → `8cc6f85`
 - **Лицензия:** MIT, © 2026 Maduranga Jayasena. Блок EARS сам заимствован из
   [jasonkneen/kiro `skills/requirements-engineering`](https://github.com/jasonkneen/kiro/blob/main/skills/requirements-engineering/) (MIT)
 - **Дата разбора:** 2026-11-03
@@ -94,7 +94,20 @@ use cases, acceptance criteria, «interview me/grill me», **«вставил
 вопросов, но **даёт три приёма, которых у нас нет**: уверенность по
 измерениям, сигналы «надо хотеть» и разбор рассказа на скрытые требования.
 
-## Что и куда перенести
+## Что взять
+
+SHA разобранного коммита: `b72840625da4debb175b9ede39090f976a7e5ffe`
+(далее `@b728406`). Лицензия MIT разрешает и дословный перенос, и
+пересказ, при условии сохранения копирайта и текста лицензии в копиях.
+
+| # | Исходный файл | Что берём | Куда у нас | Как | Лицензия |
+|---|---|---|---|---|---|
+| 1 | `skill/references/narrative-elicitation.md@b728406` | 5 сигналов скрытых требований и правило «найденное — гипотеза до подтверждения» | `session-transcript-analyzer`, новый шаг 3б (через `proposals/odoo19-discovery/`) | Пересказ своими словами по-украински; дословно — только названия 5 сигналов | MIT, да; атрибуция в `references/ATTRIBUTION.md` |
+| 2 | `skill/references/reasoning-framework.md@b728406`, раздел «Contradiction Handling» | 4 шага обработки противоречия | `session-transcript-analyzer`, шаги 3 и 4 (тот же `proposals/`) | Пересказ своими словами | MIT, да; атрибуция |
+| 3 | `skill/references/confidence-interview.md@b728406`, разделы «Confidence dimensions» и «Hunting the gap» | Уверенность по измерениям; сигналы «надо хотеть»; «схлопнуть scope» | `plugins/boost/skills/interview-me/SKILL.md` (шаги 1, 3, 4) + новый `references/should-want.md` | Пересказ; набор измерений свой (5 вместо 8, с Odoo-измерением); примеры свои | MIT, да; дописать в `interview-me/references/attribution.md` |
+| 4 | `skill/references/ears-format.md@b728406`, «Edge Case Patterns» и «Bad → Good» | Граничные случаи «одновременный доступ», «ровно на пороге»; список расплывчатых слов | Чек-листы `tr-usecases-acceptance`, `tr-review` (через `proposals/`) | Только идея: две строки чек-листа своими словами | MIT, да; первоисточник — jasonkneen/kiro (MIT), указать обоих |
+
+### Приоритет и детали
 
 | # | Приём | Куда | Как | Приоритет |
 |---|---|---|---|---|
