@@ -77,3 +77,21 @@
   (дословно / пересказ / идея) и разрешение лицензии. README обновлён:
   полный SHA `20fe4c6a56482e85d3ea9a9ebaadb37206047e41`, MIT (ITSalt),
   таблица «Что взять» с источниками.
+
+## 2026-11-03 — сверка с текстами маркетплейса
+
+- По подсказке главной сессии: `add_repo` на чтение
+  `todoltd/claude-methodology-marketplace` прошёл, shallow-клон в
+  `/home/user/claude-methodology-marketplace` (HEAD `7acde05`), вне нашего репо.
+  `register_repo_root` не вызывал: плагины оттуда в сессию не грузил.
+  Из приватного репо в наш ничего не копировал, только пересказ.
+- Прочитаны: `odoo19-mvp-build` (`pr-review` + `references/review-discipline.md`,
+  `testing`, `code-dev`), `odoo19-tr-authoring` (`tr-review`,
+  `tr-usecases-acceptance`, `tr-odoo-tech-design`),
+  `odoo19-discovery-closeout` (`journal-to-tr-builder`, `discovery-gap-analyzer`),
+  состав `boost`.
+- Итог: две идеи сузились (Runtime Contract, трассировка), baseline почти
+  покрыт, достижимость UI и постмортем остаются полностью новыми. Таблица
+  в README, раздел «Сверка с текущими текстами».
+- `odoo19-sales-*` (публичный `sale_todo_claude`) не смотрел: к NaCl
+  отношения не имеет (в NaCl нет продаж).
