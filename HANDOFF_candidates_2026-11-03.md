@@ -46,4 +46,33 @@ odoo-skills `634b2db`.
 - Холодные рассылки (`growthenginenowoslawski/coldoutboundskills`, `explorium-ai/gtm-skills` и т. п.):
   у нас продажа через бриф и демо, не рассылки.
 
+## Раунд 2: продажи, бизнес-анализ, оценка, ревью
+
+Тот же порядок: только описания, ничего не запускали. Нумерация продолжается.
+
+| № | slug | Репозиторий | ★ | Лицензия | Чем может помочь | Сравнить с |
+|---|---|---|---|---|---|---|
+| **Первыми** |||||||
+| 12 | `ai-presales-skills` | [hangljoe/AI-PreSales-Skills](https://github.com/hangljoe/AI-PreSales-Skills) | 5 | не указана | пресейл по «The PreSales Handbook», независимый от вендора | весь `odoo19-sales-*` |
+| 13 | `presales-agent-skill` | [namit-jpg/presales-agent-skill](https://github.com/namit-jpg/presales-agent-skill) | 0 | MIT | пресейл внедрения Salesforce: дискавери → матрица скоупа → план спринтов; ближайший аналог нашего | `preliminary-estimate`, `presale-pack-builder`, `discovery-scope-mapper` |
+| 14 | `software-estimation-skills` | [Leanware-io/software-estimation-skills](https://github.com/Leanware-io/software-estimation-skills) | 0 | MIT | 3 скилла оценки стоимости разработки с источниками ставок | `preliminary-estimate`, `tr-effort-instruction` |
+| 15 | `ukr-follow-up` | [s1vanov/follow-up](https://github.com/s1vanov/follow-up) | 2 | не указана | украиноязычный: транскрипт встречи → follow-up (одно действие — один владелец) | `client-followup-writer`, `demo-followup-writer`, `meeting-protocol-builder` |
+| **Тоже подходят** |||||||
+| 16 | `ba-skills` | [uycung/ba-skills](https://github.com/uycung/ba-skills) | 0 | MIT | 11 скиллов БА: стейкхолдеры, бизнес-кейс, выявление требований, истории | `kickoff-question-builder`, `session-question-builder` |
+| 17 | `requirement-engineer` | [MadurangaDev/requirement-engineer](https://github.com/MadurangaDev/requirement-engineer) | 0 | MIT | активный инженер требований: сам задаёт вопросы | `boost:interview-me`, `session-transcript-analyzer` |
+| 18 | `mastering-technical-sales` | [tokenaissance/mastering-technical-sales](https://github.com/tokenaissance/mastering-technical-sales) | 0 | MIT | справочник пресейл-инженера, 28 глав фреймворков | `defence-brief`, `demo-runbook` |
+| 19 | `ai-first-estimation` | [antondrob/ai-first-estimation](https://github.com/antondrob/ai-first-estimation) | 1 | MIT | оценка проектов, где код пишет ИИ: считать только время человека | `tr-effort-instruction` |
+| 20 | `modularity` | [vladikk/modularity](https://github.com/vladikk/modularity) | 578 | не указана | проектирование модульной системы из функциональных требований и ревью | `architecture` |
+| 21 | `security-harness` | [dmdhrumilmistry/security-harness](https://github.com/dmdhrumilmistry/security-harness) | 42 | MIT | мультиагентное ревью безопасности приложения | `security-review`, каталог `strix` |
+| 22 | `opencode-power-pack` | [waybarrios/opencode-power-pack](https://github.com/waybarrios/opencode-power-pack) | 549 | MIT | 55 скиллов: ревью кода, аудит безопасности | `pr-review`, `boost:repo-audit` |
+| **Только идеи (лицензии нет)** |||||||
+| 23 | `claude-sow-creation` | [SB-Celebal/claude-sow-creation](https://github.com/SB-Celebal/claude-sow-creation) | 0 | нет | SOW + анкеты-опросники для клиента | `discovery-sow-builder`, `data-completeness-scorer` |
+| 24 | `generate-test-book` | [Androbito/generate-test-book](https://github.com/Androbito/generate-test-book) | 0 | нет | история → ручная тест-книга (Gherkin) | `tr-usecases-acceptance`, `acceptance-act-builder` |
+| 25 | `repo-security-review` | [Consensys/repo-security-review](https://github.com/Consensys/repo-security-review) | 33 | нет | ревью безопасности кода **и скиллов** — пригодится для проверки самих кандидатов | процесс разбора (`criteria.md`, безопасность) |
+
+Источники для следующих раундов поиска (каталоги, не разбирать целиком):
+[VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) (MIT),
+[ComposioHQ/awesome-claude-skills](https://github.com/ComposioHQ/awesome-claude-skills),
+[hesreallyhim/awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) — кандидат в `sources.md`.
+
 Поиск продолжается в чате-источнике; новые находки — дописывать сюда.
