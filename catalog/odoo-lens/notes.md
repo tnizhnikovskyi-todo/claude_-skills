@@ -89,3 +89,14 @@ eval `_fixture/addons/td_fleet_report/models/kpi.py` + кейс `who-extends`
 полный SHA, лицензия, дата; у каждой идеи — исходный файл `путь@SHA`, куда,
 как и позволяет ли лицензия. Добавлено в `README.md`: строка «Лицензия» и
 таблица «Происхождение».
+
+## 2026-11-03 — попытка достать оригинал `pr-review`
+
+Главная сессия подсказала источник: приватный
+`todoltd/claude-methodology-marketplace` (`plugins/<плагин>/skills/`).
+`add_repo` на чтение отклонён автоклассификатором прав (как и `todo_timur`).
+**Сравнение с `odoo19-mvp-build:pr-review` сделано НЕ по оригиналу**, а по
+реконструкции `proposals/odoo19-mvp-build/pr-review/BASELINE-STANDIN.md`
+и по описанию скилла. Вывод «в `pr-review` нет списка v19-ловушек» надо
+перепроверить по оригиналу. Публичный `sale_todo_claude` (продажи) для этого
+разбора не нужен.
