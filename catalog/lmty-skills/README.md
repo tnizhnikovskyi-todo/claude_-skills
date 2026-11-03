@@ -27,7 +27,7 @@ ERP, а про SaaS-рынок с публичными прайсами и chang
 
 | Скилл | Что делает | Для нас | Куда |
 |---|---|---|---|
-| [`competitive-win-loss-analysis`](items/competitive-win-loss-analysis.md) | Причины побед/проигрышей: слова клиента отдельно от версии продавца, счёт N из M с исключениями, смещения выборки, гипотезы с тестом | **Лучшая находка** | `odoo19-sales-offer:loss-pattern-analyzer` |
+| [`competitive-win-loss-analysis`](items/competitive-win-loss-analysis.md) | Причины побед/проигрышей: слова клиента отдельно от версии продавца, счёт N из M с исключениями, смещения выборки, гипотезы с тестом | Средняя: почти всё у нас уже есть, сверх — 3 правила | `odoo19-sales-offer:loss-pattern-analyzer` |
 | [`competitive-objection-response`](items/competitive-objection-response.md) | Одно возражение: проверить посылку, 5 поз (acknowledge/clarify/reframe/prove/qualify), 15-секундный ответ, 1–2 вопроса, «что не утверждать» | Средняя: сверх нашего — проверка посылки и вопросы | `defence-brief` |
 | [`competitive-deal-prep`](items/competitive-deal-prep.md) | Одна сделка: кто реально в сделке, критерии клиента vs допущения продавца, 3 вопроса следующей встречи, риски | Средняя (частично дублирует) | `defence-brief`, `brief-prep-pack` |
 | [`competitive-poc-rfp-plan`](items/competitive-poc-rfp-plan.md) | POC/RFP: table stakes vs решающие критерии, каждое преимущество → «событие-доказательство», условия no-go | Средняя | `demo-build-plan`, тендеры |
