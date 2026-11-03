@@ -2,7 +2,8 @@
 
 - **Тип:** плагин Claude Code (LSP-сервер + линтер модулей + скилл + хук `SessionStart`)
 - **Источник:** https://github.com/ChengyanOo/odoo-lens (★21, **лицензии нет**)
-- **Версия / коммит:** `2482f92` (2026-10-22) = HEAD на 2026-11-03, плагин `0.1.0`
+- **Версия / коммит:** `2482f9216244ee540fc6a0fb9f453e15d570293f` (2026-10-22) = HEAD на 2026-11-03, плагин `0.1.0`
+- **Лицензия:** нет (ни `LICENSE`, ни поля в манифестах) → все права у автора; берём только идеи, пересказом
 - **Дата разбора:** 2026-11-03
 - **Вердикт:** **адаптировать** (правила линтера → наши чек-листы; поправить
   `odoo-model-map`). Сам плагин не ставить.
@@ -117,6 +118,21 @@ JS), поиск символов, иерархию вызовов. Отдель�
 4. **Приём формата**: одна строка «файл:строка — что, с какой версии, на
    что заменить» и понижение серьёзности с пометкой «не проверено», если
    не видна зависимость.
+
+### Происхождение (что и откуда берём)
+
+SHA для всех строк: `2482f92`. Лицензии нет, поэтому способ везде —
+пересказ своими словами или только идея; дословное копирование не
+разрешено. Факты об Odoo (правила версий) сами по себе не охраняются, но
+формулировки пишем свои и сверяем по первоисточнику Odoo.
+
+| # | Исходный файл | Что берём | Куда у нас | Как | Лицензия позволяет? |
+|---|---|---|---|---|---|
+| 1 | `odoo_lens/features/diagnostics.py@2482f92` (`_check_class`, правило про `_inherit` списком в 19) | Факт: в 19 `_inherit`-список без `_name` = новая модель | `plugins/boost/skills/odoo-model-map/` (`scripts/odoo_map.py`, `SKILL.md`), `evals/odoo-model-map/` | Только идея; факт сверен с `odoo/orm/models.py@19.0` (odoo/odoo, LGPL-3) | Да (идея + факт из Odoo) |
+| 2 | `odoo_lens/features/diagnostics.py@2482f92` (таблицы `REMOVED_DECORATORS`, `FIELD_KWARG_DEPRECATIONS`, `FIELD_RENAMES_19`, `_user_has_groups`, `_inherits_links`, проверки `tree`/`attrs`/`list`) | Список устаревшего API 17–19 | `plugins/boost/skills/repo-audit/references/odoo-checklist.md`; предложение в `proposals/odoo19-mvp-build/pr-review/` | Пересказ своими словами, каждую строку сверить с Odoo (`source-check`) | Да, если без дословного текста сообщений |
+| 3 | `odoo_lens/features/diagnostics.py@2482f92` (`PY_FIELD_ROLES`, `XML_STRICT_ROLES`, `_not_imported`, `_not_loaded`, `private-method`, `_check_manifest`, `missing-dependency`) | Правила связности модуля и градация серьёзности по месту ссылки | `repo-audit/references/odoo-checklist.md`, `pr-review` | Пересказ своими словами | Да (идея) |
+| 4 | `odoo_lens/features/diagnostics.py@2482f92` (`_Resolver.adjust`) | Понижение серьёзности с пометкой «не проверено», если зависимость не видна | формат находки в `repo-audit` / `pr-review` | Только идея | Да (идея) |
+| 5 | `skills/odoo-lens/SKILL.md@2482f92`, `odoo_lens/cli.py@2482f92` (`session-hint`) | — (не берём: широкий триггер и always-on хук) | — | — | — |
 
 ## Риски и заметки
 
