@@ -107,13 +107,26 @@ Bits. Дословно не копируем (ShareAlike заразил бы н�
 
 ## Сравнение с нашими
 
-- `odoo19-mvp-build:pr-review`: оригинального текста в окружении нет
-  (`~/.claude/plugins/synced/` пустая). Сравнивали с нашим предложением
-  `proposals/odoo19-mvp-build/pr-review/proposed/INSERT.md` и
-  заменителем `BASELINE-STANDIN.md`.
-- `security-review` (орг.): `proposals/odoo19-mvp-build/security-review/proposed/SKILL.md`
-  (метод Strix: `confirmed` / `ruled_out` / `open_proof_gap`, «понижай, не
-  удаляй», 5 ворот фикса, таблица покрытия).
+- **Обновление (по подсказке главной сессии).** Сначала сравнивали с
+  предложениями из `proposals/odoo19-mvp-build/` (`~/.claude/plugins/synced/`
+  пустая). Потом подключили приватный `todoltd/claude-methodology-marketplace`
+  через `add_repo` (только чтение), клон `/home/user/claude-methodology-marketplace`,
+  HEAD `7acde054afadf0ebaecc508ea3c41c6d93d65605`. Прочитаны
+  `plugins/odoo19-mvp-build/skills/pr-review/SKILL.md` (278 строк) и
+  `security-review/SKILL.md` (284) + `references/`. Текст из приватного репо
+  сюда не копируем, только названия разделов и короткий пересказ.
+- **Итог сверки:** обе вставки из наших предложений уже влиты. В
+  `security-review` есть: закрытие кандидата тремя состояниями, «что НЕ
+  доказывает безопасность», «аргументируй другую сторону», VULN только при
+  показанной достижимости, «понижай, не удаляй», 5 ворот фикса, скоуп диффа
+  (новая достижимость старого синка, ослабленный общий контроль, изменённый
+  default), а в `references/closure-and-severity.md` — строки «контроль,
+  который может открыться при ошибке» и «что поставляется, то и считается».
+  В `pr-review` есть: 4-частная находка, регрессия / newly reached /
+  pre-existing через `git show`/`git blame`, пол качества, мутационная
+  проверка, Prove-It, «Not checked», раунд из 4 критиков-субагентов.
+- Поэтому прирост от power-pack меньше, чем казалось по предложениям (см.
+  «Что взять» в `README.md`, пересчитано).
 - `boost:repo-audit`, `boost:lean-change`: `plugins/boost/skills/`.
 - Встроенные `code-review`, `security-review`.
 
@@ -127,6 +140,8 @@ Bits. Дословно не копируем (ShareAlike заразил бы н�
 
 ## Открытые вопросы
 
+0. Главная сессия прислала, где лежат тексты наших плагинов; приватный
+   репо подключён на чтение, сверка выполнена (см. выше).
 1. A/B не делали. Кандидаты на проверку — вставки из раздела «Что взять»
    в `security-review` (fail-open, шаг 0 «перескажи находку») на фикстурах
    `proposals/odoo19-mvp-build/tests/fixtures/`.

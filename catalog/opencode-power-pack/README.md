@@ -5,7 +5,7 @@
 - **Версия / коммит:** v0.6.0, `c3328ad1633c1561026532f29b718a2380bc52ee` (2026-10-27)
 - **Лицензия:** заявлена «MIT AND Apache-2.0»; по скиллам см. ниже, у скиллов безопасности фактически **CC BY-SA 4.0** (Trail of Bits)
 - **Дата разбора:** 2026-11-03
-- **Вердикт:** **отклонить как плагин; адаптировать 4 идеи** в `security-review`, `pr-review`, `criteria.md`
+- **Вердикт:** **отклонить как плагин; адаптировать 5 небольших вставок** (по 1–3 строки) в `security-review`, `pr-review`, `criteria.md`
 
 ## Что делает
 
@@ -52,19 +52,21 @@ Trail of Bits, мелкие авторы) и делает их переноси�
 
 | Скилл | Вердикт | Итог | Главное |
 |---|---|---|---|
-| [`insecure-defaults`](items/insecure-defaults.md) | адаптировать | 14 | fail-open / fail-secure; Odoo-таблица готова |
+| [`insecure-defaults`](items/insecure-defaults.md) | адаптировать 2 строки | 13 | fail-open конфигурации: `get_param(default=…)`, TLS по умолчанию |
 | [`supply-chain-risk-auditor`](items/supply-chain-risk-auditor.md) | адаптировать в `criteria.md` | 13 | 6 признаков риска вместо одной шкалы «Поддержка» |
-| [`differential-review`](items/differential-review.md) | адаптировать 3 идеи | 12 | риск по содержанию, `git blame` удалённого защитного кода, радиус |
-| [`fp-check`](items/fp-check.md) | адаптировать 3 идеи | 11 | шаг 0 «перескажи находку», ворота достижимости, цепочки |
+| [`differential-review`](items/differential-review.md) | адаптировать 2 идеи | 11 | риск файла по содержанию; переопределения через `_inherit` (сравнение с базой у нас уже есть) |
+| [`fp-check`](items/fp-check.md) | адаптировать 2 идеи | 10 | шаг 0 «перескажи находку», цепочки из `ruled_out` (достижимость у нас уже есть) |
 | [`agentic-actions-auditor`](items/agentic-actions-auditor.md) | отложить | 11–12 | 9 векторов атаки на CI с ИИ-агентом; нужно, если есть такие workflow |
-| [`code-review`](items/code-review.md) | отклонить, 2 идеи | 10 | «упавший субагент ≠ нет находок»; пин коммитов PR |
+| [`code-review`](items/code-review.md) | отклонить, 2 идеи | 10 | «упавший критик ≠ нет находок» — прямо ложится на раунд критиков `pr-review`; пин коммитов PR |
 
 ## Сравнение с нашими
 
+Сверено с действующими текстами `odoo19-mvp-build` (`todoltd/claude-methodology-marketplace@7acde05`, приватный, только чтение; текст не копируем). Наши предложения Strix/ponytail там уже влиты.
+
 | Наш скилл | Что у них сверх | Что дублирует |
 |---|---|---|
-| `security-review` (орг., предложение со Strix) | fail-open (`insecure-defaults`); шаг 0 и ворота достижимости/окружения (`fp-check`); `git blame` удалённых проверок (`differential-review`) | Закрытие кандидата с доказательством, калибровка severity, скоуп диффа, таблица покрытия, недоверенное описание PR |
-| `pr-review` (орг.; оригинал недоступен, сравнение с `proposals/.../INSERT.md`) | Риск файла по содержанию, а не размеру; «частичный ответ ≠ чисто»; пин `merge-base` | 4-частная находка, регрессия vs старое, «не проверено» |
+| `security-review` (орг., действующий) | Явный **fail-open конфигурации модуля**: `get_param(key, default='<секрет/URL>')`, `verify=False` по умолчанию (`insecure-defaults`); шаг 0 «перескажи находку» и цепочки из `ruled_out` (`fp-check`) | Закрытие кандидата тремя состояниями, «аргументируй другую сторону», VULN только при показанной достижимости, «понижай, не удаляй», скоуп диффа с изменённым default, «контроль, который открывается при ошибке», «что поставляется, то и считается» |
+| `pr-review` (орг., действующий) | Риск файла по содержанию, а не размеру; переопределения изменённого метода через `_inherit`; «критик-субагент упал/ответил частично → это «Not checked», а не «чисто»»; пин `merge-base` | 4-частная находка, регрессия / newly reached / pre-existing через `git show`/`git blame`, пол качества, мутационная проверка, Prove-It, «Not checked» |
 | `boost:repo-audit` | Odoo-таблица fail-open в `odoo-checklist.md`; признаки риска зависимостей | Ранжирование, формат, «нет случая — нет находки», «не проверено» |
 | `boost:lean-change` | — (у них нет аналога; `code-review` только флагует scope creep) | — |
 | `boost:automation-audit` | Векторы атаки на CI (`agentic-actions-auditor`) | — |
@@ -78,7 +80,7 @@ A/B не делали. Внешний код не запускали.
 |---|---|---|
 | — | — | — |
 
-Кандидат на A/B: вставка fail-open + шаг 0 в `security-review`, фикстуры
+Кандидат на A/B: две строки fail-open в Dimension 6 `security-review` и правило «упавший критик → Not checked» в `pr-review`; фикстуры
 `proposals/odoo19-mvp-build/tests/fixtures/` плюс одна новая с
 `get_param(..., default='секрет')`.
 
@@ -98,11 +100,11 @@ A/B не делали. Внешний код не запускали.
 
 | # | Идея | Исходный файл | Куда у нас | Как | Лицензия |
 |---|---|---|---|---|---|
-| 1 | **fail-open / fail-secure** и вопрос «что будет без настройки» + Odoo-таблица (`get_param(..., default)`, `verify=False`, `auth='public'`, `csrf=False`, секретное поле без `groups=`) | `skills/insecure-defaults/SKILL.md@c3328ad` (ToB `plugins/insecure-defaults@711af09`) | `security-review` Dimension 6 + `references/insecure-defaults-odoo.md`; строка в `boost:repo-audit/references/odoo-checklist.md` | Своими словами, ссылка на Trail of Bits | CC BY-SA 4.0 → только идея |
-| 2 | **Шаг 0** «перескажи находку: что / корень / триггер / влияние / кто атакует» + ворота «достижимость» и «защита окружения» + поиск цепочек из `ruled_out` | `skills/fp-check/SKILL.md@c3328ad`, `references/gate-reviews.md@c3328ad` (ToB `plugins/fp-check@711af09`) | `security-review`, «Closing every candidate» и `references/closure-and-severity.md` | Своими словами | CC BY-SA 4.0 → только идея |
-| 3 | **Риск файла по содержанию**, удалённая проверка = HIGH; `git log -S`/`blame` удалённого защитного кода; переопределения через `_inherit` | `skills/differential-review/SKILL.md@c3328ad` (ToB `plugins/differential-review@711af09`) | `pr-review` INSERT («Review discipline»), `security-review/references/diff-scope.md` | Своими словами, Odoo-вариант | CC BY-SA 4.0 → только идея |
+| 1 | **fail-open конфигурации:** «что будет, если параметра нет?» — `get_param(key, default='<секрет/URL>')` = находка уровня хардкода; `verify=False` / `verify_ssl` по умолчанию `False`. Остальное (`auth='public'`, `groups=`, `except: pass` в проверке) у нас уже есть | `skills/insecure-defaults/SKILL.md@c3328ad` (ToB `plugins/insecure-defaults@711af09`) | `security-review` Dimension 6 (2 строки); строка в `boost:repo-audit/references/odoo-checklist.md` | Своими словами, ссылка на Trail of Bits | CC BY-SA 4.0 → только идея |
+| 2 | **Шаг 0** «перескажи находку: что / корень / триггер / влияние / кто атакует» + поиск **цепочек** из `ruled_out`/понижённых в конце. Достижимость и «другую сторону» у нас уже есть | `skills/fp-check/SKILL.md@c3328ad` (ToB `plugins/fp-check@711af09`) | `security-review`, «Closing every candidate» | Своими словами | CC BY-SA 4.0 → только идея |
+| 3 | **Риск файла по содержанию** (в Odoo HIGH = `security/`, `ir.rule`, контроллеры, `sudo()`, `account.*`; «рефакторинг» с удалённой проверкой = HIGH) + переопределения изменённого метода через `_inherit` в других аддонах. `git blame` для регрессий у нас уже есть | `skills/differential-review/SKILL.md@c3328ad` (ToB `plugins/differential-review@711af09`) | `pr-review`, «Review discipline»; `security-review/references/diff-scope.md` | Своими словами, Odoo-вариант | CC BY-SA 4.0 → только идея |
 | 4 | **6 признаков риска** (один мейнтейнер, заброшен, непопулярен, рискованные возможности, CVE, нет `SECURITY.md`) + «цифры только из `gh`» + наш признак «цепочка лицензий» | `skills/supply-chain-risk-auditor/SKILL.md@c3328ad` (ToB `plugins/supply-chain-risk-auditor@711af09`) | `criteria.md`, подсказки к «Поддержке» и «Безопасности» (правит главная сессия) | Своими словами | CC BY-SA 4.0 → только идея |
-| 5 | «Упавший или частичный ответ субагента ≠ нет находок» → в «Не проверено»; ревьюить `merge-base(base, head)..head` | `skills/code-review/SKILL.md@c3328ad` (Anthropic `claude-plugins-official@bdca23e`) | `pr-review` INSERT, Inputs и «Not checked» | Пересказ | Apache-2.0, атрибуция |
+| 5 | «Критик или субагент упал / вернул пусто / частично ≠ нет находок» → участок в «Not checked» (сейчас при недоступности только «single pass»); ревьюить `merge-base(base, head)..head` | `skills/code-review/SKILL.md@c3328ad` (Anthropic `claude-plugins-official@bdca23e`) | `pr-review`, раунд критиков и Inputs | Пересказ | Apache-2.0, атрибуция |
 | 6 | (отложено) 9 векторов атаки на CI с ИИ-агентом | `skills/agentic-actions-auditor/references/vector-*.md@c3328ad` | `boost:automation-audit`, если у нас есть `claude-code-action` | Только идея | CC BY-SA 4.0 |
 
 Если понадобится текст скиллов безопасности целиком — брать из
