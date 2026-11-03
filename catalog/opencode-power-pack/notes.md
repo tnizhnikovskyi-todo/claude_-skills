@@ -33,7 +33,7 @@
 |---|---|---|
 | `huggingface/skills` | 25 | Apache-2.0 |
 | `vigolium/piolium` | 14 (безопасность) | MIT |
-| `anthropics/claude-plugins-official` | 10 (`code-review`, `feature-dev`, `agents-md-*`, `frontend-design`…) | Apache-2.0 |
+| `anthropics/claude-plugins-official` | 8 (`code-review`, `feature-dev`, `agents-md-*`, `frontend-design`…) | Apache-2.0 |
 | `anthropics/skills` | 2 (`mcp-builder`, `skill-creator`) | Apache-2.0 |
 | `anthropics/claude-code-security-review` | 1 (`security-review`) | MIT |
 | `Firstp1ck/pi-coding-agent-forge` | 3 (`code-quality`, `design-patterns`, `paper-summarizer`) | MIT |

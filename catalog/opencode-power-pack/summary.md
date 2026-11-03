@@ -2,7 +2,7 @@
 
 - **Что это:** сборник 55 чужих скиллов под Claude Code / Codex / OpenCode / Pi
   (`waybarrios/opencode-power-pack@c3328ad`, v0.6.0). Свой скилл один
-  (`humanizer`); 25 из Hugging Face, 13 из Anthropic, 14 скиллов
+  (`humanizer`); 25 из Hugging Face, 11 из Anthropic, 14 скиллов
   безопасности через `vigolium/piolium`, по сути из `trailofbits/skills`.
 - **Вердикт:** плагин отклонить (≈3.6 тыс. токенов описаний в каждой сессии,
   дубли встроенных `code-review`/`security-review`, нам нужны 3–4 из 55).
