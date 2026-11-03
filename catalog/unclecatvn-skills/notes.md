@@ -118,3 +118,39 @@ sparse-клон `odoo/` + `addons/{base,mail,sale,account,web}/models`.
 `claude/admiring-cannon-25jueb`): у каждой идеи источник `путь@SHA`, куда,
 как, лицензия. Раздел README «Что перенести» переписан в таблицу «Что
 взять»; в шапку добавлены полный SHA и лицензия.
+
+## 2026-11-03, сравнение с `odoo19-mvp-build:code-dev`
+
+Источник: приватный `todoltd/claude-methodology-marketplace` (коммит
+`7acde05`, 2026-11-03), подключён на чтение по подсказке главной сессии,
+файлы `plugins/odoo19-mvp-build/skills/code-dev/SKILL.md` и
+`references/odoo-version-notes.md`. Текст оттуда сюда не копируем,
+ниже только наши выводы.
+
+**Чем `code-dev` занят.** Дисциплина спецификации: одна AC за раз,
+маркеры `# TODO: AC-XX`, докстринги с AC, соглашения ToDo (`td.*`,
+`td_*`), формат коммита, общие примеры кода. Проверки фактов версии по
+исходникам нет: опора на заметки о версиях в `references/`.
+
+**Сверка раздела про 19.0 в наших заметках с `odoo/odoo@19.0` (`e0b25b7`):**
+
+| Утверждение наших заметок (пересказ) | Исходники 19.0 | Итог |
+|---|---|---|
+| Python 3.12+, PostgreSQL 16+ | `odoo/release.py:39-41`: Python 3.10–3.14, PostgreSQL ≥ 13 | неверно |
+| Есть поле `fields.AiSuggestion` | в `odoo/` такого нет (поиск по всему ядру пуст) | не подтверждено |
+| Модуль `discuss` отделён от `mail`, проверять depends | аддона `discuss` в 19.0 community нет; `mail` зависит от `base`, `base_setup`, `bus`, `web_tour`, `html_editor` | не подтверждено |
+| Проведение `account.move`: `action_post` → внутренний `_post` | оба есть (`account_move.py:5598`, `:6227`), но `_post` был и до 19 — это не изменение 19.0 | вводит в заблуждение |
+| `fields.Html` sanitize по умолчанию `True` (про 18) | `odoo/orm/fields_textual.py:578` `sanitize: bool = True` | верно |
+
+Кроме того, в `SKILL.md` для агрегатов советуется `read_group`, а в 19.0
+он deprecated (`odoo/orm/models.py:2754`). Изменений 19.0, которые есть в
+паке unclecatvn (`_sql_constraints` → `models.Constraint`, `@api.returns`,
+`self._cr`, `jsonrpc`, `privilege_id`, правила `_name`, демо), в наших
+заметках нет.
+
+**Вывод.** Пак unclecatvn по 19.0 точнее наших заметок (11/11 против
+1 верного из 5 проверенных). Это поднимает приоритет строки 1 таблицы
+«Что взять»: проверенный список изменений 19.0 нужен не только в
+`source-check`, но и вместо раздела про 19 в
+`odoo19-mvp-build:code-dev/references/odoo-version-notes.md`
+(правка через PR в маркетплейс, делает главная сессия или сессия реализации).
