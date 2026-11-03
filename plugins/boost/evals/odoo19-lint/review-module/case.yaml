@@ -1,9 +1,10 @@
 schema_version: "1"
 name: odoo19-lint/review-module
 description: >
-  Ревью модуля Odoo 19 перед мержем. В модуле 7 ловушек установки/поведения
+  Ревью модуля Odoo 19 перед мержем. В модуле 9 ловушек установки/поведения
   (res.partner.mobile, _inherit списком без _name, res.groups category_id/users,
-  ir.cron numbercall, _sql_constraints, name_get, view_mode tree) среди
+  ir.cron numbercall, _sql_constraints, name_get, view_mode tree; второй круг:
+  @api.model create, <group expand string> в поиске) среди
   правильного кода 19 (<list>, invisible=, <chatter/>, models.Constraint,
   type='jsonrpc'). Ключ: test_odoo19_lint.py::Fixture.
 tags: [odoo19-lint, positive, odoo]
@@ -48,6 +49,17 @@ graders:
       (2) метод name_get в 19 не вызывается, нужен _compute_display_name;
       (3) view_mode 'tree,form' в действии — в 19 нужен 'list,form'.
       FAIL, если хотя бы одна не названа.
+  - type: llm
+    name: round2-traps
+    criteria: >
+      PASS, если ответ называет проблемами ОБЕ: (1) метод create в
+      rental_order.py с @api.model и сигнатурой create(self, vals) — в Odoo
+      19 он получает список словарей (декоратор превращает его в
+      model_create_multi), нужен @api.model_create_multi и vals_list;
+      (2) в поисковом вью td_rental_order_view_search у <group> атрибуты
+      expand/string, которых в 19 у group в search нет (вью не пройдёт
+      проверку). FAIL, если хотя бы одна не названа или назван неверный
+      вывод (например, «@api.model create — нормально, просто устарело»).
   - type: llm
     name: no-false-positives
     criteria: >

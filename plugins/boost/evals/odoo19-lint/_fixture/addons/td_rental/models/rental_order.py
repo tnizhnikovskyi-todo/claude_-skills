@@ -55,3 +55,9 @@ class RentalOrder(models.Model):
             return overdue
         overdue.action_return()
         return overdue
+
+    @api.model
+    def create(self, vals):
+        if vals.get('code', '/') == '/':
+            vals['code'] = self.env['ir.sequence'].next_by_code('td.rental.order') or '/'
+        return super().create(vals)

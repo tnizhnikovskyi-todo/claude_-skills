@@ -48,7 +48,25 @@ EXPECTED = {
     'product-type': [('data/data.xml', 21), ('data/data.xml', 22)],
     'uom-fields': [('data/data.xml', 15), ('data/data.xml', 16), ('data/data.xml', 17)],
     'line-product-uom': [('models/models.py', 65), ('models/models.py', 68), ('views/views.xml', 45)],
-    'manifest-hook-path': [('__manifest__.py', 6)],
+    'manifest-hook-path': [('__manifest__.py', 4)],
+    # второй круг
+    'manifest-version': [('__manifest__.py', 5)],
+    'removed-module': [('__manifest__.py', 6)],
+    'old-constraints': [('models/round2.py', 9)],
+    'digits-uom': [('models/round2.py', 12)],
+    'fields-date-alias': [('models/round2.py', 13)],
+    'api-model-create': [('models/round2.py', 15)],
+    'default-get-kwarg': [('models/round2.py', 22)],
+    'models-newid': [('models/round2.py', 28)],
+    'odoo-registry': [('models/round2.py', 31)],
+    'default-user': [('models/round2.py', 34), ('views/round2.xml', 39)],
+    'login-classmethod': [('models/round2.py', 41)],
+    'line-tax-ids': [('models/round2.py', 49), ('models/round2.py', 56), ('views/round2.xml', 32)],
+    'js-use-service': [('static/src/js/widget.js', 7), ('static/src/js/widget.js', 8)],
+    'savepoint-case': [('tests/test_ticket.py', 1)],
+    'search-group-attrs': [('views/round2.xml', 9)],
+    'oe-chatter': [('views/round2.xml', 21)],
+    'osv-expression': [('models/round2.py', 3)],
 }
 
 
@@ -119,7 +137,7 @@ class Suppression(unittest.TestCase):
                         "    _name = 'a'\n"
                         "    x = fields.Char(related='partner_id.mobile')  # odoo19-lint: ignore\n"
                         "    y = fields.Char(related='partner_id.mobile')\n")
-            lines = [x['line'] for x in lint_mod.lint([p]).findings]
+            lines = [x['line'] for x in lint_mod.lint([p], all_files=True).findings]
             self.assertEqual(lines, [7])
 
     def test_module_defines_mobile(self):
@@ -132,7 +150,7 @@ class Suppression(unittest.TestCase):
                         "    _inherit = 'res.partner'\n    mobile = fields.Char()\n\n\n"
                         "class A(models.Model):\n    _name = 'a'\n"
                         "    m = fields.Char(related='partner_id.mobile')\n")
-            self.assertEqual(lint_mod.lint([p]).findings, [])
+            self.assertEqual(lint_mod.lint([p], all_files=True).findings, [])
 
 
 @unittest.skipUnless(os.path.isdir(PILOT), 'pilot/addons нет рядом')
@@ -163,7 +181,31 @@ class EvalFixture(unittest.TestCase):
             ('view-mode-tree', 'td_rental/views/rental_views.xml', 55),
             ('read-group', 'td_rental/models/rental_kpi.py', 10),
             ('private-env', 'td_rental/models/rental_order.py', 54),
+            ('api-model-create', 'td_rental/models/rental_order.py', 59),
+            ('search-group-attrs', 'td_rental/views/rental_views.xml', 66),
         ]))
+
+
+class ReferenceFiles(unittest.TestCase):
+    """Урок darwin-skill: барьер не срабатывает на справочниках, где запрещённое перечислено."""
+
+    SKILLS = os.path.join(HERE, '..', '..', 'skills')
+
+    def test_skills_and_references_are_clean(self):
+        linter = lint_mod.lint([self.SKILLS])
+        self.assertEqual(linter.findings, [])
+        self.assertTrue(linter.outside)  # скрипты скиллов вне модулей Odoo — пропущены
+
+    def test_markdown_is_never_read(self):
+        files = list(lint_mod.iter_files([self.SKILLS]))
+        self.assertFalse([f for f in files if f.endswith('.md')])
+        rules_md = os.path.join(self.SKILLS, 'odoo19-lint', 'references', 'rules.md')
+        self.assertTrue(os.path.isfile(rules_md))
+
+    def test_all_files_flag_sees_own_script(self):
+        """Без ограничения скрипт видит свои же строки-сообщения: поэтому по умолчанию только модули."""
+        linter = lint_mod.lint([os.path.join(self.SKILLS, 'odoo19-lint', 'scripts')], all_files=True)
+        self.assertTrue(linter.findings)
 
 
 if __name__ == '__main__':
