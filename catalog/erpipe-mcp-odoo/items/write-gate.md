@@ -1,7 +1,7 @@
 # Гейт записи erpipe `odoo-mcp` (детально)
 
-Источник: `src/odoo_mcp/tools_write.py`, `agent_tools.py`, `server_core.py`,
-`write_policy.py`, `audit.py`, `diagnostics.py` @ `76ec136`, MIT.
+Источник: https://github.com/erpipe-org/mcp-odoo, коммит `76ec136e0c89c414811a12629eb2903d2dc27357`, лицензия MIT. Файлы: `src/odoo_mcp/tools_write.py`, `agent_tools.py`, `server_core.py`,
+`write_policy.py`, `audit.py`, `diagnostics.py`. Описание своими словами, код не скопирован; набросок ниже — наш.
 
 ## Поток
 

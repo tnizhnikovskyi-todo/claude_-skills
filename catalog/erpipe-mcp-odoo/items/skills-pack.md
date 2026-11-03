@@ -1,5 +1,7 @@
 # Скиллы erpipe `odoo-mcp` (`skills/`)
 
+Источник: https://github.com/erpipe-org/mcp-odoo, `skills/*/SKILL.md@76ec136e0c89c414811a12629eb2903d2dc27357`, лицензия MIT. Пересказ, текст не копировали.
+
 4 SKILL.md по ~55–62 строки: `odoo-data-quality-gate`,
 `odoo-migration-copilot`, `odoo-month-end-close`, `odoo-agency-fleet-review`.
 Это плейбуки поверх инструментов именно этого сервера (`data_quality_report`,

@@ -1,8 +1,9 @@
 # erpipe-org/mcp-odoo (`odoo-mcp`)
 
 - **Тип:** MCP-сервер (Python, stdio / Streamable HTTP) + 4 скилла-плейбука
-- **Источник:** https://github.com/erpipe-org/mcp-odoo (★427, MIT; бывш. `tuanle96/mcp-odoo`)
-- **Версия / коммит:** 1.3.2, `76ec136` (2026-08-25)
+- **Источник:** https://github.com/erpipe-org/mcp-odoo (★427; бывш. `tuanle96/mcp-odoo`)
+- **Лицензия:** MIT (`LICENSE`), © Lê Anh Tuấn
+- **Версия / коммит:** 1.3.2, `76ec136e0c89c414811a12629eb2903d2dc27357` (2026-08-25)
 - **Дата разбора:** 2026-11-03
 - **Вердикт:** **адаптировать** (идеи в наш `odoo-mcp`; сервер как есть не ставить)
 
@@ -81,24 +82,27 @@ payload и базе, аудит, человек через elicitation.
 | Поддержка | 2 | Активен (101 коммит за полгода), один автор, коммерческий хостинг рядом |
 | **Итого** | **10/18** | |
 
-## Что перенести в наш коннектор
+## Что взять
 
-1. **Allowlist методов в git** для `odoo_execute`: точный `model.method` с
-   `reviewed_by/date/reason`, неизвестные методы блок по умолчанию (а не
-   только «деструктивные по имени»).
-2. **Предел на число записей** в `write`/`unlink`/методах (например 50) +
-   обязательный показ списка с `display_name` перед изменением.
-3. **Preview с diff «было → стало»**: перед `odoo_write` читать текущие
-   значения полей и показывать пользователю (у erpipe этого нет — можем
-   сделать лучше).
-4. **Невалидный домен → ошибка**, не пустой домен. Проверить наш сервер.
-5. **Аудит-журнал** каждого изменяющего вызова (включая методы): кто, база,
-   модель, ids, значения, итог.
-6. **Подтверждение человеком на стороне сервера** (MCP elicitation), если
-   клиент поддерживает — вместо `user_confirmed`, который выставляет сама
-   модель. Привязать подтверждение к хешу точного payload + `connection_id`.
-7. **None-marshal**: при `cannot marshal None` отвечать «выполнено», чтобы
-   модель не повторяла действие.
+Все ссылки на файлы относятся к коммиту `@76ec136` (полный SHA выше).
+Лицензия MIT допускает любое использование, в том числе дословное, при
+сохранении копирайта и текста лицензии. Сейчас переносим **только идеи и
+пересказ**, код не копируем, поэтому атрибуции в коде не нужно; если код
+будет взят дословно, приложить `LICENSE` MIT и копирайт автора. «Наш
+`odoo-mcp`» — серверный код вне этого репозитория.
+
+| # | Что берём | Источник | Куда у нас | Как | Лицензия |
+|---|---|---|---|---|---|
+| 1 | Allowlist точных `model.method` в git с `reviewed_by/date/reason`; неизвестные и побочные методы блокировать; битый файл = пустой список | `src/odoo_mcp/write_policy.py@76ec136`, `odoo_mcp_policy.json.example@76ec136`, `src/odoo_mcp/tools_write.py@76ec136` (`execute_method`), `src/odoo_mcp/diagnostics.py@76ec136` (`classify_method_safety`) | наш `odoo-mcp`, `odoo_execute` + файл политики | своими словами (схема JSON по образцу) | MIT, да |
+| 2 | Предел числа записей на одно изменение | идея из `MAX_WRITE_BATCH_SIZE`, `src/odoo_mcp/agent_tools.py@76ec136` (у них только для create); расширение на write/unlink/методы — наше | наш `odoo-mcp`, `odoo_write`/`odoo_execute` | только идея | MIT, да |
+| 3 | Diff «было → стало» с `display_name` перед записью | своё; отталкиваемся от `_write_elicitation_message`, `src/odoo_mcp/tools_write.py@76ec136`, где показаны только новые значения | наш `odoo-mcp` (preview) | только идея | — |
+| 4 | Нераспознанный домен → ошибка, не `[]` | `normalize_domain_input`, `src/odoo_mcp/tool_helpers.py@76ec136` (коммит «reject invalid search domains…», 2026-08-14) | наш `odoo-mcp`, все инструменты с `domain` | только идея (проверка нашего поведения) | MIT, да |
+| 5 | JSONL-аудит изменяющих вызовов, токены в журнале только хешем; у нас — включая методы | `src/odoo_mcp/audit.py@76ec136` | наш `odoo-mcp` | своими словами | MIT, да |
+| 6 | Подтверждение человеком через MCP elicitation; одобрение привязано к хешу точного payload + базе, одноразовое, TTL | `_elicit_write_confirmation` и `_execute_approved_write_gated`, `src/odoo_mcp/tools_write.py@76ec136`; `build_approval_token`, `src/odoo_mcp/agent_tools.py@76ec136`; `register_write_approval`, `src/odoo_mcp/server_core.py@76ec136` | наш `odoo-mcp`, вместо/поверх `user_confirmed` | своими словами | MIT, да |
+| 7 | `cannot marshal None` после метода = «выполнено, не повторяй» | `_NONE_MARSHAL_FAULT_MARKER`, `src/odoo_mcp/tools_write.py@76ec136` | наш `odoo-mcp`, `odoo_execute` | только идея | MIT, да |
+| 8 | «Сирота» может быть просто скрыта правами, проверь доступ до чистки; исправления партиями с явными id | `skills/odoo-data-quality-gate/SKILL.md@76ec136` | правила скиллов `odoo19-implementation` (миграция, качество данных) | пересказ своими словами | MIT, да |
+
+Набросок реализации 1–3 и 6: [`items/write-gate.md`](items/write-gate.md).
 
 ## Риски и заметки
 
