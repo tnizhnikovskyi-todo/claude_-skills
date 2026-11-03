@@ -163,9 +163,9 @@ URL = R(r"https?://[^\s\"'<>)\]`|\\]+")
 # теги), bidi-управление, zero-width. ZWJ/ZWNJ считаем скрытыми только между
 # ASCII (как в janitor), BOM в начале файла — норма.
 TAG_RUN = R("[\U000E0000-\U000E007F]+")
-BIDI = R("[‪-‮⁦-⁩]")
-ZERO_WIDTH = R("[​‎‏⁠-⁤﻿]")
-ZWJ_ASCII = R("[\x20-\x7e][‌‍]+[\x20-\x7e]")
+BIDI = R("[\u202a-\u202e\u2066-\u2069]")
+ZERO_WIDTH = R("[\u200b\u200e\u200f\u2060-\u2064\ufeff]")
+ZWJ_ASCII = R("[\x20-\x7e][\u200c\u200d]+[\x20-\x7e]")
 
 B64_BLOB = R(r"(?<![A-Za-z0-9+/_-])[A-Za-z0-9+/]{40,}={0,2}(?![A-Za-z0-9+/_-])")
 HEX_BLOB = R(r"(?<![0-9A-Fa-f])(?:[0-9A-Fa-f]{2}){40,}(?![0-9A-Fa-f])")
@@ -240,7 +240,7 @@ def parse_frontmatter(text: str):
     (|, >, |-, >-, |2), простые списки. CRLF допускается. Возвращает
     (dict | None, номер строки конца frontmatter)."""
     text = text.replace("\r\n", "\n").replace("\r", "\n")
-    if text.startswith("﻿"):
+    if text.startswith("\ufeff"):
         text = text[1:]
     lines = text.split("\n")
     if not lines or lines[0].strip() != "---":
@@ -449,7 +449,7 @@ class Scanner:
             self.add("BLOCK" if kind == "code" else "WARN", "hidden-text", "unicode-bidi", rel, lineno,
                      "bidi-управление (Trojan Source): " + repr(line.strip()[:80]))
         zw = ZERO_WIDTH.search(line)
-        if zw and not (first and zw.start() == 0 and zw.group(0) == "﻿"):
+        if zw and not (first and zw.start() == 0 and zw.group(0) == "\ufeff"):
             self.add("WARN", "hidden-text", "unicode-zero-width [janitor+]", rel, lineno, "zero-width: " + repr(line.strip()[:80]))
         elif ZWJ_ASCII.search(line):
             self.add("WARN", "hidden-text", "unicode-zwj-ascii [janitor]", rel, lineno, "ZWJ/ZWNJ между ASCII: " + repr(line.strip()[:80]))

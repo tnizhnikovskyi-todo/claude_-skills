@@ -111,7 +111,7 @@ GOOD: dict[str, dict[str, str]] = {
     },
     "emoji": {
         "skills/emoji/SKILL.md": skill("emoji", "Пишет посты с эмодзи. НЕ для кода.",
-            "Флаг: \U0001F3F4\U000E0067\U000E0062\U000E0073\U000E0063\U000E0074\U000E007F, семья: \U0001F468‍\U0001F469‍\U0001F467."),
+            "Флаг: \U0001F3F4\U000E0067\U000E0062\U000E0073\U000E0063\U000E0074\U000E007F, семья: \U0001F468\u200d\U0001F469\u200d\U0001F467."),
     },
     "frontmatter-traps": {
         "skills/crlf/SKILL.md": "---\r\nname: crlf\r\ndescription: >-\r\n  Пишет протокол. Не для\r\n  листів клієнту.\r\n---\r\n\r\nТело.\r\n",
