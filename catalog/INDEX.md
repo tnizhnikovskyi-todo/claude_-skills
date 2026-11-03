@@ -3,7 +3,7 @@
 Ведёт главная сессия по итогам слияния веток `analysis/*`.
 Общие выводы и план действий: [`../synthesis.md`](../synthesis.md).
 
-Сводка на 2026-11-02 (два прохода, 17 репозиториев).
+Сводка на 2026-11-03 (три прохода, 42 репозитория).
 
 | Что | Тип | Источник | Вердикт | Итог | Карточка |
 |---|---|---|---|---|---|
@@ -26,3 +26,35 @@
 | OmniRoute | AI-шлюз с обходом подписок | [cheaper-inference/OmniRoute](https://github.com/cheaper-inference/OmniRoute) | **отклонить** (безопасность 0) | 7/18 | [omniroute](omniroute/README.md) |
 
 ¹ Чат оценил по пяти критериям из шести, сумма из 15.
+
+## Третий проход (2026-11-03)
+
+Все 25 — «как есть не ставить»; ценность в идеях. Лицензия указана по факту разбора.
+
+| Что | Тип | Источник | Лицензия | Вердикт | Итог | Карточка |
+|---|---|---|---|---|---|---|
+| dooservice/odoo-skills | скиллы Odoo 16–20 (5 из `odoo/odoo@20.0:skills/`) | [dooservice/odoo-skills](https://github.com/dooservice/odoo-skills) | LGPL-3 | адаптировать (факты 19.0, правило «одна версия») | 14/18 | [dooservice-odoo-skills](dooservice-odoo-skills/README.md) |
+| unclecatvn/agent-skills | справочники Odoo + `odoo_trace.py` | [unclecatvn/agent-skills](https://github.com/unclecatvn/agent-skills) | MIT | адаптировать (API 19.0, Context Brief) | 13/18 | [unclecatvn-skills](unclecatvn-skills/README.md) |
+| odoo-lens | LSP + линтер Odoo 16–20 | [ChengyanOo/odoo-lens](https://github.com/ChengyanOo/odoo-lens) | нет | адаптировать идеи (правила устаревшего API) | 12/18 | [odoo-lens](odoo-lens/README.md) |
+| modularity | дизайн и ревью модульности (Balanced Coupling) | [vladikk/modularity](https://github.com/vladikk/modularity) | CC BY-NC-SA 4.0 | адаптировать идеи | 12/18 | [modularity](modularity/README.md) |
+| follow-up (укр.) | транскрипт → follow-up | [s1vanov/follow-up](https://github.com/s1vanov/follow-up) | CC BY 4.0 | адаптировать (метки спикеров, сомнительные места) | 12/18 | [ukr-follow-up](ukr-follow-up/README.md) |
+| kevinlin/skills | gap-analysis, spec-lint и др. | [kevinlin/skills](https://github.com/kevinlin/skills) | MIT | адаптировать выборочно | 12/18 | [kevinlin-skills](kevinlin-skills/README.md) |
+| ba-skills | 11 скиллов БА (BABOK) | [uycung/ba-skills](https://github.com/uycung/ba-skills) | MIT | адаптировать (роли, бизнес-кейс) | 11/18 | [ba-skills](ba-skills/README.md) |
+| software-estimation-skills | оценка разработки снизу вверх | [Leanware-io/software-estimation-skills](https://github.com/Leanware-io/software-estimation-skills) | MIT | адаптировать узко | 11/18 | [software-estimation-skills](software-estimation-skills/README.md) |
+| mastering-technical-sales | конспект книги о пресейле | [tokenaissance/mastering-technical-sales](https://github.com/tokenaissance/mastering-technical-sales) | MIT (обвязка) | адаптировать идеи | 11/18 | [mastering-technical-sales](mastering-technical-sales/README.md) |
+| ai-first-estimation | оценка, когда код пишет ИИ | [antondrob/ai-first-estimation](https://github.com/antondrob/ai-first-estimation) | MIT | адаптировать | 11/18 | [ai-first-estimation](ai-first-estimation/README.md) |
+| generate-test-book | AC → ручная тест-книга | [Androbito/generate-test-book](https://github.com/Androbito/generate-test-book) | нет | адаптировать идеи (`uat-test-book`) | 11/18 | [generate-test-book](generate-test-book/README.md) |
+| LMTY skills | battlecards, win-loss | [LMTYdotcom/skills](https://github.com/LMTYdotcom/skills) | MIT | адаптировать точечно | 10/18 | [lmty-skills](lmty-skills/README.md) |
+| erpipe mcp-odoo | MCP Odoo с безопасной записью | [erpipe-org/mcp-odoo](https://github.com/erpipe-org/mcp-odoo) | MIT | адаптировать (механика записи в `odoo-connector`) | 10/18 | [erpipe-mcp-odoo](erpipe-mcp-odoo/README.md) |
+| planning-with-files | план и состояние в файлах | [OthmanAdi/planning-with-files](https://github.com/OthmanAdi/planning-with-files) | MIT | адаптировать формат (`PLAN.md`) | 10/18 | [planning-with-files](planning-with-files/README.md) |
+| SkillOpt | автоулучшение текстов скиллов | [microsoft/SkillOpt](https://github.com/microsoft/SkillOpt) | MIT | идеи адаптировать; инструмент отклонить | 10/18 | [skillopt](skillopt/README.md) |
+| presales-agent-skill | пресейл Salesforce | [namit-jpg/presales-agent-skill](https://github.com/namit-jpg/presales-agent-skill) | MIT | адаптировать (граница «нужно от клиента») | 10/18 | [presales-agent-skill](presales-agent-skill/README.md) |
+| requirement-engineer | инженер требований | [MadurangaDev/requirement-engineer](https://github.com/MadurangaDev/requirement-engineer) | MIT | адаптировать частично | 10/18 | [requirement-engineer](requirement-engineer/README.md) |
+| claude-sow-creation | SOW + MCQ-анкеты | [SB-Celebal/claude-sow-creation](https://github.com/SB-Celebal/claude-sow-creation) | нет | адаптировать узко | 10/18 | [claude-sow-creation](claude-sow-creation/README.md) |
+| odoo-agent-pro-kit | платформа разработки Odoo 17–20 | [infovpcs/odoo-agent-pro-kit](https://github.com/infovpcs/odoo-agent-pro-kit) | Apache-2.0 | адаптировать (линтер ловушек 19) | 9/18 | [odoo-agent-pro-kit](odoo-agent-pro-kit/README.md) |
+| mart337i odoo-skills | справочники Odoo 17–20 | [mart337i/odoo-skills](https://github.com/mart337i/odoo-skills) | нет | идеи; как источник фактов 19 опасен (9 ошибок из 19) | 9/18 | [mart337i-odoo-skills](mart337i-odoo-skills/README.md) |
+| NaCl | 59 скиллов BA → SA → TL | [ITSalt/NaCl](https://github.com/ITSalt/NaCl) | MIT | отклонить; адаптировать 5 методов | 8/18 | [nacl](nacl/README.md) |
+| security-harness | мультиагентный аудит безопасности | [dmdhrumilmistry/security-harness](https://github.com/dmdhrumilmistry/security-harness) | MIT | плагин отклонить; методика PR-ревью — адаптировать | 8/18 | [security-harness](security-harness/README.md) |
+| opencode-power-pack | сборник 55 скиллов | [waybarrios/opencode-power-pack](https://github.com/waybarrios/opencode-power-pack) | MIT/Apache; часть CC BY-SA | отклонить; 4 идеи | 8/18 | [opencode-power-pack](opencode-power-pack/README.md) |
+| repo-security-review | аудит кода и скиллов | [Consensys/repo-security-review](https://github.com/Consensys/repo-security-review) | нет | отклонить; идеи для проверки скиллов | 8/18 | [repo-security-review](repo-security-review/README.md) |
+| AI-PreSales-Skills | пресейл по «The PreSales Handbook» | [hangljoe/AI-PreSales-Skills](https://github.com/hangljoe/AI-PreSales-Skills) | MIT (тексты книги — нет) | адаптировать выборочно | 7/18 | [ai-presales-skills](ai-presales-skills/README.md) |

@@ -116,6 +116,29 @@
 | F2 | `odoo19-mvp-build:code-dev`, `references/odoo-version-notes.md` | Раздел 19.0 в основном неверен: Python 3.12+/PG 16+ (в исходниках 3.10–3.14, PG ≥ 13), несуществующее `fields.AiSuggestion`, аддон `discuss` в community 19.0, совет `read_group` (deprecated в 19.0) | `analysis/unclecatvn-skills` и независимо `analysis/dooservice-odoo-skills` (сверено с `odoo@19.0`) |
 | F3 | `odoo19-mvp-build:security-review` (Dimension 5) | `type='json'` — устаревший алиас в 19.0, правильно `jsonrpc` (`odoo/http.py:812–818`) | `analysis/mart337i-odoo-skills` |
 | F4 | `odoo19-mvp-build:pr-review` | Ложная проверка «Odoo 19+: `mail` вместо `discuss`» — следствие ошибки F2 | `analysis/dooservice-odoo-skills` |
+| F5 | `boost:odoo-model-map` (скрипт, пример в SKILL.md, фикстура, кейс `who-extends`) | В Odoo 19 `_inherit = ['x']` (список) без `_name` создаёт **новую** модель с именем из класса; расширение — только `_inherit = 'x'` строкой или явный `_name`. Наш скилл трактует список как расширение. Проверено главной сессией: `odoo/orm/models.py@19.0:240–249` против `odoo/models.py@18.0:245–250` | `analysis/odoo-lens` |
+
+## Третий проход: что берём (план, 2026-11-03)
+
+Источник каждой идеи — раздел «Что взять» в `catalog/<slug>/README.md` (файл@SHA, лицензия, способ). При внедрении — строка в `PROVENANCE.md`.
+
+| # | Приоритет | Куда | Что | Источники (`catalog/…`) |
+|---|---|---|---|---|
+| T1 | **высокий** | `boost:source-check/references/odoo19-facts.md`, `code-dev/references/odoo-version-notes.md` | Своя таблица фактов Odoo 19 с `файл:строка` из `odoo@19.0` (вместо неверного раздела, F2); правило «одна версия, без подстраховок» | dooservice-odoo-skills, unclecatvn-skills, odoo-lens, mart337i-odoo-skills, odoo-agent-pro-kit |
+| T2 | **высокий** | новый `boost:odoo19-lint` (stdlib-скрипт, опц. хук warn) | Барьер на ловушки 19: `<tree>`, `attrs=`, `type='json'`, `_sql_constraints`, `res.partner.mobile/title`, `groups_id`, `_inherit=[…]` без `_name`, `numbercall`… — у каждого правила цитата из 19.0; A/B на `general/hard` | odoo-agent-pro-kit (Apache-2.0, идея), odoo-lens (идея), F2–F5 |
+| T3 | **высокий** | `odoo-connector` (маркетплейс) | Allowlist `model.method`, лимит ids, ошибка на невалидный домен, JSONL-аудит, diff «было → стало», dry-run с откатом (F1) | erpipe-mcp-odoo (MIT), dooservice-odoo-skills (`connect.md`) |
+| T4 | высокий | `boost:odoo-model-map` | Исправить F5; режим «трасса от точки входа» | odoo-lens, mart337i-odoo-skills (идея), unclecatvn-skills (`odoo_trace.py`, после проверки) |
+| T5 | средний | `odoo19-mvp-build:security-review`, `pr-review` | F3, F4; insecure-defaults (fail-open, `get_param(..., default)`, `verify=False`, секретное поле без `groups=`); пункты odoo-security (Markup-XSS, публичные методы = RPC, `file_open`); критерии «усугубил»; достижимость UI; differential review через `_inherit` | opencode-power-pack (идеи; CC BY-SA у ToB), dooservice-odoo-skills, security-harness, nacl |
+| T6 | средний | `session-transcript-analyzer`, `meeting-protocol-builder`, анализаторы транскриптов | 5 сигналов скрытых требований и правило противоречий (→ `Q-N`, не `D-N`); проверка перепутанных меток спикеров; блок «сомнительные места» | requirement-engineer, ukr-follow-up |
+| T7 | средний | `discovery-gap-analyzer`, `discovery-sow-builder`, `discovery-scope-mapper`, `handover-dossier-builder` | Конвенции gap (ID по типу, без перенумерации, тройка провенанса); «делаем / даёт клиент к сроку / не входит»; 9 содержательных проверок; чек-лист ролей стейкхолдеров | kevinlin-skills, presales-agent-skill, claude-sow-creation, ba-skills |
+| T8 | средний | `tr-effort-instruction`, `preliminary-estimate` | Колонка «что делает человек», несжимаемые блоки Odoo, риск-буфер с причиной, кросс-проверка двумя методами, `stale_after` ставок, пометка аналога «до/с AI-сборкой» | ai-first-estimation, software-estimation-skills |
+| T9 | средний | `tr-review`, `tr-odoo-tech-design`, `tr-usecases-acceptance` | Runtime Contract для моделей со `state`/cron; обратная трассировка журнал → ТР → SPEC → тесты (`trace-lint`); признаки неоднозначного AC | nacl, kevinlin-skills, generate-test-book |
+| T10 | средний | `odoo19-sales-*` | Вставки в `loss-pattern-analyzer`/`defence-brief`/`demo-build-plan`; проблема ≠ симптом ≠ хотелка; вердикт «демо или нет»; стресс-тест экономики; статус-кво как обязательное возражение; MCQ-дозбор | lmty-skills, ai-presales-skills, mastering-technical-sales, claude-sow-creation |
+| T11 | низкий | новый `uat-test-book` (`odoo19-implementation`) | UAT-таблица из AC: шаг / ожидаемое / факт / статус / роль / дефект | generate-test-book (идеи) |
+| T12 | низкий | `architecture` | Линза связности аддонов Odoo (сила × расстояние × изменчивость), «не вторгаться в стандарт» | modularity (только идеи, NC) |
+| T13 | низкий | `boost:cloud-memory`, `build-orchestrator` | `memory/PLAN.md` для долгих задач; `BUILD_STATE.md` на модуль | planning-with-files |
+| T14 | низкий | `skill-feedback/references/weekly-review.md`, `criteria.md`, `catalog/_TEMPLATE.md` | Слияние по отложенным кейсам, no-regression по каждому кейсу, ≤4 правки за ревью; чек-лист «безопасность скилла/плагина», признаки supply-chain риска; разделы «Условия использования / Отклонённые подозрения / Что не проверено» | skillopt, repo-security-review, opencode-power-pack |
+| T15 | решение пользователя | новый скилл бизнес-кейса / ROI для продаж | В `odoo19-sales-*` ROI нет | ba-skills |
 
 ## Что нужно от пользователя
 
