@@ -30,7 +30,7 @@ EXPECTED = {
     'route-type-json': [('controllers/main.py', 5)],
     'sql-constraints': [('models/models.py', 7)],
     'partner-mobile-title': [('models/models.py', 12), ('models/models.py', 13), ('models/models.py', 31),
-                             ('views/views.xml', 30), ('views/views.xml', 49)],
+                             ('views/views.xml', 30), ('views/views.xml', 49), ('models/models.py', 82)],
     'groups-fields': [('models/models.py', 25), ('models/models.py', 28), ('security/security.xml', 8),
                       ('security/security.xml', 14), ('security/security.xml', 17), ('views/views.xml', 58),
                       ('security/res.groups.csv', 1)],

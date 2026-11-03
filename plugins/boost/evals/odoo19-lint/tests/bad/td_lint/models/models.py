@@ -72,3 +72,11 @@ class ResPartner(models.Model):
     _inherit = ['res.partner']
 
     td_code = fields.Char()
+
+
+class TdTrip(models.Model):
+    _name = 'td.trip'
+    _description = 'Trip'
+
+    driver_id = fields.Many2one('res.partner')
+    driver_mobile = fields.Char(related='driver_id.mobile')

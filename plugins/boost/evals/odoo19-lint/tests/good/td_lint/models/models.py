@@ -89,3 +89,17 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     td_code = fields.Char()
+
+
+class TdTrip(models.Model):
+    _name = 'td.trip'
+    _description = 'Trip'
+
+    driver_id = fields.Many2one('res.partner')
+    driver_phone = fields.Char(related='driver_id.phone')
+    job_title = fields.Char()
+    label = fields.Char(compute='_compute_label')
+
+    def _compute_label(self):
+        for trip in self:
+            trip.label = (trip.job_title or '').title()

@@ -158,7 +158,7 @@ BAD_FIELDS = {
 }
 LINE_MODELS = {'sale.order.line', 'purchase.order.line'}
 ORDER_MODELS = {'sale.order', 'purchase.order'} | LINE_MODELS
-PARTNER_RE = re.compile(r'(?<![\w.])(\w*partner\w*)\.(mobile|title)\b(?!\s*\()')
+PARTNER_RE = re.compile(r'(?<!\w)(\w+)\.(mobile|title)\b(?!\s*\()')
 
 
 class Linter:
@@ -168,12 +168,21 @@ class Linter:
         self.skipped = []
         # поля, которые сам сканируемый код добавляет моделям: подавляет ложные срабатывания
         self.defined = set()
+        # имена полей Many2one('res.partner') в сканируемом коде (driver_id, customer_id…)
+        self.partner_fields = set()
 
     def add(self, path, line, rule, detail='', lines=None):
         if lines is not None and 0 < line <= len(lines) and IGNORE_MARK in lines[line - 1]:
             return
         self.findings.append({'file': path, 'line': line, 'rule': rule,
                               'severity': RULES[rule][0], 'detail': detail})
+
+    def is_partner(self, name):
+        return 'partner' in name.lower() or name in self.partner_fields
+
+    def partner_hits(self, text):
+        return [m for m in PARTNER_RE.finditer(text)
+                if self.is_partner(m.group(1)) and self.field_missing('res.partner', m.group(2))]
 
     def field_missing(self, model, field):
         rule = BAD_FIELDS.get((model, field))
@@ -259,6 +268,13 @@ def collect_defined(tree, linter):
                     and dotted(stmt.value.func).startswith('fields.')):
                 for m in models:
                     linter.defined.add((m, stmt.targets[0].id))
+                call = stmt.value
+                comodel = const_str(call.args[0]) if call.args else None
+                for kw in call.keywords:
+                    if kw.arg == 'comodel_name':
+                        comodel = const_str(kw.value)
+                if dotted(call.func).endswith('Many2one') and comodel == 'res.partner':
+                    linter.partner_fields.add(stmt.targets[0].id)
 
 
 def docstring_lines(tree):
@@ -361,7 +377,7 @@ def check_python(path, text, linter):
                 linter.add(path, node.lineno, 'private-env', f'{node.value.id}.{node.attr}', lines)
             base = dotted(node.value)
             last = base.split('.')[-1] if base else ''
-            if node.attr in ('mobile', 'title') and 'partner' in last.lower():
+            if node.attr in ('mobile', 'title') and linter.is_partner(last):
                 if linter.field_missing('res.partner', node.attr):
                     linter.add(path, node.lineno, 'partner-mobile-title', f'{base}.{node.attr}', lines)
             elif node.attr == 'groups_id' and ('res.users', 'groups_id') not in linter.defined \
@@ -399,9 +415,8 @@ def check_python(path, text, linter):
             if node.lineno in doc:
                 continue
             s = node.value
-            for m in PARTNER_RE.finditer(s):
-                if linter.field_missing('res.partner', m.group(2)):
-                    linter.add(path, node.lineno, 'partner-mobile-title', repr(m.group(0)), lines)
+            for m in linter.partner_hits(s):
+                linter.add(path, node.lineno, 'partner-mobile-title', repr(m.group(0)), lines)
             if 'tree_view_ref' in s and not s.strip() == 'tree_view_ref':
                 linter.add(path, node.lineno, 'tree-view-ref', '', lines)
             if re.search(r'//tree\b|<tree[\s>/]', s):
@@ -555,9 +570,8 @@ def check_arch(path, arch, view_model, linter, lines):
             if fname == 'product_uom' and view_model in ORDER_MODELS and \
                     ('sale.order.line', 'product_uom') not in linter.defined:
                 linter.add(path, node.line, 'line-product-uom', f'<field name="product_uom"> во вью {view_model}', lines)
-            if m := PARTNER_RE.search(fname):
-                if linter.field_missing('res.partner', m.group(2)):
-                    linter.add(path, node.line, 'partner-mobile-title', f'<field name="{fname}">', lines)
+            if linter.partner_hits(fname):
+                linter.add(path, node.line, 'partner-mobile-title', f'<field name="{fname}">', lines)
         ctx = node.attrib.get('context', '')
         if 'tree_view_ref' in ctx:
             linter.add(path, node.line, 'tree-view-ref', '', lines)
