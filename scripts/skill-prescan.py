@@ -891,11 +891,11 @@ def load_tsv(path: Path) -> list[dict]:
 # ---------------------------------------------------------------------------
 # Вывод
 # ---------------------------------------------------------------------------
-def render(sc: Scanner, findings: list[Finding], roots, dup_only: bool, verbose: bool) -> str:
+def render(sc: Scanner, findings: list[Finding], roots, dup_only: bool, verbose: bool, n_skills: int) -> str:
     cnt = {lv: sum(1 for f in findings if f.level == lv) for lv in RANK}
     verdict = "BLOCK" if cnt["BLOCK"] else "WARN" if cnt["WARN"] else "PASS"
     out = [f"# skill-prescan {VERSION}: {', '.join(str(r) for r in roots)}", "",
-           f"Итог: **{verdict}** · BLOCK {cnt['BLOCK']} · WARN {cnt['WARN']} · INFO {cnt['INFO']} · файлов {sc.files} · скиллов {len(sc.skills)}",
+           f"Итог: **{verdict}** · BLOCK {cnt['BLOCK']} · WARN {cnt['WARN']} · INFO {cnt['INFO']} · файлов {sc.files} · скиллов {n_skills}",
            "", "Эвристика, не доказательство: BLOCK — стоп и ручной разбор, WARN — прочитать и закрыть, INFO — справочно.", ""]
     if not dup_only:
         out += ["## Поверхности исполнения без вызова скилла", ""]
@@ -963,7 +963,7 @@ def main(argv: list[str]) -> int:
                           "exec_surfaces": sc.surfaces, "hosts": sorted(sc.hosts), "unread": sc.unread},
                          ensure_ascii=False, indent=1))
     else:
-        sys.stdout.write(render(sc, findings, shown, not a.paths, a.verbose))
+        sys.stdout.write(render(sc, findings, shown, not a.paths, a.verbose, len({s['dir'] for s in all_skills})))
     worst = min((RANK[f.level] for f in findings), default=9)
     limit = RANK["WARN"] if a.fail_on == "warn" else RANK["BLOCK"]
     return 1 if worst <= limit else 0
