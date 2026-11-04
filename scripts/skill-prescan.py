@@ -53,6 +53,7 @@ DOWN = {"BLOCK": "WARN", "WARN": "INFO", "INFO": "INFO"}
 MAX_BYTES = 2_000_000
 DESC_LIMIT = 1536          # Claude Code: description + when_to_use в листинге
 SPEC_DESC_LIMIT = 1024     # открытая спецификация Agent Skills
+PLUGIN_DESC_LIMIT = 500    # синк маркетплейса claude.ai: «Plugin description must be at most 500 characters»
 
 INSTR_EXT = {".md", ".markdown", ".mdx", ".txt", ".rst"}
 CODE_EXT = {".sh", ".bash", ".zsh", ".fish", ".py", ".js", ".mjs", ".cjs", ".ts",
@@ -722,6 +723,10 @@ class Scanner:
                         servers = {}
                 self.mcp(label, servers)
             if base == "plugin.json":
+                pdesc = data.get("description", "")
+                if isinstance(pdesc, str) and len(pdesc) > PLUGIN_DESC_LIMIT:
+                    self.add("WARN", "lint", "plugin-desc-length", label, 0,
+                             f"description плагина = {len(pdesc)} > {PLUGIN_DESC_LIMIT}: синк claude.ai пропустит элементы плагина")
                 for k in ("commands", "agents", "skills", "outputStyles", "lspServers"):
                     if k in data:
                         self.add("INFO", "inventory", "manifest-" + k, label, 0, f"{k}: {json.dumps(data[k], ensure_ascii=False)[:120]}")

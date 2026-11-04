@@ -240,5 +240,30 @@ class Duplicates(unittest.TestCase):
             self.assertIn("dup-name", [f["rule"] for f in data["findings"]])
 
 
+class PluginManifest(unittest.TestCase):
+    """Синк claude.ai отклоняет description плагина длиннее 500 символов."""
+
+    def _run(self, desc: str) -> dict:
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d) / "plug"
+            (root / ".claude-plugin").mkdir(parents=True)
+            (root / ".claude-plugin" / "plugin.json").write_text(
+                json.dumps({"name": "plug", "version": "0.1.0", "description": desc}, ensure_ascii=False), encoding="utf-8")
+            return run(str(root), "--fail-on", "warn")
+
+    def test_long_plugin_description_warns(self):
+        for n in (501, 732):
+            with self.subTest(n):
+                code, data = self._run("ж" * n)
+                self.assertIn("plugin-desc-length", {f["rule"] for f in data["findings"]})
+                self.assertEqual(code, 1)
+
+    def test_limit_plugin_description_ok(self):
+        for n in (420, 500):
+            with self.subTest(n):
+                _, data = self._run("ж" * n)
+                self.assertNotIn("plugin-desc-length", {f["rule"] for f in data["findings"]})
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
