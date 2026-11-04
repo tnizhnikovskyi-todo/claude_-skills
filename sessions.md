@@ -131,3 +131,11 @@
 | uat-test-book | T11, U7 | `claude/uat-test-book` в маркетплейсе | [session_01L4X5dyiW4w5HTW2Qi9cKwg](https://claude.ai/code/session_01L4X5dyiW4w5HTW2Qi9cKwg) | готово, PR не открыт; конфликт версии `odoo19-mvp-build` (0.9.2) с T1 (0.9.3) |
 | humizer-uk-pass4 | U6 (апостроф `ʼ`) | `claude/humizer-uk-pass4` в sale_todo_claude | [session_01L4X5e1uPxnWnBvhELUGDuz](https://claude.ai/code/session_01L4X5e1uPxnWnBvhELUGDuz) | готово, PR #2 (не слит) |
 | sales-pass4 | T10, U9, T8 (`preliminary-estimate`) | `claude/sales-pass4` в sale_todo_claude | [session_01L4X5dyMPpMfQehWMCwG9RD](https://claude.ai/code/session_01L4X5dyMPpMfQehWMCwG9RD) | готово (продажи 0.5.0), PR не открыт |
+
+## Решения владельца 2026-11-04
+
+| slug | Задача | Ветка | Сессия | Статус |
+|---|---|---|---|---|
+| humizer-warn-email | Humizer: мягкий старт до 18.11, режим для писем | `claude/humizer-warn-email` в sale_todo_claude | [session_01L4X5dwKG29a3ycfAg8iDAp](https://claude.ai/code/session_01L4X5dwKG29a3ycfAg8iDAp) | в работе |
+| tr-pm-share | ТР: PM 10%, без скидки на ИИ; протокол: срок из стенограммы | `claude/tr-pm-share` в маркетплейсе | [session_01L4X5dwwg1tycz1vYDxRxfW](https://claude.ai/code/session_01L4X5dwwg1tycz1vYDxRxfW) | в работе |
+| odoo-ls-layer | `odoo-ls` вторым слоем к `odoo19-lint` | `build/odoo-ls-layer` | [session_01L4X5dwiM5PUk6JgMfnF1P1](https://claude.ai/code/session_01L4X5dwiM5PUk6JgMfnF1P1) | в работе |
