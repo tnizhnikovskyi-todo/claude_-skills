@@ -140,6 +140,25 @@ class Suppression(unittest.TestCase):
             lines = [x['line'] for x in lint_mod.lint([p], all_files=True).findings]
             self.assertEqual(lines, [7])
 
+    def test_toggle_active_own_class_not_orm(self):
+        """toggle_active своего не-ORM класса (odoo@19.0 iot_drivers/server_logger.py:47) — не находка;
+        вызов на записи ORM в другом файле — находка."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            own = os.path.join(d, 'own.py')
+            with open(own, 'w', encoding='utf-8') as f:
+                f.write("import logging\n\n\nclass H(logging.Handler):\n"
+                        "    def __init__(self):\n        self.toggle_active(True)\n\n"
+                        "    def toggle_active(self, on):\n        self.on = on\n\n\n"
+                        "_h = H()\n_h.toggle_active(False)\n")
+            orm = os.path.join(d, 'orm.py')
+            with open(orm, 'w', encoding='utf-8') as f:
+                f.write("from odoo import models\n\n\nclass A(models.Model):\n    _name = 'a'\n\n"
+                        "    def go(self):\n        self.toggle_active()\n")
+            rules = lambda p: [x['rule'] for x in lint_mod.lint([p], all_files=True).findings]
+            self.assertNotIn('toggle-active', rules(own))
+            self.assertIn('toggle-active', rules(orm))
+
     def test_module_defines_mobile(self):
         """Если модуль сам добавляет res.partner.mobile, related на него не ошибка."""
         import tempfile

@@ -136,6 +136,6 @@
 
 | slug | Задача | Ветка | Сессия | Статус |
 |---|---|---|---|---|
-| humizer-warn-email | Humizer: мягкий старт до 18.11, режим для писем | `claude/humizer-warn-email` в sale_todo_claude | [session_01L4X5dwKG29a3ycfAg8iDAp](https://claude.ai/code/session_01L4X5dwKG29a3ycfAg8iDAp) | в работе |
-| tr-pm-share | ТР: PM 10%, без скидки на ИИ; протокол: срок из стенограммы | `claude/tr-pm-share` в маркетплейсе | [session_01L4X5dwwg1tycz1vYDxRxfW](https://claude.ai/code/session_01L4X5dwwg1tycz1vYDxRxfW) | в работе |
-| odoo-ls-layer | `odoo-ls` вторым слоем к `odoo19-lint` | `build/odoo-ls-layer` | [session_01L4X5dwiM5PUk6JgMfnF1P1](https://claude.ai/code/session_01L4X5dwiM5PUk6JgMfnF1P1) | в работе |
+| humizer-warn-email | Humizer: мягкий старт до 18.11, режим для писем | `claude/humizer-warn-email` в sale_todo_claude | [session_01L4X5dwKG29a3ycfAg8iDAp](https://claude.ai/code/session_01L4X5dwKG29a3ycfAg8iDAp) | готово, PR #4 (CI зелёный) |
+| tr-pm-share | ТР: PM 10%, без скидки на ИИ; протокол: срок из стенограммы | `claude/tr-pm-share` в маркетплейсе | [session_01L4X5dwwg1tycz1vYDxRxfW](https://claude.ai/code/session_01L4X5dwwg1tycz1vYDxRxfW) | готово, PR #16 |
+| odoo-ls-layer | `odoo-ls` вторым слоем к `odoo19-lint` | `build/odoo-ls-layer` | [session_01L4X5dwiM5PUk6JgMfnF1P1](https://claude.ai/code/session_01L4X5dwiM5PUk6JgMfnF1P1) | остановлено: `cargo build` заблокирован классификатором (разрешение не из чата сессии) |

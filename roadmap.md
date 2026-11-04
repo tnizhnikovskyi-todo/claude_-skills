@@ -171,7 +171,7 @@
 | ИИ-ускорение в оценке ТР | не учитывать (часы без скидки) | [сессия](https://claude.ai/code/session_01L4X5dwwg1tycz1vYDxRxfW), `claude/tr-pm-share` в маркетплейсе |
 | Доля PM в оценке ТР | добавить, 10% | там же |
 | Срок в протоколе без договорённости | только из стенограммы, иначе «термін не визначено» + открытый вопрос | там же (`meeting-protocol-builder`) |
-| odoo-ls вторым слоем к линтеру | разрешено: сборка официального `odoo-ls` и A/B, лимит $5 | [сессия](https://claude.ai/code/session_01L4X5dwiM5PUk6JgMfnF1P1), `build/odoo-ls-layer` |
+| odoo-ls вторым слоем к линтеру | разрешено; сессия остановилась на `cargo build` (классификатор не засчитал разрешение, пришедшее не из её чата). Кроме того, в `claude plugin eval` Bash закрыт, поэтому A/B режима `--with-odoo-ls` дал бы 0 по построению. Базовые замеры: наш линтер на Odoo 19.0 — 0 ERROR, 4 WARN (3 ложных `toggle-active` в `iot_drivers` исправлены главной сессией) | [сессия](https://claude.ai/code/session_01L4X5dwiM5PUk6JgMfnF1P1), `build/odoo-ls-layer` |
 | `memory/PLAN.md`: отдельная проверка на прерванной задаче | не нужна: A/B `cloud-memory/long-plan` 3/3 | — |
 
 ## Что нужно от пользователя

@@ -452,6 +452,12 @@ def check_python(path, text, linter):
                         if s and s.split('.')[-1] in ('tax_id', 'taxes_id'):
                             linter.add(path, a.lineno, 'line-tax-ids', repr(s), lines)
 
+    # toggle_active, объявленный в своём не-ORM классе файла (например, logging.Handler
+    # в odoo@19.0:addons/iot_drivers/server_logger.py:47), — не устаревший метод ORM
+    own_toggle = any(isinstance(c, ast.ClassDef) and not is_model_class(c)
+                     and any(isinstance(f, ast.FunctionDef) and f.name == 'toggle_active' for f in c.body)
+                     for c in ast.walk(tree))
+
     for node in ast.walk(tree):
         # декораторы
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
@@ -474,7 +480,7 @@ def check_python(path, text, linter):
                 attr = func.attr
                 if attr == 'read_group':
                     linter.add(path, node.lineno, 'read-group', dotted(func), lines)
-                elif attr == 'toggle_active':
+                elif attr == 'toggle_active' and not own_toggle:
                     linter.add(path, node.lineno, 'toggle-active', dotted(func), lines)
                 elif attr == '_notify_progress':
                     linter.add(path, node.lineno, 'notify-progress', dotted(func), lines)
